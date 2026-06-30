@@ -1,0 +1,11 @@
+[project]
+name = "oku100-pipeline"
+version = "0.1.0"
+description = "Leak-safe multi-timeframe OHLC decision pipeline"
+requires-python = ">=3.10"
+
+[project.scripts]
+oku100 = "oku100.cli:main"
+
+[tool.unittest]
+start-directory = "tests"
