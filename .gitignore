@@ -2,3 +2,8 @@
 __pycache__/
 *.pyc
 *.pyo
+
+# 大容量(146MB/887.5MB)。git管理下には置かず、圧縮アーカイブ+マニフェスト方式で
+# プロジェクト外(E:ドライブ)に保管する(2026-07-27、docs/archive_manifest_*.md参照)。
+data/realtrade_cache/
+docs/codex_examples/
