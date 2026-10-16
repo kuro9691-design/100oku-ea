@@ -64,6 +64,12 @@ class Params:
     weekend_filter_enabled: bool = True
     economic_event_filter_enabled: bool = True
     atr_period: int = 14
+    # Split take-profit (docs/execution_spec.md 7). 80 = 原典「4時間足80MA」;
+    # zone/buffer reuse PH-06 (0.5%) and the structural-SL buffer of PH-37 (0.3%).
+    split_targets: bool = True
+    h4_tp_ma_period: int = 80
+    tp_zone_pct: float = 0.005
+    tp_buffer_pct: float = 0.003
 
     @property
     def use_weekend_filter(self) -> bool:
@@ -96,6 +102,8 @@ class Decision:
     target: float | None
     rr: float | None
     metadata: dict[str, Any] = field(default_factory=dict)
+    # Split take-profit orders [(price, fraction)], nearest first (execution_spec 7).
+    targets: list[tuple[float, float]] = field(default_factory=list)
 
     @property
     def actionable(self) -> bool:
@@ -121,3 +129,5 @@ class Trade:
     exit: float
     pnl_r: float
     reason: str
+    # Partial exits [(exit_index, price, fraction, reason)] (execution_spec 7-2).
+    legs: tuple = ()

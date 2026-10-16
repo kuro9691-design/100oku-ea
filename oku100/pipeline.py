@@ -215,6 +215,7 @@ class DecisionPipeline:
             stop=chosen["stop"] if direction is not Direction.NONE else None,
             target=chosen["target"] if direction is not Direction.NONE else None,
             rr=chosen["rr"] if direction is not Direction.NONE else None,
+            targets=list(chosen.get("targets", [])) if direction is not Direction.NONE else [],
             metadata={
                 "candidate_direction": "long" if chosen["direction"] > 0 else "short",
                 "all_direction_aligned": chosen["alignment"]["passed"],
@@ -344,6 +345,8 @@ class DecisionPipeline:
         stop = self._stop(h1, entry, direction)
         target = self._target(d1, h4, entry, direction, b2_pass, stop=stop, min_rr=p.MinRR)
         rr = self._rr(entry, stop, target)
+        # Exit-only: F keeps judging the single _target above (execution_spec 7-1).
+        targets = self._split_targets(d1, h4, entry, direction) if p.split_targets else []
         f_pass = rr is not None and rr >= p.MinRR
         criteria["F"] = Criterion("F", f_pass, 14 if f_pass else 0, f"RR={rr}")
 
@@ -381,6 +384,7 @@ class DecisionPipeline:
             "entry": entry,
             "stop": stop,
             "target": target,
+            "targets": targets,
             "rr": rr,
             "alignment": alignment,
         }
@@ -596,6 +600,42 @@ class DecisionPipeline:
         if not valid:
             return None
         return min(valid) if direction > 0 else max(valid)
+
+    def _split_targets(
+        self, d1: TimeframeState, h4: TimeframeState, entry: float, direction: int
+    ) -> list[tuple[float, float]]:
+        """Split take-profit orders (docs/execution_spec.md 7-1).
+
+        T1/T2: nearest H4 structures (pivots, H4 20/80 SMA), T3: nearest D1
+        structure (pivots, D1 fast SMA) beyond the last H4 target. Structures
+        within the zone of the fill are the broken trigger line and are
+        excluded; structures within the zone of the previous target merge into
+        it. Orders sit just before each line; fractions are equal.
+        """
+        p = self.params
+        if entry <= 0:
+            return []
+        zone = entry * p.tp_zone_pct
+
+        def ahead(price: float) -> float:
+            return (price - entry) * direction
+
+        h4_structures = [pivot.price for pivot in h4.pivots] + [
+            h4.fast_ma, sma(h4.bars, h4.index, p.h4_tp_ma_period),
+        ]
+        levels: list[float] = []
+        for price in sorted((x for x in h4_structures if ahead(x) > zone), key=ahead):
+            if not levels or ahead(price) - ahead(levels[-1]) > zone:
+                levels.append(price)
+        levels = levels[:2]
+        if not levels:
+            return []
+        d1_structures = [pivot.price for pivot in d1.pivots] + [d1.fast_ma]
+        beyond = [x for x in d1_structures if ahead(x) - ahead(levels[-1]) > zone]
+        if beyond:
+            levels.append(min(beyond, key=ahead))
+        fraction = 1 / len(levels)
+        return [(level * (1 - direction * p.tp_buffer_pct), fraction) for level in levels]
 
     @staticmethod
     def _ma_direction(state: TimeframeState, direction: int) -> bool:

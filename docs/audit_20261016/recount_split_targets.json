@@ -1,0 +1,117 @@
+{
+  "scan": {
+    "strict": {
+      "long": 47,
+      "short": 32
+    },
+    "strict_total": 79,
+    "targets_per_candidate": {
+      "2": 1,
+      "3": 78
+    },
+    "fallback_single_target": 0,
+    "t1_rr": {
+      "n": 79,
+      "median": 0.1691405444540985,
+      "below_1": 76,
+      "below_1_5": 77
+    },
+    "cancel_stats": {
+      "cancelled": 646,
+      "same_bar_resolved": 8,
+      "same_bar_ambiguous": 1
+    }
+  },
+  "backtests": [
+    {
+      "gate": "strict",
+      "split_targets": true,
+      "trades": 75,
+      "reasons": {
+        "partial_stop": 27,
+        "target": 40,
+        "stop": 8
+      },
+      "legs_per_trade": {
+        "3": 74,
+        "2": 1
+      },
+      "ambiguous": 0,
+      "win_rate": 0.5466666666666666,
+      "avg_r": 0.13737319536237286,
+      "total_r": 10.302989652177965,
+      "max_drawdown_r": 1.8700199593452531
+    },
+    {
+      "gate": "strict",
+      "split_targets": false,
+      "trades": 63,
+      "reasons": {
+        "stop": 41,
+        "target": 22
+      },
+      "legs_per_trade": {
+        "1": 63
+      },
+      "ambiguous": 0,
+      "win_rate": 0.3492063492063492,
+      "avg_r": 0.19238340094340112,
+      "total_r": 12.12015425943427,
+      "max_drawdown_r": 9.480767030227108
+    },
+    {
+      "gate": "actionable",
+      "split_targets": true,
+      "trades": 257,
+      "reasons": {
+        "target": 125,
+        "stop": 33,
+        "partial_stop": 99
+      },
+      "legs_per_trade": {
+        "3": 250,
+        "2": 6,
+        "1": 1
+      },
+      "ambiguous": 0,
+      "win_rate": 0.5330739299610895,
+      "avg_r": 0.0354178696300196,
+      "total_r": 9.102392494915037,
+      "max_drawdown_r": 8.192292542994991
+    }
+  ],
+  "before_split": {
+    "scan": {
+      "strict": {
+        "long": 47,
+        "short": 32
+      },
+      "strict_total": 79,
+      "actionable": 337,
+      "actionable_with_sl_tp": 317,
+      "cancel_stats": {
+        "cancelled": 646,
+        "same_bar_resolved": 8,
+        "same_bar_ambiguous": 1
+      }
+    },
+    "backtests": [
+      {
+        "gate": "actionable",
+        "trades": 189,
+        "ambiguous": 0,
+        "win_rate": 0.3862433862433862,
+        "avg_r": 0.3018192412770243
+      },
+      {
+        "gate": "strict",
+        "trades": 63,
+        "ambiguous": 0,
+        "win_rate": 0.3492063492063492,
+        "avg_r": 0.19238340094340112
+      }
+    ],
+    "elapsed_sec": 1288
+  },
+  "elapsed_sec": 1916
+}

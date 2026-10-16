@@ -97,6 +97,8 @@ def run_backtest(
         trade = _resolve_trade(
             h1, index + 1, decision.direction, decision.entry, decision.stop, decision.target,
             m15_by_hour=m15_by_hour,
+            # No H4 structure -> single target (execution_spec 7-1).
+            targets=decision.targets or None,
         )
         if trade:
             trades.append(trade)
@@ -114,55 +116,73 @@ def run_backtest(
     )
 
 
-def _bar_exit(bar: Bar, long: bool, stop: float, target: float, filled_at_open: bool):
-    """Exit on the bar where the stop order filled (docs/execution_spec.md 3-1).
+def _targets_reached(bar: Bar, long: bool, remaining: Sequence[tuple[float, float]]) -> int:
+    """Leading remaining targets (nearest first) reached by the bar."""
+    count = 0
+    for price, _ in remaining:
+        if (bar.high >= price) if long else (bar.low <= price):
+            count += 1
+        else:
+            break
+    return count
 
-    Returns (reason, needs_order): reason is "stop", "target" or None.
-    needs_order=True means OHLC alone cannot tell whether the stop came
-    after the fill or before the target.
+
+def _bar_exit(
+    bar: Bar, long: bool, stop: float, remaining: Sequence[tuple[float, float]], filled_at_open: bool,
+) -> tuple[int, bool, bool]:
+    """Exit on the bar where the stop order filled (docs/execution_spec.md 3-1, 7-2).
+
+    Returns (targets_hit, stopped, needs_order). needs_order=True means OHLC
+    alone cannot tell whether the stop came after the fill or before a target.
     """
     stop_hit = bar.low <= stop if long else bar.high >= stop
-    target_hit = bar.high >= target if long else bar.low <= target
-    if not stop_hit and not target_hit:
-        return None, False
+    hits = _targets_reached(bar, long, remaining)
+    if not stop_hit and not hits:
+        return 0, False, False
     if filled_at_open:
-        if stop_hit and target_hit:
-            return "stop", True
-        return ("stop" if stop_hit else "target"), False
-    # Filled mid-bar: the target lies beyond the fill, so reaching it is
+        if stop_hit and hits:
+            return 0, True, True
+        return hits, stop_hit, False
+    # Filled mid-bar: targets lie beyond the fill, so reaching them is
     # necessarily after the fill. A stop touch may predate the fill.
-    if target_hit and not stop_hit:
-        return "target", False
-    return "stop", True
+    if hits and not stop_hit:
+        return hits, False, False
+    return 0, True, True
 
 
 def _fill_bar_exit(
-    bar: Bar, long: bool, entry: float, stop: float, target: float,
+    bar: Bar, long: bool, entry: float, stop: float, remaining: Sequence[tuple[float, float]],
     m15_bars: Sequence[Bar] | None,
-) -> tuple[str | None, bool]:
-    """Returns (reason, ambiguous). Ambiguous outcomes are conservatively "stop"."""
+) -> tuple[int, bool, bool]:
+    """Returns (targets_hit, stopped, ambiguous). Ambiguous remainders are conservatively stopped."""
     reaches = (lambda b: b.high >= entry) if long else (lambda b: b.low <= entry)
     at_open = (lambda b: b.open >= entry) if long else (lambda b: b.open <= entry)
-    reason, needs_order = _bar_exit(bar, long, stop, target, at_open(bar))
+    hits, stopped, needs_order = _bar_exit(bar, long, stop, remaining, at_open(bar))
     if not needs_order:
-        return reason, False
+        return hits, stopped, False
     if m15_bars is None or len(m15_bars) != 4:
-        return "stop", True
+        return 0, True, True
+    total = 0
     filled = False
     for sub in m15_bars:
         if not filled:
             if not reaches(sub):
                 continue
             filled = True
-            reason, needs_order = _bar_exit(sub, long, stop, target, at_open(sub))
+            hits, stopped, needs_order = _bar_exit(sub, long, stop, remaining[total:], at_open(sub))
         else:
-            reason, needs_order = _bar_exit(sub, long, stop, target, True)
-        if reason is not None:
-            return reason, needs_order
+            hits, stopped, needs_order = _bar_exit(sub, long, stop, remaining[total:], True)
+        if needs_order:
+            return total, True, True
+        total += hits
+        if stopped:
+            return total, True, False
+        if total == len(remaining):
+            return total, False, False
     if not filled:
         # M15 does not show the fill the H1 bar implies: treat as missing.
-        return "stop", True
-    return None, False
+        return 0, True, True
+    return total, False, False
 
 
 def _resolve_trade(
@@ -174,10 +194,13 @@ def _resolve_trade(
     target: float,
     *,
     m15_by_hour: Mapping[datetime, Sequence[Bar]] | None = None,
+    targets: Sequence[tuple[float, float]] | None = None,
 ) -> Trade | None:
     """start_index is the bar after the fill bar; the fill bar is start_index - 1.
 
     Exits are examined from the fill bar itself (docs/execution_spec.md 3).
+    `targets` [(price, fraction)] splits the exit (execution_spec 7-2); without
+    it the whole position exits at `target`.
     """
     if entry is None:
         return None
@@ -185,30 +208,53 @@ def _resolve_trade(
     if risk == 0:
         return None
     long = direction is Direction.LONG
+    remaining = list(targets) if targets else [(target, 1.0)]
+    legs: list[tuple[int, float, float, str]] = []
+    ambiguous = False
     fill_index = start_index - 1
+    entry_index = max(fill_index, 0)
+    exit_index = None
     if fill_index >= 0:
         fill_bar = bars[fill_index]
         m15_bars = m15_by_hour.get(fill_bar.timestamp) if m15_by_hour is not None else None
-        reason, ambiguous = _fill_bar_exit(fill_bar, long, entry, stop, target, m15_bars)
-        if reason == "stop":
-            return Trade(direction, fill_index, fill_index, entry, stop, -1.0,
-                         "stop_ambiguous" if ambiguous else "stop")
-        if reason == "target":
-            return Trade(direction, fill_index, fill_index, entry, target, abs(target - entry) / risk, "target")
-    entry_index = max(fill_index, 0)
-    for index in range(start_index, len(bars)):
-        bar = bars[index]
-        stop_hit = bar.low <= stop if long else bar.high >= stop
-        target_hit = bar.high >= target if long else bar.low <= target
-        # Same-bar ambiguity after the fill bar is resolved conservatively: stop first.
-        if stop_hit:
-            return Trade(direction, entry_index, index, entry, stop, -1.0, "stop")
-        if target_hit:
-            pnl = abs(target - entry) / risk
-            return Trade(direction, entry_index, index, entry, target, pnl, "target")
-    final = bars[-1].close
-    signed = (final - entry) if long else (entry - final)
-    return Trade(direction, entry_index, len(bars) - 1, entry, final, signed / risk, "end_of_data")
+        hits, stopped, ambiguous = _fill_bar_exit(fill_bar, long, entry, stop, remaining, m15_bars)
+        legs += [(fill_index, price, fraction, "target") for price, fraction in remaining[:hits]]
+        remaining = remaining[hits:]
+        if stopped:
+            legs += [(fill_index, stop, fraction, "stop") for _, fraction in remaining]
+            remaining = []
+        if not remaining:
+            exit_index = fill_index
+    if exit_index is None:
+        for index in range(start_index, len(bars)):
+            bar = bars[index]
+            # Same-bar ambiguity after the fill bar is resolved conservatively: stop first.
+            if bar.low <= stop if long else bar.high >= stop:
+                legs += [(index, stop, fraction, "stop") for _, fraction in remaining]
+                remaining = []
+            else:
+                hits = _targets_reached(bar, long, remaining)
+                legs += [(index, price, fraction, "target") for price, fraction in remaining[:hits]]
+                remaining = remaining[hits:]
+            if not remaining:
+                exit_index = index
+                break
+    if exit_index is None:
+        final = bars[-1].close
+        legs += [(len(bars) - 1, final, fraction, "end_of_data") for _, fraction in remaining]
+        exit_index = len(bars) - 1
+    weight = sum(leg[2] for leg in legs)
+    sign = 1 if long else -1
+    pnl = sum(fraction * sign * (price - entry) / risk for _, price, fraction, _ in legs)
+    exit_price = sum(price * fraction for _, price, fraction, _ in legs) / weight
+    kinds = {leg[3] for leg in legs}
+    if "end_of_data" in kinds:
+        reason = "end_of_data"
+    elif "stop" in kinds:
+        reason = "stop_ambiguous" if ambiguous else ("partial_stop" if "target" in kinds else "stop")
+    else:
+        reason = "target"
+    return Trade(direction, entry_index, exit_index, entry, exit_price, pnl, reason, tuple(legs))
 
 
 def metrics(trades: Sequence[Trade]) -> Metrics:
