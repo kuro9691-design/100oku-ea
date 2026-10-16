@@ -70,6 +70,8 @@ class Params:
     split_targets: bool = False
     # SL = latest H1 pivot confirmed by the bar before the fill (execution_spec 5-1).
     sl_at_fill: bool = True
+    # Move a pending stop order to a newer, nearer H1 pivot (execution_spec 4-2).
+    order_follow: bool = True
     h4_tp_ma_period: int = 80
     tp_zone_pct: float = 0.005
     tp_buffer_pct: float = 0.0

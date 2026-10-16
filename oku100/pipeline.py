@@ -77,7 +77,7 @@ class DecisionPipeline:
         self._reaction_cache: dict[tuple[int, int, str], float] = {}
         self._m15_by_hour = group_m15_by_hour(m15) if m15 is not None else None
         # docs/execution_spec.md 4-1: counts of pending-order cancellations.
-        self.cancel_stats = {"cancelled": 0, "same_bar_resolved": 0, "same_bar_ambiguous": 0}
+        self.cancel_stats = {"cancelled": 0, "same_bar_resolved": 0, "same_bar_ambiguous": 0, "moved": 0}
 
     def evaluate(
         self,
@@ -475,13 +475,14 @@ class DecisionPipeline:
                 "fills": {},
                 "fill_placed_at": {},
                 "cancel_level": None,
+                "moved_at": -1,
             },
         )
         kind = "high" if direction > 0 else "low"
         for index in range(order["processed"] + 1, state.index + 1):
             bar = state.bars[index]
             active = order["active"]
-            if active is not None and index > order["placed_at"]:
+            if active is not None and index > max(order["placed_at"], order["moved_at"]):
                 reached = bar.high >= active.price if direction > 0 else bar.low <= active.price
                 level = order["cancel_level"]
                 broke = level is not None and (bar.low < level if direction > 0 else bar.high > level)
@@ -499,6 +500,8 @@ class DecisionPipeline:
                 elif broke:
                     order["active"] = None
                     self.cancel_stats["cancelled"] += 1
+            if order["active"] is not None and self.params.order_follow:
+                self._follow_order(order, state.bars, index, direction, kind)
             setup_ready = self._d_setup_ready_at(state.bars, index, direction)
             if setup_ready and not order["previous_setup_ready"]:
                 pivots = confirmed_pivots(state.bars, index, self.params.N_h1)
@@ -508,10 +511,28 @@ class DecisionPipeline:
                     if line_ahead:
                         order["active"] = pivot
                         order["placed_at"] = index
+                        order["moved_at"] = -1
                         order["cancel_level"] = _latest_pivot_beyond(pivots, pivot.price, direction)
             order["previous_setup_ready"] = setup_ready
             order["processed"] = index
         return order["fills"].get(state.index)
+
+    def _follow_order(self, order: dict, bars: Sequence[Bar], index: int, direction: int, kind: str) -> None:
+        """Move a pending order to a newer, nearer confirmed H1 pivot after
+        bar `index` closes (docs/execution_spec.md 4-2). Scoring time
+        (placed_at) and the cancel level are unchanged."""
+        pivots = confirmed_pivots(bars, index, self.params.N_h1)
+        pivot = next((item for item in reversed(pivots) if item.kind == kind), None)
+        active = order["active"]
+        if pivot is None or pivot.index <= active.index:
+            return
+        nearer = pivot.price < active.price if direction > 0 else pivot.price > active.price
+        close = bars[index].close
+        ahead = pivot.price > close if direction > 0 else pivot.price < close
+        if nearer and ahead:
+            order["active"] = pivot
+            order["moved_at"] = index
+            self.cancel_stats["moved"] += 1
 
     def _fill_before_break(self, bar: Bar, price: float, level: float, direction: int) -> bool:
         """Order of fill vs. stop-level break within one H1 bar (execution_spec 4-1).
