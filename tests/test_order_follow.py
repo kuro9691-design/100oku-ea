@@ -86,10 +86,35 @@ class OrderFollowTests(unittest.TestCase):
         )
         self.assertEqual(fills, {4: 105})
 
-    def test_moves_are_counted_and_cancel_level_is_unchanged(self):
-        pipeline, order, _ = self.run_bars([(100, 101, 99, 100)], later={3: self.newer(102)})
+    def test_moves_are_counted(self):
+        pipeline, _, _ = self.run_bars([(100, 101, 99, 100)], later={3: self.newer(102)})
         self.assertEqual(pipeline.cancel_stats["moved"], 1)
+
+    def test_cancel_level_follows_the_newer_low(self):
+        _, order, _ = self.run_bars([(100, 101, 99.5, 100)], later={3: self.newer(102)})
+        self.assertEqual(order["cancel_level"], 99)
+
+    def test_cancel_level_fixed_when_disabled(self):
+        _, order, _ = self.run_bars(
+            [(100, 101, 99.5, 100)], later={3: self.newer(102)}, params=Params(N_h1=1, cancel_follow=False),
+        )
         self.assertEqual(order["cancel_level"], 95)
+
+    def test_break_of_newer_low_cancels_before_old_level(self):
+        # Newer low 99 confirmed at bar 3; bar 4 dips to 98.5 (above the old 95): cancelled.
+        pipeline, order, fills = self.run_bars(
+            [(100, 101, 99.5, 100), (100, 100.5, 98.5, 99), (99, 106, 99, 105.5)],
+            later={3: self.newer(102)},
+        )
+        self.assertEqual(fills, {})
+        self.assertEqual(pipeline.cancel_stats["cancelled"], 1)
+
+    def test_old_level_kept_without_cancel_follow_fills_later(self):
+        _, _, fills = self.run_bars(
+            [(100, 101, 99.5, 100), (100, 100.5, 98.5, 99), (99, 106, 99, 105.5)],
+            later={3: self.newer(102)}, params=Params(N_h1=1, cancel_follow=False),
+        )
+        self.assertEqual(fills, {5: 102})
 
 
 if __name__ == "__main__":

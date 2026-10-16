@@ -72,6 +72,8 @@ class Params:
     sl_at_fill: bool = True
     # Move a pending stop order to a newer, nearer H1 pivot (execution_spec 4-2).
     order_follow: bool = True
+    # Cancel level follows the latest H1 pivot beyond the order (execution_spec 4-3).
+    cancel_follow: bool = True
     h4_tp_ma_period: int = 80
     tp_zone_pct: float = 0.005
     tp_buffer_pct: float = 0.0

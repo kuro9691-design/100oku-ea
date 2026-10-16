@@ -513,6 +513,11 @@ class DecisionPipeline:
                         order["placed_at"] = index
                         order["moved_at"] = -1
                         order["cancel_level"] = _latest_pivot_beyond(pivots, pivot.price, direction)
+            if order["active"] is not None and self.params.cancel_follow:
+                # Cancel level = latest pivot beyond the order after this close (execution_spec 4-3).
+                order["cancel_level"] = _latest_pivot_beyond(
+                    confirmed_pivots(state.bars, index, self.params.N_h1), order["active"].price, direction,
+                )
             order["previous_setup_ready"] = setup_ready
             order["processed"] = index
         return order["fills"].get(state.index)
