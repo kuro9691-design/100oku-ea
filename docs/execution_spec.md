@@ -194,6 +194,8 @@ M15は `DecisionPipeline(params, m15=...)` または `run_backtest(..., m15=...)
 - `Trade.reason`: 全目標で決済 `target`、目標の一部の後にSL `partial_stop`、目標なしでSL `stop`／`stop_ambiguous`
   （一部利確後の曖昧も `stop_ambiguous`）、データ終端 `end_of_data`。各部分は `Trade.legs` に残す。
 - `Params.split_targets=False` で従来の単一目標に戻る（比較用）。
+- **既定値は False（2026-10-17）**。全期間でT1までのRRが中央値0.17R（原典の第1目標は1:1.8〜1:3）で、
+  T1の定義が原典と一致していないため。照合が済むまで `split_targets=True` は明示したときだけ使う。
 
 ## 8. 変更履歴
 

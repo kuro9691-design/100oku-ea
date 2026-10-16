@@ -66,7 +66,8 @@ class Params:
     atr_period: int = 14
     # Split take-profit (docs/execution_spec.md 7). 80 = 原典「4時間足80MA」;
     # zone/buffer reuse PH-06 (0.5%) and the structural-SL buffer of PH-37 (0.3%).
-    split_targets: bool = True
+    # Off until T1 matches the source (1:1.8-1:3); see 報告_20261016_分割利確の実装.md 4.
+    split_targets: bool = False
     h4_tp_ma_period: int = 80
     tp_zone_pct: float = 0.005
     tp_buffer_pct: float = 0.003
