@@ -1,0 +1,106 @@
+{
+  "probes": [
+    {
+      "id": "F_skips_nearer_structure",
+      "reproduced": true,
+      "entry": 100,
+      "stop": 98,
+      "nearest_structure": 101,
+      "nearest_rr": 0.5,
+      "chosen_target": 104,
+      "chosen_rr": 2.0
+    },
+    {
+      "id": "C_requires_opposing_line_for_long",
+      "reproduced": true,
+      "support": {
+        "line": null,
+        "touches": 0,
+        "near": false,
+        "ahead": false
+      },
+      "resistance": {
+        "line": 100.2,
+        "touches": 2,
+        "near": true,
+        "ahead": true
+      }
+    },
+    {
+      "id": "gap_fill_ignores_open",
+      "reproduced": true,
+      "existing_fill": 101,
+      "executable_open": 105
+    },
+    {
+      "id": "backtest_and_distribution_gate_differ",
+      "reproduced": true,
+      "actionable": true,
+      "category": "trend_reversal",
+      "confidence": 76.0,
+      "backtest_eligible": true,
+      "entry": 101,
+      "stop": 98,
+      "target": 106,
+      "criteria": {
+        "A": true,
+        "B": true,
+        "B-2": false,
+        "C": false,
+        "D": true,
+        "E": true,
+        "F": true,
+        "G": true
+      }
+    },
+    {
+      "id": "legacy_distribution_unfinished_higher_tf",
+      "reproduced": true,
+      "cutoff": "2024-01-03T07:00:00+00:00",
+      "legacy_indexes": [
+        2,
+        13,
+        55
+      ],
+      "public_evaluate_indexes": [
+        1,
+        13,
+        55
+      ]
+    },
+    {
+      "id": "A_depends_on_fill_bar_close",
+      "reproduced": true,
+      "same_prior_state": true,
+      "close_100": {
+        "passed": true,
+        "d1_matches": false,
+        "h4_matches": true,
+        "h1_matches": true,
+        "d1_ma_room": true,
+        "d1_exception": true
+      },
+      "close_104": {
+        "passed": false,
+        "d1_matches": false,
+        "h4_matches": true,
+        "h1_matches": true,
+        "d1_ma_room": false,
+        "d1_exception": false
+      },
+      "note": "Component test. _score_direction receives current H1 state in evaluate()."
+    },
+    {
+      "id": "fill_bar_exit_not_examined",
+      "reproduced": true,
+      "existing_result": "target",
+      "fill_bar_open": 100,
+      "fill_level": 101,
+      "fill_bar_low": 97,
+      "stop": 98,
+      "note": "OHLC path is ambiguous; existing resolver entirely skips this bar."
+    }
+  ],
+  "all_probes_reproduced": true,
+  "inputs_unchanged": true
+}

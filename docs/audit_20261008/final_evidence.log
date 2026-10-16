@@ -1,0 +1,127 @@
+**********************
+PowerShell transcript start
+Start time: 20261008013756
+Username: DESKTOP-2HVADME\CodexSandboxOffline
+RunAs User: DESKTOP-2HVADME\CodexSandboxOffline
+Configuration Name: 
+Machine: DESKTOP-2HVADME (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\user\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -NoProfile -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+Start-Transcript -Path 'docs\audit_20261008\final_evidence.log' -Append | Out-Null; rg -n '^    def _decide|^    def _score_direction|convergence =|structural =|ma720_slope_ok|def _structural_line|def _stop_entry_fill|def _target|def _alignment|def _nested|def _resolve_indexes|def entry_candidate_ready|_index_at_or_before|decision.actionable|_resolve_trade|MinRR' oku100/pipeline.py oku100/models.py oku100/distribution.py oku100/backtest.py; Get-Content -Raw 'scripts\collect_candidates_sell.py' | Select-Object -First 1; Get-Item 'scripts\BTCUSD60.hst','scripts\BTCUSD1440.hst' | Select-Object FullName,Length,LastWriteTime; git log -3 --date=iso --format='%h %ad %s' -- oku100/pipeline.py; Stop-Transcript | Out-Null
+Process ID: 20564
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+
+"""指標テーブルCSVをしきい値でフィルタして戻り目（売り）候補を出す（collect_candidates.pyの鏡像）。
+
+事前に scripts/build_indicator_table.py で作った素の指標テーブルを読み込み、
+MA下・MA近接（高値基準）・高値切り下げ・上髭の各しきい値で候補を絞り込むだけ。再計算なしで一瞬。
+upper_wick_ratioとhigh基準のMA近接はテーブルに列が無いためこのスクリプト内で計算する
+（build_indicator_table.py・collect_candidates.pyは変更しない）。
+
+Usage:
+    python scripts/collect_candidates_sell.py --table btc_candidate_indicators.csv
+"""
+from __future__ import annotations
+
+import argparse
+import csv
+import json
+from pathlib import Path
+
+
+def evaluate(row: dict, wick_ratio_min: float, ma_proximity_pct: float) -> tuple[bool, bool, bool, bool, bool]:
+    open_ = float(row["open"])
+    high = float(row["high"])
+    close = float(row["close"])
+    ma = float(row["ma"])
+
+    below_ma = close < ma
+    below_ma720 = close < float(row["ma720"])
+
+    ma_distance_pct_high = (high - ma) / ma * 100
+    ma_near = abs(ma_distance_pct_high) <= ma_proximity_pct
+
+    body = abs(close - open_)
+    upper_wick = high - max(open_, close)
+    upper_wick_ratio = upper_wick / max(body, 1e-9) if upper_wick > 0 else 0.0
+    has_upper_wick = upper_wick_ratio >= wick_ratio_min
+
+    lower_high = row["lower_high"] == "yes"
+
+    candidate = below_ma and below_ma720 and ma_near and lower_high and has_upper_wick
+    return below_ma, below_ma720, ma_near, has_upper_wick, candidate
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--table", default="btc_candidate_indicators.csv")
+    parser.add_argument("--wick-ratio", type=float, default=0.5, help="上髭/実体の最小比率")
+    parser.add_argument("--ma-proximity-pct", type=float, default=1.0, help="高値とMA80の距離許容（±%%、近いほど戻り目らしい）")
+    parser.add_argument("--output", default="btc_rally_candidates.csv")
+    parser.add_argument("--summary-output", default="btc_rally_candidates_summary.json")
+    args = parser.parse_args()
+
+    with Path(args.table).open(encoding="utf-8-sig", newline="") as handle:
+        table = list(csv.DictReader(handle))
+
+    counts = {"below_ma": 0, "below_ma720": 0, "ma_near": 0, "lower_high": 0, "has_upper_wick": 0}
+    candidates: list[dict] = []
+    for row in table:
+        below_ma, below_ma720, ma_near, has_upper_wick, candidate = evaluate(row, args.wick_ratio, args.ma_proximity_pct)
+        counts["below_ma"] += below_ma
+        counts["below_ma720"] += below_ma720
+        counts["ma_near"] += ma_near
+        counts["has_upper_wick"] += has_upper_wick
+        counts["lower_high"] += row["lower_high"] == "yes"
+        if candidate:
+            out_row = dict(row)
+            out_row["below_ma"] = "yes" if below_ma else "no"
+            out_row["below_ma720"] = "yes" if below_ma720 else "no"
+            out_row["ma_near"] = "yes" if ma_near else "no"
+            out_row["has_upper_wick"] = "yes" if has_upper_wick else "no"
+            out_row["candidate"] = "yes"
+            candidates.append(out_row)
+
+    fields = list(table[0]) + ["below_ma", "below_ma720", "ma_near", "has_upper_wick", "candidate"] if table else []
+    with Path(args.output).open("w", encoding="utf-8-sig", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(candidates)
+
+    summary = {
+        "table_path": args.table,
+        "bars_scanned": len(table),
+        "candidates_found": len(candidates),
+        "candidate_rate": len(candidates) / len(table) if table else 0.0,
+        "individual_pass_counts": counts,
+        "params": {
+            "wick_ratio_min": args.wick_ratio,
+            "ma_proximity_pct": args.ma_proximity_pct,
+        },
+        "date_range": {
+            "first": table[0]["timestamp"] if table else None,
+            "last": table[-1]["timestamp"] if table else None,
+        },
+    }
+    Path(args.summary_output).write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    print(json.dumps(summary, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()
+
+
+**********************
+PowerShell transcript end
+End time: 20261008013757
+**********************

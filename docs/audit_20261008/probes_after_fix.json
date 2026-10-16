@@ -1,0 +1,124 @@
+{
+  "probes": [
+    {
+      "id": "F_skips_nearer_structure",
+      "reproduced": true,
+      "entry": 100,
+      "stop": 98,
+      "nearest_structure": 101,
+      "nearest_rr": 0.5,
+      "chosen_target": 104,
+      "chosen_rr": 2.0
+    },
+    {
+      "id": "C_requires_opposing_line_for_long",
+      "reproduced": true,
+      "support": {
+        "line": null,
+        "touches": 0,
+        "near": false,
+        "ahead": false
+      },
+      "resistance": {
+        "line": 100.2,
+        "touches": 2,
+        "near": true,
+        "ahead": true
+      }
+    },
+    {
+      "id": "gap_fill_ignores_open",
+      "reproduced": false,
+      "existing_fill": 105,
+      "executable_open": 105
+    },
+    {
+      "id": "backtest_and_distribution_gate_differ",
+      "reproduced": true,
+      "actionable": true,
+      "category": "trend_reversal",
+      "confidence": 76.0,
+      "backtest_eligible": true,
+      "entry": 101,
+      "stop": 98,
+      "target": 106,
+      "criteria": {
+        "A": true,
+        "B": true,
+        "B-2": false,
+        "C": false,
+        "D": true,
+        "E": true,
+        "F": true,
+        "G": true
+      }
+    },
+    {
+      "id": "legacy_distribution_unfinished_higher_tf",
+      "reproduced": true,
+      "cutoff": "2024-01-03T07:00:00+00:00",
+      "legacy_indexes": [
+        2,
+        13,
+        55
+      ],
+      "public_evaluate_indexes": [
+        1,
+        13,
+        55
+      ]
+    },
+    {
+      "id": "A_depends_on_fill_bar_close",
+      "reproduced": true,
+      "same_prior_state": true,
+      "close_100": {
+        "passed": true,
+        "d1_matches": false,
+        "h4_matches": true,
+        "h1_matches": true,
+        "d1_ma_room": true,
+        "d1_exception": true
+      },
+      "close_104": {
+        "passed": false,
+        "d1_matches": false,
+        "h4_matches": true,
+        "h1_matches": true,
+        "d1_ma_room": false,
+        "d1_exception": false
+      },
+      "note": "Component test. _score_direction receives current H1 state in evaluate()."
+    },
+    {
+      "id": "fill_bar_exit_not_examined",
+      "reproduced": false,
+      "existing_result": "stop_ambiguous",
+      "fill_bar_open": 100,
+      "fill_level": 101,
+      "fill_bar_low": 97,
+      "stop": 98,
+      "note": "OHLC path is ambiguous; existing resolver entirely skips this bar."
+    }
+  ],
+  "all_probes_reproduced": false,
+  "input_sha256": {
+    "oku100\\backtest.py": "9f98989e31d9822e9b79bd957f76fa3958d798e33c16631824384a804c117dfb",
+    "oku100\\cli.py": "189fd14d7a28c7406d9e30ad0dee52d4f2555edeab30906c13351fbfdc2260dc",
+    "oku100\\distribution.py": "c68f7452847b4b7b5d8f9779dd8551da895c44fb0f1bf8335b7890411c8680cf",
+    "oku100\\indicators.py": "634469e8c4439e8c20788b28440965b23813e3f4428dd40b7a81b36b795f4fea",
+    "oku100\\io.py": "986f0b4ba6f89ad71575922b6e6cff9e77e571530581e12c3223ed28a255b444",
+    "oku100\\leak.py": "c1b699f866a108c6ae6d169b3e5fa923a53b03fbbcb63eb830c8a7908a2e8670",
+    "oku100\\leak_check.py": "afcc804f0627a96dd8afeb47dbe875a19a43c0ca61c5d8341eb0b101c0367dfa",
+    "oku100\\models.py": "a810fd8c458f15dc06de77a977fc4040006a45af692c51e53237529ada1ebad6",
+    "oku100\\optimize.py": "619adf86951116e2e15035e382c28bd758af95ca92e660727162e81e7b01b7bc",
+    "oku100\\pipeline.py": "0f6af8f517798bc64d5d51302ac19ec780af3e57533bf58b69e8947e16dca551",
+    "oku100\\__init__.py": "e4b0ee3661e2625e3d676fedc5bb934945b52851ed59c1ca4288ef4cb0d87733",
+    "data\\d1.csv": "31d0be435c6188bff9684687da2edb5dc7fc2a2a4995b1bf459075164cb7bfc1",
+    "data\\h4.csv": "721dc7e5df3076c338e1d45eb5efd8efbd56b90c5aa59ebdfaa646d11cd2bc84",
+    "data\\h1.csv": "056d01322618002882e3fcf845da2ee897b94edacb543c63b34b6acad4f02328",
+    "btc_candidate_indicators.csv": "a1cfce716d839b5f3c3554d354b9ab035967100d815677cc0583b0d98734bbb8",
+    "scripts\\audit_fidelity_20261008.py": "908e7c0afd43ed66a066e5fb11cfa3736392ba8b78fd24d4a2a543e5ac853b47"
+  },
+  "inputs_unchanged": true
+}

@@ -1,0 +1,33 @@
+**********************
+PowerShell transcript start
+Start time: 20261008014151
+Username: DESKTOP-2HVADME\user
+RunAs User: DESKTOP-2HVADME\user
+Configuration Name: 
+Machine: DESKTOP-2HVADME (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\user\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+Start-Transcript -Path 'docs\audit_20261008\handoff.log' -Append | Out-Null; $auditSource = 'C:\Users\user\Documents\100億j\docs\audit_20261008\報告_20261008_原典忠実性と3系統実装監査.md'; $auditDestination = 'C:\Users\user\Documents\100億j_share\報告_20261008_原典忠実性と3系統実装監査.md'; if (Test-Path -LiteralPath $auditDestination) { throw 'Destination already exists; refusing overwrite' }; Copy-Item -LiteralPath $auditSource -Destination $auditDestination -ErrorAction Stop; Get-FileHash -LiteralPath $auditSource,$auditDestination -Algorithm SHA256 | Format-List; Stop-Transcript | Out-Null
+Process ID: 14008
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+
+Algorithm : SHA256
+Hash      : 0AC397C376FB3FFAE81B999F0E622DC7340CF19D179FF616DA4C1B79762FB8D2
+Path      : C:\Users\user\Documents\100億j\docs\audit_20261008\報告_20261008_原典忠実性と3系統実装監査.md
+
+Algorithm : SHA256
+Hash      : 0AC397C376FB3FFAE81B999F0E622DC7340CF19D179FF616DA4C1B79762FB8D2
+Path      : C:\Users\user\Documents\100億j_share\報告_20261008_原典忠実性と3系統実装監査.md
+
+**********************
+PowerShell transcript end
+End time: 20261008014151
+**********************

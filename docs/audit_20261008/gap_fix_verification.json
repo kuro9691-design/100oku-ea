@@ -1,0 +1,34 @@
+{
+  "directions": {
+    "1": {
+      "fills": 523,
+      "same_fill_bars": true,
+      "price_mismatches": [],
+      "gap_changes": []
+    },
+    "-1": {
+      "fills": 471,
+      "same_fill_bars": true,
+      "price_mismatches": [],
+      "gap_changes": []
+    }
+  },
+  "candidate_regression": {
+    "buy": {
+      "rows": 47647,
+      "expected": 2015,
+      "actual": 2015,
+      "matches": true
+    },
+    "sell": {
+      "rows": 47647,
+      "expected": 1944,
+      "actual": 1944,
+      "matches": true
+    }
+  },
+  "protected_input_mismatches": [],
+  "pipeline_before_sha256": "c541584e1ceff7dd166b61743343fb2c436251460aa1cfbc7011a7da5ff4b22c",
+  "pipeline_after_sha256": "bee6d7b413e9574e894594bfefa58cd52bb8d7f254255b16e3fbc559858cd1e8",
+  "passed": true
+}

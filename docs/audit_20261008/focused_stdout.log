@@ -1,0 +1,185 @@
+{
+  "indicator_range": {
+    "first": "2021-01-04T07:00:00+00:00",
+    "last": "2026-07-20T20:00:00+00:00"
+  },
+  "PH44_through_indicator_end": 465,
+  "AG_strict_through_indicator_end": 65,
+  "AG_backtest_eligible_signal_bars": 363,
+  "AG_backtest_eligible_but_not_strict": 294,
+  "AG_strict_gap_entry_count": 0,
+  "AG_strict_warnings": {
+    "strong_line_ahead": 55,
+    "range_not_mature": 5,
+    "rapid_move": 26,
+    "war_state_without_exception": 2
+  },
+  "h1_non_hourly_steps": [
+    {
+      "after": "2021-02-11T03:00:00+00:00",
+      "hours": 2.0
+    },
+    {
+      "after": "2021-03-06T01:00:00+00:00",
+      "hours": 2.0
+    },
+    {
+      "after": "2021-04-20T01:00:00+00:00",
+      "hours": 3.0
+    },
+    {
+      "after": "2021-04-25T04:00:00+00:00",
+      "hours": 4.0
+    },
+    {
+      "after": "2021-08-13T01:00:00+00:00",
+      "hours": 5.0
+    },
+    {
+      "after": "2021-09-29T06:00:00+00:00",
+      "hours": 3.0
+    },
+    {
+      "after": "2023-03-24T12:00:00+00:00",
+      "hours": 2.0
+    }
+  ],
+  "note": "Signal bars are not trades; position occupancy was not simulated. No performance computed."
+}
+{
+  "article": "2024-07-06",
+  "reference_status": "historical estimate, unverified execution timestamp",
+  "direction": 1,
+  "center": 30770,
+  "criterion_pass_counts": {
+    "A": 0,
+    "B": 6,
+    "B-2": 0,
+    "C": 48,
+    "D": 0,
+    "E": 0,
+    "F": 49
+  },
+  "strict_candidates": [],
+  "center_detail": {
+    "index": 30770,
+    "timestamp": "2024-07-06T16:00:00+00:00",
+    "candidate": false,
+    "criteria": {
+      "A": {
+        "passed": false,
+        "evidence": "D1=False, H4=False, H1_turn=False, D1_MA_room=True, D1_exception=True"
+      },
+      "B": {
+        "passed": false,
+        "evidence": "H1_20_80_contracted=True, min_distance_atr=2.2758, limit=0.6"
+      },
+      "B-2": {
+        "passed": false,
+        "evidence": "dev_atr=0.48"
+      },
+      "C": {
+        "passed": true,
+        "evidence": "touches=17, near=True"
+      },
+      "D": {
+        "passed": false,
+        "evidence": "H1 trend=0, expansion=False, stop_entry_fill=False, trigger=None, ma720_slope=-19.457694"
+      },
+      "E": {
+        "passed": false,
+        "evidence": "H4_flow=False, H4/H1_dow=-1/0, nested=True"
+      },
+      "F": {
+        "passed": true,
+        "evidence": "RR=1.5011337497683395"
+      },
+      "G": {
+        "passed": false,
+        "evidence": "rapid_move, strong_line_ahead, range_not_mature"
+      }
+    },
+    "entry": 57852.62,
+    "stop": 56018.0,
+    "target": 60606.63,
+    "rr": 1.5011337497683395
+  }
+}
+{
+  "article": "2024-07-24",
+  "reference_status": "historical estimate, unverified execution timestamp",
+  "direction": -1,
+  "center": null,
+  "criterion_pass_counts": {
+    "A": 2,
+    "B": 2,
+    "B-2": 0,
+    "C": 33,
+    "D": 0,
+    "E": 2,
+    "F": 35
+  },
+  "strict_candidates": [],
+  "center_detail": null
+}
+{
+  "article": "2024-07-28",
+  "reference_status": "historical estimate, unverified execution timestamp",
+  "direction": 1,
+  "center": 31308,
+  "criterion_pass_counts": {
+    "A": 23,
+    "B": 5,
+    "B-2": 49,
+    "C": 46,
+    "D": 1,
+    "E": 23,
+    "F": 49
+  },
+  "strict_candidates": [
+    31308
+  ],
+  "center_detail": {
+    "index": 31308,
+    "timestamp": "2024-07-29T02:00:00+00:00",
+    "candidate": true,
+    "criteria": {
+      "A": {
+        "passed": true,
+        "evidence": "D1=True, H4=True, H1_turn=True, D1_MA_room=False, D1_exception=False"
+      },
+      "B": {
+        "passed": false,
+        "evidence": "H1_20_80_contracted=True, min_distance_atr=0.6319, limit=0.6"
+      },
+      "B-2": {
+        "passed": true,
+        "evidence": "dev_atr=3.64"
+      },
+      "C": {
+        "passed": true,
+        "evidence": "touches=6, near=True"
+      },
+      "D": {
+        "passed": true,
+        "evidence": "H1 trend=1, expansion=True, stop_entry_fill=True, trigger=69399.99, ma720_slope=11.068750"
+      },
+      "E": {
+        "passed": true,
+        "evidence": "H4_flow=True, H4/H1_dow=1/1, nested=True"
+      },
+      "F": {
+        "passed": true,
+        "evidence": "RR=1.6135250286228964"
+      },
+      "G": {
+        "passed": false,
+        "evidence": "rapid_move, strong_line_ahead"
+      }
+    },
+    "entry": 69399.99,
+    "stop": 67801.62,
+    "target": 71979.0,
+    "rr": 1.6135250286228964
+  }
+}

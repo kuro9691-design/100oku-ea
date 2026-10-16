@@ -1,0 +1,347 @@
+**********************
+PowerShell transcript start
+Start time: 20261008015038
+Username: DESKTOP-2HVADME\CodexSandboxOffline
+RunAs User: DESKTOP-2HVADME\CodexSandboxOffline
+Configuration Name: 
+Machine: DESKTOP-2HVADME (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\user\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -NoProfile -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+Start-Transcript -Path 'docs\audit_20261008\gap_fix_inspection.log' -Append | Out-Null; Get-Content 'oku100\pipeline.py' | Select-Object -Skip 365 -First 82; Get-Content 'tests\test_pipeline.py' | Select-Object -Skip 108 -First 114; Get-Content -Raw 'AGENTS.md'; Stop-Transcript | Out-Null
+Process ID: 30192
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+            pivot.price - min(bar.low for bar in following)
+            if pivot.kind == "high"
+            else max(bar.high for bar in following) - pivot.price
+        )
+        result = reaction / pivot_atr
+        if stable:
+            self._reaction_cache[reaction_key] = result
+        return result
+
+    def _stop_entry_fill(self, state: TimeframeState, direction: int) -> Pivot | None:
+        """Return a pending stop order filled by the current bar.
+
+        A stop order becomes active after a completed H1 bar satisfies D's
+        trend, expansion, and MA-order setup. Prior touches cancel an active
+        order, but a later completed setup may place a fresh order at the same
+        still-valid pivot. Only the current bar is used for the fill check.
+        """
+        source = getattr(state.bars, "_values", state.bars)
+        key = (id(source), direction)
+        order = self._stop_order_cache.setdefault(
+            key,
+            {
+                "processed": -1,
+                "active": None,
+                "placed_at": -1,
+                "previous_setup_ready": False,
+                "fills": {},
+            },
+        )
+        kind = "high" if direction > 0 else "low"
+        for index in range(order["processed"] + 1, state.index + 1):
+            bar = state.bars[index]
+            active = order["active"]
+            if active is not None and index > order["placed_at"]:
+                reached = bar.high >= active.price if direction > 0 else bar.low <= active.price
+                if reached:
+                    order["fills"][index] = active
+                    order["active"] = None
+            setup_ready = self._d_setup_ready_at(state.bars, index, direction)
+            if setup_ready and not order["previous_setup_ready"]:
+                pivots = confirmed_pivots(state.bars, index, self.params.N_h1)
+                pivot = next((item for item in reversed(pivots) if item.kind == kind), None)
+                if pivot is not None:
+                    line_ahead = pivot.price > bar.close if direction > 0 else pivot.price < bar.close
+                    if line_ahead:
+                        order["active"] = pivot
+                        order["placed_at"] = index
+            order["previous_setup_ready"] = setup_ready
+            order["processed"] = index
+        return order["fills"].get(state.index)
+
+    def _d_setup_ready_at(self, bars: Sequence[Bar], index: int, direction: int) -> bool:
+        if index <= 0:
+            return False
+        key = (bars[index].timestamp, direction)
+        cached = self._d_setup_cache.get(key)
+        if cached is not None:
+            return cached
+        p = self.params
+        pivots = confirmed_pivots(bars, index, p.N_h1)
+        trend = trend_direction(pivots)
+        fast = sma(bars, index, p.h1_fast_ma_period)
+        slow = sma(bars, index, p.h1_slow_ma_period)
+        previous_band = abs(
+            sma(bars, index - 1, p.h1_fast_ma_period)
+            - sma(bars, index - 1, p.h1_slow_ma_period)
+        )
+        band = abs(fast - slow)
+        ma_ordered = (direction > 0 and fast > slow) or (direction < 0 and fast < slow)
+        ready = trend == direction and band > previous_band and ma_ordered
+        self._d_setup_cache[key] = ready
+        return ready
+
+    def _breakout(self, state: TimeframeState, close: float, direction: int) -> bool:
+        # Compatibility helper for diagnostics; breakout is now a causal
+        # pending-stop fill rather than a close beyond the pivot.
+        return self._stop_entry_fill(state, direction) is not None
+
+    @staticmethod
+    def _nested(h4: TimeframeState, h1: TimeframeState) -> bool:
+        if not h4.pivots or not h1.pivots:
+            return False
+
+    def test_stop_entry_fills_at_confirmed_pivot_on_first_later_touch(self):
+        pipeline = DecisionPipeline(Params(N_h1=1))
+        state = self._state(trend=1, fast_ma=101, fast_slope=1)
+        timestamps = [
+            datetime(2026, 1, day, tzinfo=timezone.utc)
+            for day in range(1, 5)
+        ]
+        state.bars = [
+            Bar(timestamps[0], 99, 100, 98, 99),
+            Bar(timestamps[1], 99, 101, 98, 100),
+            Bar(timestamps[2], 99, 100, 98, 99),
+            Bar(timestamps[3], 99, 101, 98, 100),
+        ]
+        state.index = 3
+        state.pivots = [Pivot(1, timestamps[1], 101, "high")]
+        with patch.object(pipeline, "_d_setup_ready_at", side_effect=lambda bars, index, direction: index == 2):
+            fill = pipeline._stop_entry_fill(state, 1)
+        self.assertIsNotNone(fill)
+        self.assertEqual(fill.price, 101)
+
+    def test_stop_entry_does_not_fill_twice_at_same_pivot(self):
+        pipeline = DecisionPipeline(Params(N_h1=1))
+        state = self._state(trend=1, fast_ma=101, fast_slope=1)
+        timestamps = [
+            datetime(2026, 1, day, tzinfo=timezone.utc)
+            for day in range(1, 6)
+        ]
+        state.bars = [
+            Bar(timestamps[0], 99, 100, 98, 99),
+            Bar(timestamps[1], 99, 101, 98, 100),
+            Bar(timestamps[2], 99, 100, 98, 99),
+            Bar(timestamps[3], 99, 101, 98, 100),
+            Bar(timestamps[4], 99, 102, 98, 101),
+        ]
+        state.index = 4
+        state.pivots = [Pivot(1, timestamps[1], 101, "high")]
+        with patch.object(pipeline, "_d_setup_ready_at", side_effect=lambda bars, index, direction: index == 2):
+            self.assertIsNone(pipeline._stop_entry_fill(state, 1))
+
+    def test_d_requires_ma720_slope_aligned(self):
+        pipeline = DecisionPipeline()
+        d1 = self._state(trend=1, fast_ma=101, fast_slope=1)
+        h4 = self._state(trend=1, fast_ma=101, fast_slope=1)
+        dummy_pivot = Pivot(0, datetime(2026, 1, 1, tzinfo=timezone.utc), 105, "high")
+
+        h1_up = self._state(trend=1, fast_ma=101, fast_slope=1)
+        h1_up.direction_slope = 0.1  # MA720 上向き → long と一致
+        with patch.object(pipeline, "_stop_entry_fill", return_value=dummy_pivot):
+            self.assertTrue(
+                pipeline._score_direction(1, d1, h4, h1_up, 0.0)["criteria"]["D"].passed
+            )
+
+        h1_dn = self._state(trend=1, fast_ma=101, fast_slope=1)
+        h1_dn.direction_slope = -0.1  # MA720 下向き → long と不一致
+        with patch.object(pipeline, "_stop_entry_fill", return_value=dummy_pivot):
+            self.assertFalse(
+                pipeline._score_direction(1, d1, h4, h1_dn, 0.0)["criteria"]["D"].passed
+            )
+
+        h1_flat = self._state(trend=1, fast_ma=101, fast_slope=1)
+        h1_flat.direction_slope = 0.0  # MA720 横ばい → 不一致（レンジ除外）
+        with patch.object(pipeline, "_stop_entry_fill", return_value=dummy_pivot):
+            self.assertFalse(
+                pipeline._score_direction(1, d1, h4, h1_flat, 0.0)["criteria"]["D"].passed
+            )
+
+    def test_stop_entry_can_be_rearmed_after_an_earlier_touch(self):
+        pipeline = DecisionPipeline(Params(N_h1=1))
+        state = self._state(trend=1, fast_ma=101, fast_slope=1)
+        timestamps = [
+            datetime(2026, 1, day, tzinfo=timezone.utc)
+            for day in range(1, 7)
+        ]
+        state.bars = [
+            Bar(timestamps[0], 99, 100, 98, 99),
+            Bar(timestamps[1], 99, 101, 98, 100),
+            Bar(timestamps[2], 99, 100, 98, 99),
+            Bar(timestamps[3], 99, 101, 98, 100),
+            Bar(timestamps[4], 99, 100, 98, 99),
+            Bar(timestamps[5], 99, 102, 98, 101),
+        ]
+        state.index = 5
+        state.pivots = [Pivot(1, timestamps[1], 101, "high")]
+        with patch.object(pipeline, "_d_setup_ready_at", side_effect=lambda bars, index, direction: index == 4):
+            self.assertIsNotNone(pipeline._stop_entry_fill(state, 1))
+
+    @staticmethod
+    def _state(trend: int, fast_ma: float, fast_slope: float) -> TimeframeState:
+        bar = Bar(datetime(2026, 1, 1, tzinfo=timezone.utc), 100, 101, 99, 100)
+        return TimeframeState(
+            bars=[bar],
+            index=0,
+            pivots=[],
+            trend=trend,
+            atr=1,
+            fast_ma=fast_ma,
+            fast_ma_slope=fast_slope,
+            slow_ma=100,
+            direction_ma=100,
+            direction_slope=0,
+        )
+# 100億j Codex Instructions
+
+## サブエージェントへの委譲(2026-07-27追加、btc_all_articles.csv誤削除事故を受けて)
+
+サブエージェントにタスクを委譲する際は、以下を必ずプロンプトに明示的に含めること。
+「AGENTS.mdを読め」では不十分で、制約そのものを渡す。
+
+- 事前承認済みの操作範囲
+- 要確認の操作範囲(特に「削除は禁止。必要なら報告して停止せよ」)
+- 委譲元がblindであるべき情報(正解データ等)に触れてはならない場合、その旨
+
+サブエージェントの行動は委譲元の責任である。制約を渡さずに委譲した結果の
+事故は、委譲元の管理不足として扱う。
+
+## 外部アクセス依存データの保護(2026-07-27追加)
+
+外部アクセス(Webクロール等)なしに再生成できないデータは、必ずgit管理下に
+置くこと。ローカルデータのみから決定的に再生成できるファイルは対象外。
+
+## 人間への質問の原則(2026-07-27追加)
+
+人間に対して「画面に何が表示されたか」「どう見えたか」といった目視観察の報告を
+求めてはならない。代わりに、以下を徹底する。
+
+- すべての実行結果(標準出力・標準エラー)をログファイルに記録する
+- 起動の成否はheartbeatファイル等で機械的に確認する
+- 確認したいことがあれば、ログを自分で読んで判断する
+
+人間に質問してよいのは、以下に限る。
+- 判断・意思決定(どちらの方針で進めるか等)
+- 承認が必要な操作(削除、公開範囲の変更等)
+- 物理的に人間しかできない操作の依頼(`.bat`の初回起動、ブラウザ認証等)
+
+「依頼」と「観察結果の報告要求」は別物である。起動を依頼するのは可、
+その結果どう見えたかを聞くのは不可。
+
+## 指示ファイルの確認(2026-07-26追加)
+
+会話の開始時、および「指示確認」と言われた際は、
+`C:\Users\user\Documents\100億j_share\` を確認し、未読の`指示_*.md`ファイルが
+あれば読んでから作業を開始すること。
+
+報告も同フォルダに`報告_YYYYMMDD_*.md`として書き出すこと
+(チャットへの長文貼り付けではなく、ファイルで受け渡す)。
+
+## 承認範囲(2026-07-26、MANABU承認)
+
+以下は事前承認済み。実行前に都度の確認は不要でそのまま実行してよい:
+
+1. `100oku-charts`リポジトリへのチャート画像push(`charts/`配下のPNGのみ、
+   `.gitignore`の除外対象が`git status`に現れていないことを確認した上で。
+   ファイル名は日付ベースのみ、条件名・閾値・帯ラベル・勝敗を含めない)
+2. `100億j_share/`への報告ファイルの書き出し
+3. 読み取り専用の操作全般(ファイル読み込み・集計・件数確認・統計計算)
+4. `charts/`配下へのチャート画像の新規生成とコピー
+5. `docs/pending_hypotheses.md`への追記(既存記述の削除・改変を伴わない追記のみ)
+
+以下は事前承認の対象外。実行前に必ず停止して報告すること
+(「取り返しがつかない」または「公開範囲が変わる」ため):
+
+1. ファイル・ディレクトリの削除(`git rm`を含む)
+2. リポジトリの可視性変更(Public/Private切り替え)
+3. `charts/`以外を公開リポジトリに追加すること(`.md`・コード・CSV・PDFは
+   内容にかかわらず要確認)
+4. `.gitignore`の除外対象を減らす変更
+5. 既存のdocs内容の削除・大幅な書き換え
+6. MT4の実口座に関わる操作全般
+7. force push、履歴の書き換え
+
+判断に迷った場合、上記いずれにも明記がなく「取り返しがつくか」「公開範囲が
+変わるか」のどちらかに引っかかるものは確認する側に倒す。ただし単に慎重を期す
+ための確認は上記1〜5の日常作業では不要。
+
+## 最優先事項:検証順序の絶対則(PH-30/PH-31の失敗から確定、2026-07-22)
+
+全エージェント(Codexを含む)は、他のどのルールよりも先に以下を守ること。
+詳細・経緯は `skills/100oku-ea-skill/SKILL.md`「検証規律(プロジェクト確定原則)」を参照
+(このセクションは要点のみ。参照リンクを辿らなくても以下の2点は必ず守ること)。
+
+- **数値結果だけでEA条件の採否を判断しない。** 定義の忠実性(原典チャートとの一致)を
+  先に確認し、確定してから実装・統計検証に進む(定義の忠実性 → 実装 → 統計、の順序を
+  逆にしない)。統計が支持していても、原典と一致していない点があればそう指摘する。
+- **チャート画像が生成されたら、必ず目で確認する。** 数値レポートだけで判断を終えない。
+  確認する際は必ず `docs/master_pre_chart_checklist.md` を先に開き、11項目に照らして
+  見る(「見て気づく」のではなく「リストに照らして確認する」の順序)。
+
+## Google Drive共有フォルダ(2026-07-26追加)
+
+`C:\Users\user\Documents\100億j_share\` は、ユーザーがGoogle Drive経由で画像を直接確認する
+ための軽量共有フォルダ。**チャート画像を新規生成したら、必ずこのフォルダの
+`generated\` にもコピーを置くこと**(元のフォルダへの生成に加えて、こちらにも複製する。
+移動ではなくコピー)。原典記事のチャート画像は `source_charts\` に置く。
+
+## GitHubチャート共有リポジトリ(2026-07-26追加)
+
+`C:\Users\user\Documents\100oku-charts\`(GitHub: `aimanabu9691-art/100oku-charts`、
+public、`main`ブランチ)は、Claude(チャット側)が`raw.githubusercontent.com`経由で
+チャート画像を直接確認するための公開リポジトリ。**チャートを新規生成したら、
+`C:\Users\user\Documents\100oku-charts\charts\` にもコピーしてpushすること**
+(元プロジェクト内には作らない。移動ではなくコピー)。
+
+**絶対にpushしてはいけないもの**(`.gitignore`で除外済みだが、新規ファイル追加時も
+必ず確認すること): `docs/codex_examples/`配下、原典ソースPDF・その抜粋要約、
+EAソースコード(`*.mq4`/`*.ex4`/`*.mqh`)、`oku100/`・`scripts/`のPythonパイプライン、
+`data/`配下のCSV、`docs/*.md`(pending_hypotheses.md・SKILL・チェックリスト類)、
+MT4履歴ファイル・バックテスト結果JSON。**入れてよいのは生成済み4パネルチャート画像
+(PNG)のみ**で、ファイル名にも条件名・閾値を含めないこと(例: `bandD`のような
+分類ラベルは不可。日付ベースの命名にする)。
+
+## Always Read First
+Before starting work in this project, read these files:
+
+- `docs/codex_rules.md`
+- `docs/mt4_backtest_worklog.md`
+- `docs/H4_knowledge_consolidation_spec_1.md`
+- `docs/master_pre_chart_checklist.md`(チャート監査・候補チェックは、まずこのファイルを
+  読んでから開始すること)
+
+## Core Rules
+- Do not modify existing EA, CSV, or Python files unless the user explicitly asks for that exact change.
+- Prefer read-only inspection, aggregation, and reporting.
+- Keep verification notes, worklogs, and project rules under `docs\`.
+- Change only one variable at a time.
+- Do not tune thresholds to match desired results. Report numbers only.
+- Do not propose manual review of more than 2,000 candidates.
+
+## Current Focus
+MT4 backtest verification. Next major task: convert `data\h1.csv` to MT4 `.hst` format and compare BuyEA MT4 behavior against the Python baseline.
+
+## Codex監査役の判定例(few-shot教材)
+
+監査判定時は `docs/codex_examples/*/INDEX.md` を必ず参照すること。
+各フォルダは原典のリアルトレード1件(通貨ペア_日付)で、INDEX.mdに
+監査5項目(`docs/codex_auditor_checklist.md`)と画像の対応表がある。
+
+判定例は今後追加される。参照時は特定フォルダ名を決め打ちせず、
+`codex_examples/` 配下の全INDEX.mdを対象とすること。
+
+- 命名規則: `{通貨ペア小文字}_{YYYYMMDD}` (例: usdjpy_20190612)
+**********************
+PowerShell transcript end
+End time: 20261008015038
+**********************

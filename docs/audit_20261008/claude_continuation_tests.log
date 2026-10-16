@@ -1,0 +1,56 @@
+test_alignment_allows_daily_ma_room_exception (tests.test_pipeline.PipelineTests.test_alignment_allows_daily_ma_room_exception) ... ok
+test_alignment_requires_h1_dow_turn (tests.test_pipeline.PipelineTests.test_alignment_requires_h1_dow_turn) ... ok
+test_backtest_splits_is_and_oos (tests.test_pipeline.PipelineTests.test_backtest_splits_is_and_oos) ... ok
+test_d_requires_ma720_slope_aligned (tests.test_pipeline.PipelineTests.test_d_requires_ma720_slope_aligned) ... ok
+test_decision_has_all_criteria (tests.test_pipeline.PipelineTests.test_decision_has_all_criteria) ... ok
+test_e_allows_h4_dow_unconfirmed_when_h4_flow_matches (tests.test_pipeline.PipelineTests.test_e_allows_h4_dow_unconfirmed_when_h4_flow_matches) ... ok
+test_g_warning_does_not_remove_entry_candidate (tests.test_pipeline.PipelineTests.test_g_warning_does_not_remove_entry_candidate) ... ok
+test_stop_entry_can_be_rearmed_after_an_earlier_touch (tests.test_pipeline.PipelineTests.test_stop_entry_can_be_rearmed_after_an_earlier_touch) ... ok
+test_stop_entry_does_not_fill_twice_at_same_pivot (tests.test_pipeline.PipelineTests.test_stop_entry_does_not_fill_twice_at_same_pivot) ... ok
+test_stop_entry_fills_at_confirmed_pivot_on_first_later_touch (tests.test_pipeline.PipelineTests.test_stop_entry_fills_at_confirmed_pivot_on_first_later_touch) ... ok
+test_weak_pivot_is_not_a_structural_line (tests.test_pipeline.PipelineTests.test_weak_pivot_is_not_a_structural_line) ... ok
+test_pivots_are_confirmed_without_right_edge_future (tests.test_indicators.IndicatorTests.test_pivots_are_confirmed_without_right_edge_future) ... ok
+test_trend_direction_is_bounded (tests.test_indicators.IndicatorTests.test_trend_direction_is_bounded) ... ok
+test_audit_rejects_future_directly (tests.test_leak.LeakTests.test_audit_rejects_future_directly) ... ok
+test_causal_series_rejects_future (tests.test_leak.LeakTests.test_causal_series_rejects_future) ... ok
+test_pipeline_passes_cross_timeframe_leak_check (tests.test_leak.LeakTests.test_pipeline_passes_cross_timeframe_leak_check)
+2026-07に発見した「decision_indexが未確定の当日/現在バケットを指す」 ... ok
+test_pipeline_passes_leak_check (tests.test_leak.LeakTests.test_pipeline_passes_leak_check) ... ok
+test_resolve_indexes_excludes_same_day_d1_bar_mid_day (tests.test_leak.LeakTests.test_resolve_indexes_excludes_same_day_d1_bar_mid_day)
+日中(境界から離れた時刻)のH1候補は、当日ではなく前日の確定D1足を指す。 ... ok
+test_resolve_indexes_includes_same_day_d1_bar_at_last_hour (tests.test_leak.LeakTests.test_resolve_indexes_includes_same_day_d1_bar_at_last_hour)
+23時始まりのH1候補(終値確定=翌日00:00)は、確定時刻を跨ぐ当日分の ... ok
+test_scan_distribution_uses_confirmed_higher_bars (tests.test_execution_spec.DistributionHigherTimeframeTests.test_scan_distribution_uses_confirmed_higher_bars) ... ok
+test_audit_case_is_no_longer_a_target (tests.test_execution_spec.FillBarExitTests.test_audit_case_is_no_longer_a_target) ... ok
+test_gap_fill_then_stop_on_fill_bar_is_certain (tests.test_execution_spec.FillBarExitTests.test_gap_fill_then_stop_on_fill_bar_is_certain) ... ok
+test_m15_resolves_stop_after_fill (tests.test_execution_spec.FillBarExitTests.test_m15_resolves_stop_after_fill) ... ok
+test_m15_resolves_stop_before_fill_as_no_exit (tests.test_execution_spec.FillBarExitTests.test_m15_resolves_stop_before_fill_as_no_exit) ... ok
+test_m15_same_bar_fill_and_stop_stays_ambiguous (tests.test_execution_spec.FillBarExitTests.test_m15_same_bar_fill_and_stop_stays_ambiguous) ... ok
+test_metrics_report_ambiguous_count (tests.test_execution_spec.FillBarExitTests.test_metrics_report_ambiguous_count) ... ok
+test_missing_m15_is_ambiguous_stop (tests.test_execution_spec.FillBarExitTests.test_missing_m15_is_ambiguous_stop) ... ok
+test_short_mirror (tests.test_execution_spec.FillBarExitTests.test_short_mirror) ... ok
+test_target_on_fill_bar_after_midbar_fill_is_certain (tests.test_execution_spec.FillBarExitTests.test_target_on_fill_bar_after_midbar_fill_is_certain) ... ok
+test_untouched_fill_bar_keeps_later_resolution (tests.test_execution_spec.FillBarExitTests.test_untouched_fill_bar_keeps_later_resolution) ... ok
+test_buy_gap_fills_at_open_not_pivot (tests.test_execution_spec.GapFillTests.test_buy_gap_fills_at_open_not_pivot) ... ok
+test_intrabar_touch_fills_at_order_price (tests.test_execution_spec.GapFillTests.test_intrabar_touch_fills_at_order_price) ... ok
+test_sell_gap_fills_at_open_not_pivot (tests.test_execution_spec.GapFillTests.test_sell_gap_fills_at_open_not_pivot) ... ok
+test_fill_bar_close_does_not_change_decision (tests.test_execution_spec.OrderTimeScoringTests.test_fill_bar_close_does_not_change_decision) ... ok
+test_fixture_has_fills (tests.test_execution_spec.OrderTimeScoringTests.test_fixture_has_fills) ... ok
+test_non_fill_bar_is_scored_at_its_own_close (tests.test_execution_spec.OrderTimeScoringTests.test_non_fill_bar_is_scored_at_its_own_close) ... ok
+test_both_entry_points_call_the_shared_function (tests.test_execution_spec.SharedCandidateGateTests.test_both_entry_points_call_the_shared_function) ... ok
+test_defaults_keep_each_paths_previous_gate (tests.test_execution_spec.SharedCandidateGateTests.test_defaults_keep_each_paths_previous_gate) ... ok
+test_gates_are_selectable_and_differ_on_audit_case (tests.test_execution_spec.SharedCandidateGateTests.test_gates_are_selectable_and_differ_on_audit_case) ... ok
+test_buy_gap_fills_at_open (tests.test_stop_gap_execution.StopGapExecutionTests.test_buy_gap_fills_at_open) ... ok
+test_buy_normal_touch_fills_at_order (tests.test_stop_gap_execution.StopGapExecutionTests.test_buy_normal_touch_fills_at_order) ... ok
+test_filled_order_is_not_reused_on_next_bar (tests.test_stop_gap_execution.StopGapExecutionTests.test_filled_order_is_not_reused_on_next_bar) ... ok
+test_gap_fill_propagates_to_entry_and_rr (tests.test_stop_gap_execution.StopGapExecutionTests.test_gap_fill_propagates_to_entry_and_rr) ... ok
+test_open_exactly_at_order (tests.test_stop_gap_execution.StopGapExecutionTests.test_open_exactly_at_order) ... ok
+test_sell_gap_fills_at_open (tests.test_stop_gap_execution.StopGapExecutionTests.test_sell_gap_fills_at_open) ... ok
+test_sell_normal_touch_fills_at_order (tests.test_stop_gap_execution.StopGapExecutionTests.test_sell_normal_touch_fills_at_order) ... ok
+test_unreached_orders_do_not_fill (tests.test_stop_gap_execution.StopGapExecutionTests.test_unreached_orders_do_not_fill) ... ok
+test_optimizer_returns_a_list (tests.test_optimize.OptimizeTests.test_optimizer_returns_a_list) ... ok
+
+----------------------------------------------------------------------
+Ran 48 tests in 0.482s
+
+OK

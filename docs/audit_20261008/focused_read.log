@@ -1,0 +1,536 @@
+**********************
+PowerShell transcript start
+Start time: 20261008013452
+Username: DESKTOP-2HVADME\CodexSandboxOffline
+RunAs User: DESKTOP-2HVADME\CodexSandboxOffline
+Configuration Name: 
+Machine: DESKTOP-2HVADME (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\user\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -NoProfile -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+Start-Transcript -Path 'docs\audit_20261008\focused_read.log' -Append | Out-Null; Get-Content 'docs\pending_hypotheses.md' | Select-Object -Skip 1797 -First 88; Get-Content -Raw 'mql4\BuyEA_d1ma20.mq4' | Select-Object -First 1; Get-Content -Raw 'C:\Users\user\Documents\100億j_share\指示_20260729_OOS手順書_定義の凍結と銘柄予算.md'; Stop-Transcript | Out-Null
+Process ID: 21624
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+### PH-44: H1ダウ転換ブレイク 段階1r(逆指値モデルでの再実行)
+
+- 登録日: 2026-07-28
+- ステータス: 検証完了(2026-07-28) — 単体では選別力確認できず(この条件下では不採用相当)だが、PH-43から大幅改善。段階2は別途実施
+- パイプライン分類: 該当区分なし(エントリー条件単体の検証、5条件は使わない)
+- 由来: PH-43のチャート目視で、ネックライン価格とエントリー価格が最大+3.24%も
+  乖離していることが判明した(終値ベースの確定足エントリーのため、ネックライン
+  上抜け後の任意の位置の終値をそのままエントリーに使っていた)。これは
+  `skills/100oku-ea-skill/SKILL.md`「実装規律: Dの実装=逐次・逆指値モデル」の
+  既存規律(D条件は確定足終値ベースではなく逆指値モデルで実装する、この検証より
+  前から文書化済み)に違反する実装ミス。結果を見てからの定義変更ではなく、
+  文書化済みの標準に実装を合わせる修正として一度だけ再実行する。
+- **実行前確認: 実装規律との照合結果**: `skills/100oku-ea-skill/SKILL.md`の
+  該当セクション全文を確認し、本仮説の仕様(下記)との食い違いがないことを確認した
+  (詳細は`報告_20260728_H1ダウ転換ブレイク_段階1r.md`に全文転記)。
+- **定義(PH-43から変更するのは執行方法のみ、構造定義は完全同一)**:
+  ```
+  ダウ転換・ネックラインの定義: PH-43と完全同一
+  【変更前(PH-43)】終値がネックラインを上抜けた確定足の、その終値でエントリー
+  【変更後(本案)】 ネックライン価格に逆指値(買いストップ)を置き、到達で約定
+  ```
+  - 注文タイミング: ダウ転換確定足(低2の確定)の終了後に1回だけ注文を置く
+  - 注文ライン: ネックライン価格(PH-43と同一定義、前足までに確定したピボットのみ)
+  - 約定判定: 次足以降の高値が到達したかで判定。同じ足の即時約定は禁止
+  - 約定価格: ネックライン価格。ギャップ約定時は`max(ネックライン, その足の始値)`
+  - 約定時にダウ転換条件を再要求しない
+  - 未約定注文の無効化: 終値が直近確定Pivot Low(低2)を下抜けたら失効(PH-43と同一の
+    打ち切り条件)。失効までのバー数上限は設けない
+  - 変更しないもの: ピボット幅、5条件不使用、買いのみ、SL-2%/TP+4%固定、200バー
+    タイムアウト、RiskPercent1%、72h重複排除、構造SL・分割決済・勢力転換決済との
+    非併用
+- 判定基準(事前固定): PH-43と同一(件数20未満は判定不能。主指標はランダム基準線
+  パーセンタイル、80%ile未満でも「原典の入口の型が機能しない」とは記録せず「この
+  条件下では選別力が確認できなかった」と記録。段階2(売り拡張)は別途実施)。
+- 一度きりの実行。ピボット幅・失効条件・ギャップ約定の扱いを結果を見てから変更しない。
+- **検証結果(2026-07-28実施)**:
+  - 未約定・失効の内訳: 注文設置総数2,195 → 約定1,394 → 構造崩れで失効801 →
+    期間終了時点で未約定0。
+  - 件数の変化(検算): PH-43(終値ベース、72h重複排除後)431件(64.3%) →
+    本案(逆指値、72h重複排除後)**466件(69.6%)**。**実装規律に記録されている
+    「324件→84件」のような大幅減少は起きなかった。** 原因を確認したところ、
+    本仮説の「ダウ転換確定(低2の確定)」は元々1回限りのイベントであり、
+    (D条件のような)複数バーにわたって条件が持続するタイプの重複ではない
+    ため、逆指値化しても件数はほぼ変わらない。これは「注文の置き直し抑制が
+    効いていない」実装不備ではなく、この仮説の構造そのものに起因する差異
+    として記録する(注文は各(低1,低2)ペアにつき1回のみ設置しており、
+    「連続成立中は動かさない」規律は遵守している)。
+  - 比較表:
+    | | 件数 | 勝率 | 平均R | 最大DD |
+    |---|---|---|---|---|
+    | 現行ベースライン(5条件) | 79 | 48.1% | +0.443R | 5.00R |
+    | ランダム基準線(PH-36、参考、n=78/試行) | 78/試行 | 34.5% | +0.019R | 13.47R |
+    | PH-43(終値ベース) | 431 | 31.6% | -0.069R | 56.00R |
+    | 本案(逆指値モデル) | 466 | 34.8% | **+0.025R** | 46.00R |
+  - **主指標**: 同一件数(n=466)のランダム基準線に対して**57.7パーセンタイル**。
+    80%ile未満のため「買いのみ・SL-2%固定・TP+4%固定という条件下で、この
+    定義では選別力が確認できなかった」と記録する。ただしPH-43(11.5%ile、
+    平均R-0.069R)から**大幅に改善**(平均Rの符号が反転してプラスに)しており、
+    実装修正の効果は明確。
+  - エントリー価格とネックラインの乖離(検算): 平均+0.22%・中央値**0.0000%**・
+    最大+6.72%。乖離0%でない402/1394件はいずれもギャップ約定(始値がネック
+    ラインを上回っていたケース)によるもので、実装誤りは確認されなかった。
+  - 現行5条件との重なり: 9/466(1.9%)。
+  - **原典3本との重なり(確度「中」、買い2本)**: 2024.7.6(index=30770)は
+    ±24バー以内にあり(index=30767)。2024.7.28(index=31308)も**今回新たに
+    捕捉**(index=31301)。**PH-43では2024.7.28を捉えられなかったが、逆指値
+    モデルに直すことで原典2本とも捉えられるようになった。**
+  - 決済理由: TP142/SL313/タイムアウト11。平均保有39.7時間(中央値23.5時間)。
+  - 同一クラスタ内の勝敗混在率: 24件中24件が混在(**100.0%**、PH-43の
+    86.8%よりさらに高い)。
+  - 押し目の再アーム: 2021年6月上旬〜7月上旬の約1ヶ月の上昇局面で**30回の
+    約定**を確認。事前条件が繰り返し成立→約定→再アームされていることを
+    具体例で確認できた(残課題チェックリストの懸念は該当しなかった)。
+  - **判定**: 主指標は80%ile未満のため単体では選別力を確認できなかったが、
+    事前登録通り「原典の型が機能しない」ではなく「この条件下では確認できな
+    かった」と記録する。PH-43からの実装修正により、平均Rが-0.069R→+0.025Rへ
+    改善し、原典実エントリーとの重なりも1/2本→2/2本に向上した。この方向の
+    修正が正しかったことの傍証と考える。発火頻度(69.6%)は依然として高く、
+    他条件との組み合わせが必要な可能性が高い。
+  - チャート目視確認: 勝ち2枚・負け2枚(2021-02-08/02-14/02-05/02-21)を
+    4段形式で生成しGitHub `100oku-charts`へpush済み(コミット`da5eb0e`、
+    PH-43との日付重複を避けるためbサフィックス使用)。エントリー価格が
+    ネックライン(ピボット高値)そのものに一致している様子が視覚的に確認できる
+    (PH-43で見られた大陽線天井での高値づかみが解消された)。
+
+### PH-43: H1ダウ転換ポイントのブレイク 段階1(買いのみ)
+
+- 登録日: 2026-07-28
+//+------------------------------------------------------------------+
+//|                                              BuyEA_d1ma20.mq4    |
+//| BTC買いEA v1                                                     |
+//| エントリー(H1バー確定時, shift=1, AND):                            |
+//|   above_ma    : Close[1] > iMA(H1,80)                            |
+//|   above_ma720 : Close[1] > iMA(H1,720)                           |
+//|   ma_near     : abs(Low[1]-iMA(H1,80))/iMA(H1,80)*100 <= 1.0     |
+//|   has_wick    : (min(Open,Close)-Low)/abs(Close-Open) >= 0.5     |
+//|   d1_ma20     : 0 <= (Close[1]-iMA(D1,20,shift=1))/iMA*100 <= 2  |
+//| 決済: SL=entry*0.98 / TP=entry*1.04(R=2.0) / 時間切れ200本(H1)     |
+//+------------------------------------------------------------------+
+#property strict
+
+input double RiskPercent = 1.0;   // 1トレードあたりの口座資金リスク%（確定値）
+input int    Slippage    = 30;    // 許容スリッページ（ポイント）
+input int    MagicNumber = 100001;
+
+// --- optional trend-follow score filter (H1/H4/D1 confirmed candles only) ---
+input bool   UseTrendScoreFilter       = false;
+input int    TrendScoreMin             = 8;      // max 12: H1/H4/D1 x 4 points
+input bool   UseCandleSkipFilter       = true;   // E: candle-only no-trade filters
+input int    TrendFastMaPeriod         = 20;
+input int    TrendSlowMaPeriod         = 80;
+input double MaxH1FastMaDistancePct    = 6.0;    // skip if H1 close is too far from MA20
+input double StrongOppositeBodyRatio   = 0.60;   // skip on strong opposite H4/D1 candle
+
+datetime lastBarTime = 0;
+
+//+------------------------------------------------------------------+
+int OnInit()
+{
+    lastBarTime = 0;
+    return INIT_SUCCEEDED;
+}
+
+//+------------------------------------------------------------------+
+void OnTick()
+{
+    if (Time[0] == lastBarTime) return;   // 新バーでなければ何もしない
+    lastBarTime = Time[0];
+
+    if (HasOpenPosition())
+        ManageOpenPosition();
+    else if (CheckEntry())
+        OpenBuyOrder();
+}
+
+//+------------------------------------------------------------------+
+bool HasOpenPosition()
+{
+    for (int i = OrdersTotal() - 1; i >= 0; i--)
+    {
+        if (!OrderSelect(i, SELECT_BY_POS, MODE_TRADES)) continue;
+        if (OrderSymbol() == Symbol() && OrderMagicNumber() == MagicNumber && OrderType() == OP_BUY)
+            return true;
+    }
+    return false;
+}
+
+//+------------------------------------------------------------------+
+//| エントリー5条件をH1確定バー(shift=1)で判定                          |
+//| 前提: このEAはH1チャートにアタッチされている                        |
+//+------------------------------------------------------------------+
+bool CheckEntry()
+{
+    double ma80   = iMA(NULL, PERIOD_H1, 80,  0, MODE_SMA, PRICE_CLOSE, 1);
+    double ma720  = iMA(NULL, PERIOD_H1, 720, 0, MODE_SMA, PRICE_CLOSE, 1);
+    double d1ma20 = iMA(NULL, PERIOD_D1, 20,  0, MODE_SMA, PRICE_CLOSE, 1);
+
+    bool aboveMa    = Close[1] > ma80;
+    bool aboveMa720 = Close[1] > ma720;
+
+    double maDistPct = (Low[1] - ma80) / ma80 * 100.0;
+    bool maNear = MathAbs(maDistPct) <= 1.0;
+
+    double body = MathMax(MathAbs(Close[1] - Open[1]), 0.00000001);
+    double wick = MathMin(Open[1], Close[1]) - Low[1];
+    bool hasWick = (wick / body) >= 0.5;
+
+    double d1DistPct = (Close[1] - d1ma20) / d1ma20 * 100.0;
+    bool d1Ma20Ok = (d1DistPct >= 0.0 && d1DistPct <= 2.0);
+
+    return aboveMa && aboveMa720 && maNear && hasWick && d1Ma20Ok && PassTrendScoreFilter(true);
+}
+
+bool PassTrendScoreFilter(bool isBuy)
+{
+    if (!UseTrendScoreFilter) return true;
+
+    int score = TrendScore(isBuy);
+    if (score < TrendScoreMin)
+        return false;
+
+    if (UseCandleSkipFilter && ShouldSkipByCandleFilters(isBuy))
+        return false;
+
+    return true;
+}
+
+int TrendScore(bool isBuy)
+{
+    return TrendFrameScore(PERIOD_H1, isBuy)
+         + TrendFrameScore(PERIOD_H4, isBuy)
+         + TrendFrameScore(PERIOD_D1, isBuy);
+}
+
+int TrendFrameScore(int timeframe, bool isBuy)
+{
+    double o = iOpen(Symbol(), timeframe, 1);
+    double c = iClose(Symbol(), timeframe, 1);
+    double fast1 = iMA(Symbol(), timeframe, TrendFastMaPeriod, 0, MODE_SMA, PRICE_CLOSE, 1);
+    double fast2 = iMA(Symbol(), timeframe, TrendFastMaPeriod, 0, MODE_SMA, PRICE_CLOSE, 2);
+    double slow1 = iMA(Symbol(), timeframe, TrendSlowMaPeriod, 0, MODE_SMA, PRICE_CLOSE, 1);
+    if (fast1 <= 0 || fast2 <= 0 || slow1 <= 0) return 0;
+
+    int score = 0;
+    if (isBuy)
+    {
+        if (c > fast1) score++;
+        if (fast1 > fast2) score++;
+        if (c > slow1) score++;
+        if (c > o) score++;
+    }
+    else
+    {
+        if (c < fast1) score++;
+        if (fast1 < fast2) score++;
+        if (c < slow1) score++;
+        if (c < o) score++;
+    }
+    return score;
+}
+
+bool ShouldSkipByCandleFilters(bool isBuy)
+{
+    if (TooExtendedFromFastMa(PERIOD_H1))
+        return true;
+
+    if (StrongOppositeCandle(PERIOD_H4, isBuy))
+        return true;
+
+    if (StrongOppositeCandle(PERIOD_D1, isBuy))
+        return true;
+
+    return false;
+}
+
+bool TooExtendedFromFastMa(int timeframe)
+{
+    double c = iClose(Symbol(), timeframe, 1);
+    double fast = iMA(Symbol(), timeframe, TrendFastMaPeriod, 0, MODE_SMA, PRICE_CLOSE, 1);
+    if (fast <= 0) return false;
+
+    double distPct = MathAbs(c - fast) / fast * 100.0;
+    return (distPct > MaxH1FastMaDistancePct);
+}
+
+bool StrongOppositeCandle(int timeframe, bool isBuy)
+{
+    double o = iOpen(Symbol(), timeframe, 1);
+    double c = iClose(Symbol(), timeframe, 1);
+    double h = iHigh(Symbol(), timeframe, 1);
+    double l = iLow(Symbol(), timeframe, 1);
+    double range = h - l;
+    if (range <= 0) return false;
+
+    double bodyRatio = MathAbs(c - o) / range;
+    if (bodyRatio < StrongOppositeBodyRatio) return false;
+
+    if (isBuy) return (c < o);
+    return (c > o);
+}
+
+//+------------------------------------------------------------------+
+//| SL=entry*0.98(2%下) / TP=entry*1.04(SL距離×2.0上, R=2.0)          |
+//| ロットはリスクベース（口座資金のRiskPercent%をSL幅で割って算出）       |
+//+------------------------------------------------------------------+
+void OpenBuyOrder()
+{
+    double entryPrice = NormalizeDouble(Ask, Digits);
+    double risk = entryPrice * 0.02;
+    double sl = NormalizeDouble(entryPrice - risk, Digits);
+    double tp = NormalizeDouble(entryPrice + risk * 2.0, Digits);
+
+    double slDistancePoints = (entryPrice - sl) / Point;
+    double tickValue = MarketInfo(Symbol(), MODE_TICKVALUE);
+    double riskAmount = AccountBalance() * RiskPercent / 100.0;
+    double lot = riskAmount / (slDistancePoints * tickValue);
+
+    double lotStep = MarketInfo(Symbol(), MODE_LOTSTEP);
+    double minLot  = MarketInfo(Symbol(), MODE_MINLOT);
+    double maxLot  = MarketInfo(Symbol(), MODE_MAXLOT);
+    lot = MathFloor(lot / lotStep) * lotStep;
+    lot = MathMax(minLot, MathMin(maxLot, lot));
+
+    int ticket = OrderSend(
+        Symbol(), OP_BUY, lot, entryPrice, Slippage,
+        sl, tp, "BuyEA", MagicNumber, 0, clrBlue
+    );
+    if (ticket < 0)
+        Print("OrderSend failed: ", GetLastError());
+}
+
+//+------------------------------------------------------------------+
+//| 時間切れ200本(H1)で強制決済                                        |
+//+------------------------------------------------------------------+
+void ManageOpenPosition()
+{
+    for (int i = OrdersTotal() - 1; i >= 0; i--)
+    {
+        if (!OrderSelect(i, SELECT_BY_POS, MODE_TRADES)) continue;
+        if (OrderSymbol() != Symbol() || OrderMagicNumber() != MagicNumber) continue;
+        if (OrderType() != OP_BUY) continue;
+
+        int barsSinceEntry = iBarShift(Symbol(), PERIOD_H1, OrderOpenTime(), false);
+        if (barsSinceEntry >= 200)
+        {
+            bool closed = OrderClose(OrderTicket(), OrderLots(), Bid, Slippage, clrRed);
+            if (!closed)
+                Print("OrderClose failed: ", GetLastError());
+        }
+    }
+}
+//+------------------------------------------------------------------+
+# 【手順書・事前登録】OOS検証 — 定義の凍結と銘柄予算
+
+**2026-07-29**
+**これは実行指示ではありません。FXデータが揃った後に実行する手順を、
+データが存在しないうちに固定しておくための文書です。**
+
+**本文書の内容を、データを見てから変更しないこと。**
+
+---
+
+## なぜ今書くのか
+
+データが揃ってから設計を始めると、結果を見ながら手順を決めることになる。
+**目隠しの価値は、結果を一度でも見た瞬間に消える。**
+
+現時点で分かっているのは以下だけである。
+
+- 5条件は買い99.6%ile / 売り96.9%ile（BTC、鏡像テストで検算済み）
+- 構造SLは買いで非劣性、売りで弱化（96.9→87.3%ile）
+- **システムは既に移植可能**（価格の%を使っている箇所が無い。
+  SLはピボットからの距離、TPはSL幅の倍数）
+
+**OOSへの技術的な関門は越えている。残るのはデータのみ。**
+
+---
+
+## 1. 凍結する定義（この通りに実行し、銘柄ごとに一切変更しない）
+
+### エントリー条件
+
+```
+買い：above_ma / above_ma720 / ma_near / has_wick / d1_ma20
+売り：上記の鏡像（below_ma / below_ma720 / ma_near / 上ヒゲ / d1_ma20の反対側）
+```
+
+- 各条件の閾値・参照MA期間は **BTCで使用している実装の値をそのまま**使う
+- **銘柄ごとに期間や閾値を調整しない**
+
+### 決済
+
+```
+SL（買い）= H1直近確定Pivot Low  × (1 - 0.003)
+SL（売り）= H1直近確定Pivot High × (1 + 0.003)
+TP        = エントリー価格 ± (SL幅) × 2.0
+タイムアウト = 200バー
+RiskPercent  = 1%
+```
+
+- buffer 0.3%、R = 2.0、200バーはすべて固定
+- ピボット幅は既存 `confirmed_pivots` の値
+
+### 除外基準
+
+```
+SL幅 < 0.5%  → 除外
+SL幅 > 8%    → 除外
+参照ピボットなし → 除外
+```
+
+**FXではSL幅の分布がBTCと大きく異なる可能性がある**（ボラティリティが低いため）。
+0.5%未満で大量に除外される可能性があるが、**それでも閾値は変更しない**。
+除外件数を報告し、結果として件数が不足するならそれは「判定不能」である。
+
+### 重複排除
+
+72時間以内の連続候補は後着を除外（BTCと同一）。
+
+### エントリー執行
+
+確定バーの終値（5条件はBTCでこの方式。逆指値モデルはダウ転換ブレイク用であり、
+5条件には適用しない）。
+
+---
+
+## 2. 銘柄の順序と予算（先に固定する）
+
+**各銘柄は一度しか使えない。** 結果を見た時点でその銘柄はOOSではなくなる。
+
+### 第1段階：忠実性の確認（成績を見ない）
+
+原典に図つき実例が存在する銘柄で、**本人のエントリーを捕捉できるか**だけを見る。
+**この段階では勝率・平均Rを算出しない。**
+
+| 順序 | 銘柄 | 目的 |
+|---|---|---|
+| 1 | ポンド円（GBP/JPY） | 原典に図つき実例あり |
+| 2 | 日経225（JP225） | 原典に図つき実例あり |
+
+- 各記事の日付前後で候補が生成されるか
+- 本人のエントリー位置が特定できる場合、±24バー以内に候補があるか
+- **成績は計算しない。** 忠実性のみ
+
+日経のデータが入手困難な場合は、その旨を報告して1のみ実施する。
+
+### 第2段階：成績のOOS（順序を固定する）
+
+以下の順に、**1銘柄ずつ**実行する。**順序を入れ替えない。**
+
+| 順序 | 銘柄 |
+|---|---|
+| 1 | EUR/USD |
+| 2 | USD/JPY |
+| 3 | GBP/USD |
+| 4 | AUD/USD |
+| 5 | USD/CHF |
+| 6 | USD/CAD |
+| 7 | GBP/JPY |
+| 8 | EUR/JPY |
+| 9 | AUD/JPY |
+
+**予算は9銘柄。** 追加しない。
+
+第1段階でGBP/JPYを使った場合も、第2段階の7番目で成績を測ってよい
+（第1段階では成績を見ていないため、成績に関してはまだ未使用である）。
+**ただし第1段階で成績を計算してしまった場合は、GBP/JPYを第2段階から除外すること。**
+
+---
+
+## 3. 各銘柄の判定
+
+### 銘柄ごと・方向ごとにランダム基準線を作る
+
+**BTCの基準線を流用しない。** 通貨ペアごとにドリフトもボラティリティも異なる。
+
+- 対象銘柄・対象期間・**買い専用／売り専用を別々に**
+- 決済ロジックは本案と完全に同一
+- 1試行 = 本案の候補件数と同数、**1000試行**
+- シードは `20260729 + 銘柄の連番`（例：EUR/USD = 20260730）。報告に明記
+
+### 銘柄ごとの判定
+
+| パーセンタイル | 記録 |
+|---|---|
+| 95以上 | 成立 |
+| 80〜95 | 弱いが成立の可能性 |
+| 80未満 | 不成立 |
+
+**件数20未満は「判定不能」。** 成立とも不成立とも記録しない。
+
+---
+
+## 4. 集計ルール（多重比較への対処。これを先に決めるのが本文書の核心）
+
+9銘柄 × 2方向 = **18の検定**を行う。80%ile を閾値にすれば、
+**偶然でも約3.6件が通る**。「1つでも通ったから成功」としてはならない。
+
+### 主指標：パーセンタイルの中央値
+
+18件（判定不能を除く）の**パーセンタイルの中央値**を主指標とする。
+
+| 中央値 | 判定 |
+|---|---|
+| 80以上 | **5条件はBTC以外にも一般化する** |
+| 50〜80 | 一般化は限定的。BTC固有の要素が大きい |
+| 50未満 | **一般化しない。BTCでの結果は当該銘柄・期間に固有** |
+
+### 副指標：80%ile以上の件数
+
+18件中、何件が80%ile以上か。**偶然の期待値は約3.6件**である。
+
+- 9件以上 → 偶然では説明しにくい
+- 4〜8件 → 判断保留
+- 3件以下 → 偶然と区別がつかない
+
+### 買いと売りを分けて併記すること
+
+方向別の中央値も出す。**片方だけ成立している場合、それは方向バイアスの疑い**であり、
+BTCで実施した鏡像テストと同じ論理で解釈する。
+
+---
+
+## 5. 禁止事項
+
+1. **銘柄ごとにパラメータを調整しない。** 1つでも調整したらOOSではなくなる
+2. **成績の悪い銘柄を除外しない。** 全銘柄の結果を報告する
+3. **順序を入れ替えない。** 上記の順で1銘柄ずつ
+4. **途中で止めて設計を変えない。** 9銘柄すべて実行してから判断する
+5. **「この銘柄は特殊だから」という理由での除外を認めない。**
+   ただし**データ品質の問題**（欠損が多い、期間が足りない等）による除外は認める。
+   その場合は理由を明記し、**成績を見る前に**除外を決めること
+6. 中間結果を見てから集計ルールを変更しない
+
+---
+
+## 6. 実行前に確認すること
+
+- FXデータの取得が完了していること（`指示_20260728_FXデータ調達_調査と提案.md`）
+- 各銘柄のデータ品質チェックが済んでいること（欠損・重複・週末ギャップの扱い）
+- **D1・W1の区切り時刻**が決定されていること（NYクローズ基準／UTC基準）。
+  これは日足MA20の値を変えるため、**全銘柄で統一**すること
+
+---
+
+## 報告先
+
+- 第1段階：`100億j_share/報告_[実行日]_OOS段階1_忠実性.md`
+- 第2段階：`100億j_share/報告_[実行日]_OOS段階2_[銘柄名].md`（銘柄ごとに1本）
+- 総括：`100億j_share/報告_[実行日]_OOS総括.md`（**9銘柄すべて完了後**）
+
+**総括を書くまで、集計・判定を行わないこと。**
+**********************
+PowerShell transcript end
+End time: 20261008013454
+**********************

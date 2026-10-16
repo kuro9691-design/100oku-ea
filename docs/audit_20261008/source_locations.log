@@ -1,0 +1,104 @@
+**********************
+PowerShell transcript start
+Start time: 20261008013223
+Username: DESKTOP-2HVADME\CodexSandboxOffline
+RunAs User: DESKTOP-2HVADME\CodexSandboxOffline
+Configuration Name: 
+Machine: DESKTOP-2HVADME (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\user\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -NoProfile -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+Start-Transcript -Path 'docs\audit_20261008\source_locations.log' -Append | Out-Null; Get-Content -Raw 'docs\read_realtrade_sources_20260905.py'; rg --files docs/codex_examples/btcusd_20260113; Get-ChildItem 'C:\Users\user\Documents\100億j_share' -Filter '*3本目*'; rg -n 'PH-5[0-9]|PH-44|^##|原典3本' docs/pending_hypotheses.md | Select-Object -Last 45; Stop-Transcript | Out-Null
+Process ID: 5452
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+from pathlib import Path
+from email import policy
+from email.parser import BytesParser
+from bs4 import BeautifulSoup
+import sys
+
+sources = sorted(Path('reference').glob('*.mhtml'))
+out = Path('docs/realtrade_reading_20260905')
+out.mkdir(exist_ok=True)
+for i, source in enumerate(sources):
+    msg = BytesParser(policy=policy.default).parsebytes(source.read_bytes())
+    html = next(p for p in msg.walk() if p.get_content_type() == 'text/html')
+    soup = BeautifulSoup(html.get_payload(decode=True).decode('utf-8'), 'html.parser')
+    body = soup.select_one('.entry-content') or soup.select_one('article') or soup
+    for tag in body.select('script, style, nav'):
+        tag.decompose()
+    text = body.get_text('\n', strip=True)
+    if len(sys.argv) > 1 and int(sys.argv[1]) != i:
+        continue
+    print(f'ARTICLE {i}: {source.name}\n{text}\nEND ARTICLE {i}')
+    folder = out / str(i)
+    folder.mkdir(exist_ok=True)
+    for j, p in enumerate(msg.walk()):
+        if p.get_content_type().startswith('image/'):
+            ext = {'image/jpeg': '.jpg', 'image/png': '.png', 'image/webp': '.webp'}.get(p.get_content_type())
+            if ext:
+                (folder / f'{j}{ext}').write_bytes(p.get_payload(decode=True))
+                print(f'IMAGE {j}: {p.get("Content-Location", "")}')
+
+
+    Directory: C:\Users\user\Documents\100億j_share
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---          2026/08/02    15:36           7192 指示_20260802_3本目のパイプライン実態確認とA〜G棚卸し.md
+1300:### 参考資料: 損切りライン記事の抽出(2026-08-02、外部ブログ)
+1326:### PH-50: 5条件(売り鏡像)に構造SLを適用する
+1359:  ダウ転換ブレイク(PH-44/46/48)とは無関係、混ぜない。
+1396:### PH-49: 5条件の鏡像テスト(99.6%ileは本物か、上昇バイアスか) — 最優先
+1499:### PH-48: 型A(順張り)の売りへの拡張 段階2
+1511:- **定義(結果を見る前に固定、買い側PH-44/46の完全な符号反転、新規数値なし)**:
+1576:### PH-47: 加算モデル(根拠の重なりスコアと成績の関係)
+1586:- **母集団**: PH-44の466件(引き金・逆指値モデル・72h重複排除は完全同一)。
+1658:### PH-46: 型A・型Bの分離(順張りと乖離埋めを別の設定として扱う)
+1672:- **定義(結果を見る前に固定、閾値なし)**: 母集団はPH-44の466件(引き金・逆指値
+1673:  モデル・72h重複排除はPH-44と完全同一、分割は重複排除の後に行う)。
+1681:  PH-44と同一。
+1693:  | PH-44(分割前・全体) | 466 | 34.8% | +0.025R | 46.00R | 57.7 |
+1710:    下回る**という明確な非対称が見られた。**PH-44の分割前の混合平均(+0.025R)
+1723:### PH-45: 環境認識の積み上げ 段階2(原典の順序で層を重ねる)
+1732:  PH-44で引き金(H1ダウ転換ブレイク・逆指値モデル)の忠実性は確認済み(ネックライン
+1736:  L0: H1ダウ転換ブレイク(PH-44と完全同一)                    ← 基準。466件
+1770:    | L0(=PH-44) | 466 | 69.6% | 34.8% | +0.025R | 46.00R | 57.7 |
+1798:### PH-44: H1ダウ転換ブレイク 段階1r(逆指値モデルでの再実行)
+1861:  - **原典3本との重なり(確度「中」、買い2本)**: 2024.7.6(index=30770)は
+1883:### PH-43: H1ダウ転換ポイントのブレイク 段階1(買いのみ)
+1941:  - **原典3本との重なり(確度「中」、買い2本)**: 2024.7.6(index=30770)は
+1950:    原典3本のうち1本(2024.7.6)を±2バーという高精度で捉えていた点は、
+1964:### PH-42: レンジ抜けの押し目(レジサポ転換、原典ルール3の初検証)
+2033:### PH-41: 収束→拡散 段階1(原典の中核概念、初検証)
+2120:### PH-40: 分割決済(構造SL＋節目利確＋勢力転換決済)
+2212:### PH-38: 勢力転換による決済(原典で唯一「例外なし」の決済ロジック)
+2277:### PH-37: 構造ベースSL(段階1、原典への忠実化)
+2337:### PH-36: ランダムエントリー基準線 — +0.462Rは本物のエッジか(最優先)
+2396:### PH-34: レンジ相場の見送り条件(d1_ma_spread帯別集計、探索的)
+2467:### PH-35: 高値抜けエントリーの追加(段階A、原典への忠実化)
+2532:### PH-33: 画像判断層(Codex代替)の事実抽出コスト検証 — 実用水準を超過し中止
+2570:### PH-32: 日足MA20の傾き(向き)による帯別集計(探索的、confirmatory testではない)
+2686:### PH-31: H4トレンド転換の2段階判定(転換確定＋初押し、案B)
+2805:### PH-28: 週足の形は収束/乖離を問わない — D1・H4の収束＋一段上MAの乖離が本質
+2847:### PH-01: 4時間足MA20の傾き伸びきり仮説 — 検証済み(棄却)
+2874:### PH-12: Funding Rateの極値・変化と勝敗の関係 — 検証済み(棄却)
+2939:#### 追加分析: ボラティリティ交絡チェック(2026-07-20)
+2976:#### 追加検証: ETHでの独立再現(2026-07-20)
+3026:### PH-13: Volume Profile(出来高プロファイル)のHigh Volume NodeとTP経路の関係 — 検証済み(棄却)
+3095:### PH-15: 日足トレンド禁止則 — 検証済み(棄却)
+3179:### PH-14: 事例ライブラリの厚みと類推判断の精度 — 検証済み(棄却)
+3248:### PH-17: 思考テンプレート組み込みの効果(類推判断の質的強化) — 検証済み(棄却)
+3313:#### 追加検証: ETHでの独立再現(2026-07-20)
+3349:### PH-18: 候補抽出そのものの精選(100億さん除外条件による事前フィルタ) — 検証済み(棄却)
+**********************
+PowerShell transcript end
+End time: 20261008013224
+**********************

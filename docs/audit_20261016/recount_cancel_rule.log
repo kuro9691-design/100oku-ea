@@ -1,0 +1,33 @@
+{
+  "scan": {
+    "strict": {
+      "long": 47,
+      "short": 32
+    },
+    "strict_total": 79,
+    "actionable": 337,
+    "actionable_with_sl_tp": 317,
+    "cancel_stats": {
+      "cancelled": 646,
+      "same_bar_resolved": 8,
+      "same_bar_ambiguous": 1
+    }
+  },
+  "backtests": [
+    {
+      "gate": "actionable",
+      "trades": 189,
+      "ambiguous": 0,
+      "win_rate": 0.3862433862433862,
+      "avg_r": 0.3018192412770243
+    },
+    {
+      "gate": "strict",
+      "trades": 63,
+      "ambiguous": 0,
+      "win_rate": 0.3492063492063492,
+      "avg_r": 0.19238340094340112
+    }
+  ],
+  "elapsed_sec": 1288
+}

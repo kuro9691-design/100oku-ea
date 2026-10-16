@@ -1,0 +1,59 @@
+**********************
+PowerShell transcript start
+Start time: 20261008015508
+Username: DESKTOP-2HVADME\CodexSandboxOffline
+RunAs User: DESKTOP-2HVADME\CodexSandboxOffline
+Configuration Name: 
+Machine: DESKTOP-2HVADME (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\user\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -NoProfile -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+Start-Transcript -Path 'docs\audit_20261008\gap_fix_green.log' -Append | Out-Null; python -B -X utf8 -m unittest tests.test_stop_gap_execution tests.test_pipeline tests.test_indicators tests.test_leak -v 2>&1 | Tee-Object -FilePath 'docs\audit_20261008\gap_fix_green_stdout.log'; $auditExit = $LASTEXITCODE; Stop-Transcript | Out-Null; exit $auditExit
+Process ID: 21364
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+test_buy_gap_fills_at_open (tests.test_stop_gap_execution.StopGapExecutionTests.test_buy_gap_fills_at_open) ... ok
+test_buy_normal_touch_fills_at_order (tests.test_stop_gap_execution.StopGapExecutionTests.test_buy_normal_touch_fills_at_order) ... ok
+test_filled_order_is_not_reused_on_next_bar (tests.test_stop_gap_execution.StopGapExecutionTests.test_filled_order_is_not_reused_on_next_bar) ... ok
+test_gap_fill_propagates_to_entry_and_rr (tests.test_stop_gap_execution.StopGapExecutionTests.test_gap_fill_propagates_to_entry_and_rr) ... ok
+test_open_exactly_at_order (tests.test_stop_gap_execution.StopGapExecutionTests.test_open_exactly_at_order) ... ok
+test_sell_gap_fills_at_open (tests.test_stop_gap_execution.StopGapExecutionTests.test_sell_gap_fills_at_open) ... ok
+test_sell_normal_touch_fills_at_order (tests.test_stop_gap_execution.StopGapExecutionTests.test_sell_normal_touch_fills_at_order) ... ok
+test_unreached_orders_do_not_fill (tests.test_stop_gap_execution.StopGapExecutionTests.test_unreached_orders_do_not_fill) ... ok
+test_alignment_allows_daily_ma_room_exception (tests.test_pipeline.PipelineTests.test_alignment_allows_daily_ma_room_exception) ... ok
+test_alignment_requires_h1_dow_turn (tests.test_pipeline.PipelineTests.test_alignment_requires_h1_dow_turn) ... ok
+test_backtest_splits_is_and_oos (tests.test_pipeline.PipelineTests.test_backtest_splits_is_and_oos) ... ok
+test_d_requires_ma720_slope_aligned (tests.test_pipeline.PipelineTests.test_d_requires_ma720_slope_aligned) ... ok
+test_decision_has_all_criteria (tests.test_pipeline.PipelineTests.test_decision_has_all_criteria) ... ok
+test_e_allows_h4_dow_unconfirmed_when_h4_flow_matches (tests.test_pipeline.PipelineTests.test_e_allows_h4_dow_unconfirmed_when_h4_flow_matches) ... ok
+test_g_warning_does_not_remove_entry_candidate (tests.test_pipeline.PipelineTests.test_g_warning_does_not_remove_entry_candidate) ... ok
+test_stop_entry_can_be_rearmed_after_an_earlier_touch (tests.test_pipeline.PipelineTests.test_stop_entry_can_be_rearmed_after_an_earlier_touch) ... ok
+test_stop_entry_does_not_fill_twice_at_same_pivot (tests.test_pipeline.PipelineTests.test_stop_entry_does_not_fill_twice_at_same_pivot) ... ok
+test_stop_entry_fills_at_confirmed_pivot_on_first_later_touch (tests.test_pipeline.PipelineTests.test_stop_entry_fills_at_confirmed_pivot_on_first_later_touch) ... ok
+test_weak_pivot_is_not_a_structural_line (tests.test_pipeline.PipelineTests.test_weak_pivot_is_not_a_structural_line) ... ok
+test_pivots_are_confirmed_without_right_edge_future (tests.test_indicators.IndicatorTests.test_pivots_are_confirmed_without_right_edge_future) ... ok
+test_trend_direction_is_bounded (tests.test_indicators.IndicatorTests.test_trend_direction_is_bounded) ... ok
+test_audit_rejects_future_directly (tests.test_leak.LeakTests.test_audit_rejects_future_directly) ... ok
+test_causal_series_rejects_future (tests.test_leak.LeakTests.test_causal_series_rejects_future) ... ok
+test_pipeline_passes_cross_timeframe_leak_check (tests.test_leak.LeakTests.test_pipeline_passes_cross_timeframe_leak_check)
+2026-07に発見した「decision_indexが未確定の当日/現在バケットを指す」 ... ok
+test_pipeline_passes_leak_check (tests.test_leak.LeakTests.test_pipeline_passes_leak_check) ... ok
+test_resolve_indexes_excludes_same_day_d1_bar_mid_day (tests.test_leak.LeakTests.test_resolve_indexes_excludes_same_day_d1_bar_mid_day)
+日中(境界から離れた時刻)のH1候補は、当日ではなく前日の確定D1足を指す。 ... ok
+test_resolve_indexes_includes_same_day_d1_bar_at_last_hour (tests.test_leak.LeakTests.test_resolve_indexes_includes_same_day_d1_bar_at_last_hour)
+23時始まりのH1候補(終値確定=翌日00:00)は、確定時刻を跨ぐ当日分の ... ok
+
+----------------------------------------------------------------------
+Ran 27 tests in 0.313s
+
+OK
+**********************
+PowerShell transcript end
+End time: 20261008015511
+**********************

@@ -1,0 +1,58 @@
+**********************
+PowerShell transcript start
+Start time: 20261008015643
+Username: DESKTOP-2HVADME\CodexSandboxOffline
+RunAs User: DESKTOP-2HVADME\CodexSandboxOffline
+Configuration Name: 
+Machine: DESKTOP-2HVADME (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\user\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -NoProfile -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+Start-Transcript -Path 'docs\audit_20261008\gap_fix_regression.log' -Append | Out-Null; python -B -X utf8 docs\audit_20261008\verify_gap_fix.py 2>&1 | Tee-Object -FilePath 'docs\audit_20261008\gap_fix_regression_stdout.log'; $auditExit = $LASTEXITCODE; Stop-Transcript | Out-Null; exit $auditExit
+Process ID: 10996
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+{
+  "directions": {
+    "1": {
+      "fills": 523,
+      "same_fill_bars": true,
+      "price_mismatches": [],
+      "gap_changes": []
+    },
+    "-1": {
+      "fills": 471,
+      "same_fill_bars": true,
+      "price_mismatches": [],
+      "gap_changes": []
+    }
+  },
+  "candidate_regression": {
+    "buy": {
+      "rows": 47647,
+      "expected": 2015,
+      "actual": 2015,
+      "matches": true
+    },
+    "sell": {
+      "rows": 47647,
+      "expected": 1944,
+      "actual": 1944,
+      "matches": true
+    }
+  },
+  "protected_input_mismatches": [],
+  "pipeline_before_sha256": "c541584e1ceff7dd166b61743343fb2c436251460aa1cfbc7011a7da5ff4b22c",
+  "pipeline_after_sha256": "bee6d7b413e9574e894594bfefa58cd52bb8d7f254255b16e3fbc559858cd1e8",
+  "passed": true
+}
+**********************
+PowerShell transcript end
+End time: 20261008020329
+**********************

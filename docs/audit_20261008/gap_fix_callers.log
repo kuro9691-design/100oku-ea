@@ -1,0 +1,100 @@
+**********************
+PowerShell transcript start
+Start time: 20261008015115
+Username: DESKTOP-2HVADME\CodexSandboxOffline
+RunAs User: DESKTOP-2HVADME\CodexSandboxOffline
+Configuration Name: 
+Machine: DESKTOP-2HVADME (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\user\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -NoProfile -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+Start-Transcript -Path 'docs\audit_20261008\gap_fix_callers.log' -Append | Out-Null; rg -n '_stop_entry_fill|stop_entry\.|\["fills"\]' oku100 scripts tests; Get-Content -Raw 'oku100\io.py'; Get-Content -Raw 'btc_pullback_candidates_p2_summary.json'; Get-Content -Raw 'btc_rally_candidates_summary.json'; Stop-Transcript | Out-Null
+Process ID: 23768
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+
+from __future__ import annotations
+
+import csv
+from datetime import datetime
+from pathlib import Path
+
+from .models import Bar
+
+
+def read_bars(path: str | Path) -> list[Bar]:
+    rows: list[Bar] = []
+    with Path(path).open("r", encoding="utf-8-sig", newline="") as handle:
+        for row in csv.DictReader(handle):
+            rows.append(
+                Bar(
+                    timestamp=datetime.fromisoformat(row["timestamp"].replace("Z", "+00:00")),
+                    open=float(row["open"]),
+                    high=float(row["high"]),
+                    low=float(row["low"]),
+                    close=float(row["close"]),
+                )
+            )
+    validate_bars(rows)
+    return rows
+
+
+def validate_bars(bars: list[Bar]) -> None:
+    if not bars:
+        raise ValueError("OHLC series is empty")
+    timestamps = [bar.timestamp for bar in bars]
+    if timestamps != sorted(timestamps) or len(timestamps) != len(set(timestamps)):
+        raise ValueError("timestamps must be strictly increasing")
+{
+  "h1_path": "data/h1.csv",
+  "bars_scanned": 47647,
+  "candidates_found": 6667,
+  "candidate_rate": 0.1399248641047705,
+  "individual_pass_counts": {
+    "above_ma": 24456,
+    "ma_near": 28617,
+    "higher_low": 25728,
+    "has_wick": 32342
+  },
+  "params": {
+    "ma_period": 80,
+    "pivot_width": 3,
+    "wick_ratio_min": 0.3,
+    "ma_proximity_pct": 2.0
+  },
+  "date_range": {
+    "first": "2021-01-04T07:00:00+00:00",
+    "last": "2026-06-13T03:00:00+00:00"
+  }
+}
+{
+  "table_path": "btc_candidate_indicators.csv",
+  "bars_scanned": 47647,
+  "candidates_found": 1944,
+  "candidate_rate": 0.04080005037043256,
+  "individual_pass_counts": {
+    "below_ma": 23191,
+    "below_ma720": 23851,
+    "ma_near": 17416,
+    "lower_high": 24641,
+    "has_upper_wick": 25567
+  },
+  "params": {
+    "wick_ratio_min": 0.5,
+    "ma_proximity_pct": 1.0
+  },
+  "date_range": {
+    "first": "2021-01-04T07:00:00+00:00",
+    "last": "2026-06-13T03:00:00+00:00"
+  }
+}
+**********************
+PowerShell transcript end
+End time: 20261008015115
+**********************

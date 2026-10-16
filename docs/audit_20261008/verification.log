@@ -1,0 +1,57 @@
+**********************
+PowerShell transcript start
+Start time: 20261008014236
+Username: DESKTOP-2HVADME\CodexSandboxOffline
+RunAs User: DESKTOP-2HVADME\CodexSandboxOffline
+Configuration Name: 
+Machine: DESKTOP-2HVADME (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\user\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -NoProfile -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+Start-Transcript -Path 'docs\audit_20261008\verification.log' -Append | Out-Null; $auditRecord = Get-Content -Raw -LiteralPath 'docs\audit_20261008\audit_v1.json' | ConvertFrom-Json; $auditMismatches = @(); foreach ($auditEntry in $auditRecord.input_sha256.PSObject.Properties) { if ($auditEntry.Name -like 'scripts*') { continue }; $auditActual = (Get-FileHash -LiteralPath $auditEntry.Name -Algorithm SHA256).Hash.ToLowerInvariant(); if ($auditActual -ne $auditEntry.Value) { $auditMismatches += $auditEntry.Name } }; Write-Output ('Existing input hash mismatches: ' + $auditMismatches.Count); $auditMismatches; $auditSource = Get-Content -Raw -LiteralPath 'docs\audit_20261008\source_evidence.json' | ConvertFrom-Json; $auditSource | Where-Object { $_.source -match '2025\.2\.23|2025\.3\.9|2025\.3\.28' } | ForEach-Object { Write-Output $_.source; $_.excerpts | Where-Object { $_.text -match '成行|直近安値|早め|追加' } | Select-Object text_line,text | Format-List }; git diff --stat; Stop-Transcript | Out-Null; if ($auditMismatches.Count -gt 0) { exit 1 }
+Process ID: 7020
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Existing input hash mismatches: 0
+reference\【リアルトレード解説】ビットコインドル（2025.2.23）4時間足レベルのトレンド転換後の初戻しを獲りにいったトレード _ 100億円トレーダーになるまで.mhtml
+
+text_line : 73
+text      : 本来ならこの1時間足レベルの高値切り下げ安値更新ポイントでエントリーすべきでしたが↓
+            この時はチャートを見ていなかったのでかなり遅れて下記のピンク矢印の部分で成行で売り注文を仕掛けました。
+            4時間足と1時間足の移動平均線同士の関係を見ても、4時間足MAに対して1時間足MAが収束から拡散するポイントです。
+
+reference\【リアルトレード解説】ビットコインドル（2025.3.28）4時間足レベルのトレンド転換後の初戻しを獲りにいったトレード _ 100億円トレーダーになるまで.mhtml
+
+text_line : 83
+text      : そのような上位足相場環境の中で、4時間足レベルのダブルトップの右側のトップ内(赤線)で1時間足レベルの高値切り
+            下げポイント(青線)を形成してきました。
+            直近安値を更新してくることで、高値切り下げ安値更新と1時間足レベルで下降トレンド転換が確定しますので直近安値
+            抜けに売り注文を仕掛けました(ピンク矢印)。
+            4時間足と1時間足の移動平均線同士の関係を見ても、1時間足MAが4時間足MAに対して収束から拡散するポイントです。
+
+reference\【リアルトレード解説】ビットコインドル（2025.3.9）4時間足レベルの戻り売りを獲りにいったトレード _ 100億円トレーダーになるまで.mhtml
+
+text_line : 70
+text      : そのような上位足相場環境の中で、4時間足レベルの高値切り下げポイント(赤線)の中で1時間足レベルのダブルトップ(
+            青線)を形成してきました。
+            ダブルトップのネックラインを割ることで、1時間足レベルの下降トレンド転換が確定しますので本来ならこのネックラ
+            イン割れに売り注文を仕掛けるのが正しいのですが↓
+            この後チャートを見れない時間が続くことが分かっていたのでネックラインを割る前に早めに入りました。
+
+text_line : 71
+text      : ダブルトップのネックラインを割ることで、1時間足レベルの下降トレンド転換が確定しますので本来ならこのネックラ
+            イン割れに売り注文を仕掛けるのが正しいのですが↓
+            この後チャートを見れない時間が続くことが分かっていたのでネックラインを割る前に早めに入りました。
+            4時間足と1時間足の移動平均線同士の関係を見ても、1時間足MAが4時間足MAに対して収束から拡散するポイントです。
+
+
+**********************
+PowerShell transcript end
+End time: 20261008014241
+**********************
