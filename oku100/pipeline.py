@@ -608,7 +608,7 @@ class DecisionPipeline:
         """Split take-profit orders (docs/execution_spec.md 7-1).
 
         T1/T2: nearest H4 structures (7-3 lines, H4 20/80 SMA), T3: nearest D1
-        structure (pivots, D1 fast SMA) beyond the last H4 target. Structures
+        structure (7-4 wave-range pivots, D1 fast SMA) beyond the last H4 target. Structures
         within the zone of the fill are the broken trigger line and are
         excluded; structures within the zone of the previous target merge into
         it. Orders sit just before each line; fractions are equal.
@@ -631,12 +631,21 @@ class DecisionPipeline:
         levels = levels[:2]
         if not levels:
             return []
-        d1_structures = [pivot.price for pivot in d1.pivots] + [d1.fast_ma]
+        d1_structures = [
+            pivot.price for pivot in self._wave_pivots(d1, p.d1_direction_ma_period)
+        ] + [d1.fast_ma]
         beyond = [x for x in d1_structures if ahead(x) - ahead(levels[-1]) > zone]
         if beyond:
             levels.append(min(beyond, key=ahead))
         fraction = 1 / len(levels)
         return [(level * (1 - direction * p.tp_buffer_pct), fraction) for level in levels]
+
+    @staticmethod
+    def _wave_pivots(state: TimeframeState, period: int) -> list[Pivot]:
+        """Confirmed pivots of the current wave range: the last `period` bars
+        up to the order time (docs/execution_spec.md 7-4; reusable for 3)."""
+        start = state.index - period + 1
+        return [pivot for pivot in state.pivots if pivot.index >= start]
 
     def _h4_lines(self, d1: TimeframeState, h4: TimeframeState) -> list[float]:
         """H4 lines the source takes profit at (docs/execution_spec.md 7-3).
@@ -648,10 +657,10 @@ class DecisionPipeline:
         p = self.params
         tolerance = p.k2 * max(h4.atr, 1e-12)
         strong = sorted(
-            pivot.price for pivot in h4.pivots
+            pivot.price for pivot in self._wave_pivots(h4, p.h4_direction_ma_period)
             if self._pivot_reaction_atr(h4, pivot) >= p.strong_pivot_reaction_atr
         )
-        daily = sorted(pivot.price for pivot in d1.pivots)
+        daily = sorted(pivot.price for pivot in self._wave_pivots(d1, p.d1_direction_ma_period))
 
         def within(prices: list[float], price: float) -> int:
             return bisect_right(prices, price + tolerance) - bisect_left(prices, price - tolerance)

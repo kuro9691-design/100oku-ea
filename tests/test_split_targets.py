@@ -35,7 +35,7 @@ class SplitTargetSelectionTests(unittest.TestCase):
             return self.pipeline._split_targets(d1, h4, entry, direction)
 
     def assertLevels(self, targets, levels, direction=1):
-        buffer = 1 - direction * 0.003
+        buffer = 1 - direction * Params().tp_buffer_pct
         self.assertEqual(len(targets), len(levels))
         for (price, fraction), level in zip(targets, levels):
             self.assertAlmostEqual(price, level * buffer)
@@ -115,6 +115,17 @@ class H4LineDefinitionTests(unittest.TestCase):
 
     def test_rejected_pivot_shared_with_d1_is_a_line(self):
         self.assertEqual(self.lines([103, 106], [106.2], {103, 106}), [106])
+
+    def test_pivots_before_the_wave_range_are_ignored(self):
+        h4 = state([103, 103.3], fast_ma=90, close=90, count=300)
+        h4.pivots = [Pivot(10, START, 103, "high"), Pivot(250, START, 103.3, "high")]
+        h4.atr = 1.0
+        d1 = state([], fast_ma=80, close=80)
+        with patch.object(self.pipeline, "_pivot_reaction_atr", return_value=1.0):
+            self.assertEqual(self.pipeline._h4_lines(d1, h4), [])
+
+    def test_offset_is_zero(self):
+        self.assertEqual(Params().tp_buffer_pct, 0.0)
 
     def test_single_minor_swing_is_not_a_line(self):
         self.assertEqual(self.lines([101.5], [], {101.5}), [])
