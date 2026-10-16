@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from bisect import bisect_left, bisect_right
 from collections import defaultdict
 from dataclasses import dataclass, replace
 from datetime import datetime, timedelta
@@ -606,7 +607,7 @@ class DecisionPipeline:
     ) -> list[tuple[float, float]]:
         """Split take-profit orders (docs/execution_spec.md 7-1).
 
-        T1/T2: nearest H4 structures (pivots, H4 20/80 SMA), T3: nearest D1
+        T1/T2: nearest H4 structures (7-3 lines, H4 20/80 SMA), T3: nearest D1
         structure (pivots, D1 fast SMA) beyond the last H4 target. Structures
         within the zone of the fill are the broken trigger line and are
         excluded; structures within the zone of the previous target merge into
@@ -620,7 +621,7 @@ class DecisionPipeline:
         def ahead(price: float) -> float:
             return (price - entry) * direction
 
-        h4_structures = [pivot.price for pivot in h4.pivots] + [
+        h4_structures = self._h4_lines(d1, h4) + [
             h4.fast_ma, sma(h4.bars, h4.index, p.h4_tp_ma_period),
         ]
         levels: list[float] = []
@@ -636,6 +637,29 @@ class DecisionPipeline:
             levels.append(min(beyond, key=ahead))
         fraction = 1 / len(levels)
         return [(level * (1 - direction * p.tp_buffer_pct), fraction) for level in levels]
+
+    def _h4_lines(self, d1: TimeframeState, h4: TimeframeState) -> list[float]:
+        """H4 lines the source takes profit at (docs/execution_spec.md 7-3).
+
+        Only rejected pivots (C's strong-pivot reaction) count. A pivot is a
+        line when (a) at least line_touch_min rejected pivots of either kind
+        sit within k2 x ATR of it, or (b) a D1 pivot sits within that band.
+        """
+        p = self.params
+        tolerance = p.k2 * max(h4.atr, 1e-12)
+        strong = sorted(
+            pivot.price for pivot in h4.pivots
+            if self._pivot_reaction_atr(h4, pivot) >= p.strong_pivot_reaction_atr
+        )
+        daily = sorted(pivot.price for pivot in d1.pivots)
+
+        def within(prices: list[float], price: float) -> int:
+            return bisect_right(prices, price + tolerance) - bisect_left(prices, price - tolerance)
+
+        return [
+            price for price in strong
+            if within(strong, price) >= p.line_touch_min or within(daily, price) > 0
+        ]
 
     @staticmethod
     def _ma_direction(state: TimeframeState, direction: int) -> bool:

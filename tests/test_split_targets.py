@@ -1,6 +1,7 @@
 """Split take-profit (docs/execution_spec.md 7)."""
 import unittest
 from datetime import datetime, timedelta, timezone
+from unittest.mock import patch
 
 from oku100 import indicators
 from oku100.backtest import _resolve_trade, group_m15_by_hour
@@ -28,7 +29,10 @@ class SplitTargetSelectionTests(unittest.TestCase):
         self.pipeline = DecisionPipeline()
 
     def targets(self, h4, d1, entry=100.0, direction=1):
-        return self.pipeline._split_targets(d1, h4, entry, direction)
+        # Selection logic only: every H4 pivot is treated as a 7-3 line here.
+        lines = [pivot.price for pivot in h4.pivots]
+        with patch.object(self.pipeline, "_h4_lines", return_value=lines):
+            return self.pipeline._split_targets(d1, h4, entry, direction)
 
     def assertLevels(self, targets, levels, direction=1):
         buffer = 1 - direction * 0.003
@@ -83,6 +87,37 @@ class SplitTargetSelectionTests(unittest.TestCase):
         h4 = state([97, 94, 90], fast_ma=110, close=110)
         d1 = state([92, 85], fast_ma=120, close=120)
         self.assertLevels(self.targets(h4, d1, direction=-1), [97, 94, 92], direction=-1)
+
+
+class H4LineDefinitionTests(unittest.TestCase):
+    """execution_spec 7-3: only rejected pivots touched twice, or shared with D1, are lines."""
+
+    def setUp(self):
+        clear_caches()
+        self.pipeline = DecisionPipeline()
+
+    def lines(self, h4_prices, d1_prices, rejected):
+        h4 = state(h4_prices, fast_ma=90, close=90)
+        h4.atr = 1.0  # tolerance = k2 (0.4) x ATR
+        d1 = state(d1_prices, fast_ma=80, close=80)
+        reaction = lambda _state, pivot: 1.0 if pivot.price in rejected else 0.5
+        with patch.object(self.pipeline, "_pivot_reaction_atr", side_effect=reaction):
+            return self.pipeline._h4_lines(d1, h4)
+
+    def test_two_rejected_touches_make_a_line(self):
+        self.assertEqual(self.lines([103, 103.3, 106], [], {103, 103.3, 106}), [103, 103.3])
+
+    def test_unrejected_touch_does_not_count(self):
+        self.assertEqual(self.lines([103, 103.3], [], {103}), [])
+
+    def test_touches_beyond_tolerance_are_separate(self):
+        self.assertEqual(self.lines([103, 103.5], [], {103, 103.5}), [])
+
+    def test_rejected_pivot_shared_with_d1_is_a_line(self):
+        self.assertEqual(self.lines([103, 106], [106.2], {103, 106}), [106])
+
+    def test_single_minor_swing_is_not_a_line(self):
+        self.assertEqual(self.lines([101.5], [], {101.5}), [])
 
 
 class SplitTargetDecisionTests(unittest.TestCase):
