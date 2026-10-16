@@ -357,8 +357,15 @@ class DecisionPipeline:
         rr = self._rr(entry, stop, target)
         # Exit-only: F keeps judging the single _target above (execution_spec 7-1).
         targets = self._split_targets(d1, h4, entry, direction) if p.split_targets else []
-        f_pass = rr is not None and rr >= p.MinRR
-        criteria["F"] = Criterion("F", f_pass, 14 if f_pass else 0, f"RR={rr}")
+        if p.f_uses_t1:
+            # F = RR to the first take-profit line, never skipping near lines (execution_spec 7-5).
+            t1_rr = self._rr(entry, stop, self._first_target(d1, h4, entry, direction))
+            f_pass = t1_rr is not None and t1_rr >= p.f_min_rr
+            f_evidence = f"RR_T1={t1_rr}, RR_target={rr}"
+        else:
+            f_pass = rr is not None and rr >= p.MinRR
+            f_evidence = f"RR={rr}"
+        criteria["F"] = Criterion("F", f_pass, 14 if f_pass else 0, f_evidence)
 
         rapid = recent_range(h1.bars, h1.index, p.m) >= p.k3 * max(h1.atr, 1e-12)
         line_ahead = (
@@ -656,6 +663,23 @@ class DecisionPipeline:
         def ahead(price: float) -> float:
             return (price - entry) * direction
 
+        levels = self._h4_levels(d1, h4, entry, direction)
+        if not levels:
+            return []
+        beyond = [x for x in self._d1_structures(d1) if ahead(x) - ahead(levels[-1]) > zone]
+        if beyond:
+            levels.append(min(beyond, key=ahead))
+        fraction = 1 / len(levels)
+        return [(level * (1 - direction * p.tp_buffer_pct), fraction) for level in levels]
+
+    def _h4_levels(self, d1: TimeframeState, h4: TimeframeState, entry: float, direction: int) -> list[float]:
+        """T1/T2 candidates: the two nearest merged H4 structures beyond the trigger zone (7-1)."""
+        p = self.params
+        zone = entry * p.tp_zone_pct
+
+        def ahead(price: float) -> float:
+            return (price - entry) * direction
+
         h4_structures = self._h4_lines(d1, h4) + [
             h4.fast_ma, sma(h4.bars, h4.index, p.h4_tp_ma_period),
         ]
@@ -663,17 +687,28 @@ class DecisionPipeline:
         for price in sorted((x for x in h4_structures if ahead(x) > zone), key=ahead):
             if not levels or ahead(price) - ahead(levels[-1]) > zone:
                 levels.append(price)
-        levels = levels[:2]
+        return levels[:2]
+
+    def _d1_structures(self, d1: TimeframeState) -> list[float]:
+        """D1 pivots of the current wave range and the D1 fast SMA (7-4)."""
+        pivots = self._wave_pivots(d1, self.params.d1_direction_ma_period)
+        return [pivot.price for pivot in pivots] + [d1.fast_ma]
+
+    def _first_target(
+        self, d1: TimeframeState, h4: TimeframeState, entry: float, direction: int
+    ) -> float | None:
+        """T1 for F (execution_spec 7-5): the nearest H4 level, else the
+        nearest D1 structure beyond the trigger zone, else None (skip)."""
+        if entry <= 0:
+            return None
+        levels = self._h4_levels(d1, h4, entry, direction)
         if not levels:
-            return []
-        d1_structures = [
-            pivot.price for pivot in self._wave_pivots(d1, p.d1_direction_ma_period)
-        ] + [d1.fast_ma]
-        beyond = [x for x in d1_structures if ahead(x) - ahead(levels[-1]) > zone]
-        if beyond:
-            levels.append(min(beyond, key=ahead))
-        fraction = 1 / len(levels)
-        return [(level * (1 - direction * p.tp_buffer_pct), fraction) for level in levels]
+            zone = entry * self.params.tp_zone_pct
+            beyond = [x for x in self._d1_structures(d1) if (x - entry) * direction > zone]
+            if not beyond:
+                return None
+            levels = [min(beyond, key=lambda x: (x - entry) * direction)]
+        return levels[0] * (1 - direction * self.params.tp_buffer_pct)
 
     @staticmethod
     def _wave_pivots(state: TimeframeState, period: int) -> list[Pivot]:

@@ -74,6 +74,9 @@ class Params:
     order_follow: bool = True
     # Cancel level follows the latest H1 pivot beyond the order (execution_spec 4-3).
     cancel_follow: bool = True
+    # F judges RR to T1 (near lines not skipped); 1.0 = 原典「最低でも1:1以上」 (execution_spec 7-5).
+    f_uses_t1: bool = True
+    f_min_rr: float = 1.0
     h4_tp_ma_period: int = 80
     tp_zone_pct: float = 0.005
     tp_buffer_pct: float = 0.0
