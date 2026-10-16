@@ -254,7 +254,13 @@ class DecisionPipeline:
             d.evidence += ", order_time_state_unavailable"
             result["scored_at"] = h1.bars[h1.index].timestamp
             return result
-        result = self._score_direction(direction, *order_states, vision_bonus, stop_entry=fill)
+        # SL from the pivots confirmed by the bar before the fill (execution_spec 5-1).
+        stop_pivots = (
+            confirmed_pivots(h1.bars, h1.index - 1, self.params.N_h1) if self.params.sl_at_fill else None
+        )
+        result = self._score_direction(
+            direction, *order_states, vision_bonus, stop_entry=fill, stop_pivots=stop_pivots,
+        )
         result["scored_at"] = cutoff
         return result
 
@@ -267,7 +273,7 @@ class DecisionPipeline:
 
     def _score_direction(
         self, direction: int, d1: TimeframeState, h4: TimeframeState, h1: TimeframeState, vision_bonus: float,
-        *, stop_entry=_UNSET,
+        *, stop_entry=_UNSET, stop_pivots: Sequence[Pivot] | None = None,
     ) -> dict:
         p = self.params
         close = h1.bars[h1.index].close
@@ -343,7 +349,10 @@ class DecisionPipeline:
         )
 
         entry = stop_entry.price if stop_entry is not None else close
-        stop = self._stop(h1, entry, direction)
+        stop = (
+            _latest_pivot_beyond(stop_pivots, entry, direction)
+            if stop_pivots is not None else self._stop(h1, entry, direction)
+        )
         target = self._target(d1, h4, entry, direction, b2_pass, stop=stop, min_rr=p.MinRR)
         rr = self._rr(entry, stop, target)
         # Exit-only: F keeps judging the single _target above (execution_spec 7-1).

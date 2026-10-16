@@ -68,6 +68,8 @@ class Params:
     # zone reuses PH-06 (0.5%); buffer 0 = 原典「直下」 (7-4).
     # Off until T1 matches the source (1:1.8-1:3); see 報告_20261016_分割利確の実装.md 4.
     split_targets: bool = False
+    # SL = latest H1 pivot confirmed by the bar before the fill (execution_spec 5-1).
+    sl_at_fill: bool = True
     h4_tp_ma_period: int = 80
     tp_zone_pct: float = 0.005
     tp_buffer_pct: float = 0.0
