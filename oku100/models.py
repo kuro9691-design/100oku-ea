@@ -77,6 +77,8 @@ class Params:
     # F judges RR to T1 (near lines not skipped); 1.0 = 原典「最低でも1:1以上」 (execution_spec 7-5).
     f_uses_t1: bool = True
     f_min_rr: float = 1.0
+    # E requires the H1 wave to start at the H4 MA (execution_spec 7-6).
+    e_wave_from_h4_ma: bool = True
     h4_tp_ma_period: int = 80
     tp_zone_pct: float = 0.005
     tp_buffer_pct: float = 0.0

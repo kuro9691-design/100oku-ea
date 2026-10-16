@@ -219,8 +219,10 @@ class SharedCandidateGateTests(unittest.TestCase):
         h4.pivots = [Pivot(0, BASE, 106, "high")]
         fill = lambda s, d: Pivot(0, BASE, 101, "high") if d == 1 else None
         convergence = {"contracted": True, "near": True, "min_distance_atr": 0.1}
+        # The shape check of E (execution_spec 7-6) is not what this probe tests.
         with patch.object(pipeline, "_stop_entry_fill", side_effect=fill), \
-                patch.object(pipeline, "_h1_convergence", return_value=convergence):
+                patch.object(pipeline, "_h1_convergence", return_value=convergence), \
+                patch.object(pipeline, "_wave_starts_at_h4_ma", return_value=True):
             return pipeline._decide(d1, h4, h1, 0)
 
     def test_gates_are_selectable_and_differ_on_audit_case(self):

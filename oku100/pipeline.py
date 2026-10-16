@@ -339,19 +339,26 @@ class DecisionPipeline:
             ),
         )
 
-        h4_flow_matches = self._higher_timeframe_direction(h4, direction)
-        e_pass = h4_flow_matches and h1.trend == direction and self._nested(h4, h1)
-        criteria["E"] = Criterion(
-            "E",
-            e_pass,
-            10 if e_pass else 0,
-            f"H4_flow={h4_flow_matches}, H4/H1_dow={h4.trend}/{h1.trend}, nested={self._nested(h4, h1)}",
-        )
 
         entry = stop_entry.price if stop_entry is not None else close
         stop = (
             _latest_pivot_beyond(stop_pivots, entry, direction)
             if stop_pivots is not None else self._stop(h1, entry, direction)
+        )
+
+        h4_flow_matches = self._higher_timeframe_direction(h4, direction)
+        e_pass = h4_flow_matches and h1.trend == direction and self._nested(h4, h1)
+        wave_from_ma = self._wave_starts_at_h4_ma(
+            h1, stop_pivots if stop_pivots is not None else h1.pivots, entry, direction,
+        )
+        if p.e_wave_from_h4_ma:
+            e_pass = e_pass and wave_from_ma
+        criteria["E"] = Criterion(
+            "E",
+            e_pass,
+            10 if e_pass else 0,
+            f"H4_flow={h4_flow_matches}, H4/H1_dow={h4.trend}/{h1.trend}, nested={self._nested(h4, h1)}, "
+            f"wave_from_H4_MA={wave_from_ma}",
         )
         target = self._target(d1, h4, entry, direction, b2_pass, stop=stop, min_rr=p.MinRR)
         rr = self._rr(entry, stop, target)
@@ -709,6 +716,26 @@ class DecisionPipeline:
                 return None
             levels = [min(beyond, key=lambda x: (x - entry) * direction)]
         return levels[0] * (1 - direction * self.params.tp_buffer_pct)
+
+    def _wave_starts_at_h4_ma(
+        self, h1: TimeframeState, pivots: Sequence[Pivot], entry: float, direction: int
+    ) -> bool:
+        """3 shape: the SL pivot (start of the H1 wave) sits at the H4 MA, i.e.
+        within k1 x H1 ATR of the H1 slow SMA at that pivot (execution_spec 7-6)."""
+        kind = "low" if direction > 0 else "high"
+        pivot = next(
+            (
+                item for item in reversed(pivots)
+                if item.kind == kind and (item.price - entry) * direction < 0
+            ),
+            None,
+        )
+        if pivot is None:
+            return False
+        p = self.params
+        ma = sma(h1.bars, pivot.index, p.h1_slow_ma_period)
+        band = p.k1 * max(atr(h1.bars, pivot.index, p.atr_period), 1e-12)
+        return abs(pivot.price - ma) <= band
 
     @staticmethod
     def _wave_pivots(state: TimeframeState, period: int) -> list[Pivot]:
