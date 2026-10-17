@@ -1,0 +1,85 @@
+{
+  "scans": {
+    "BTC": {
+      "symbol": "BTC",
+      "m15": true,
+      "period": [
+        "2021-01-31T06:00:00+00:00",
+        "2026-09-13T06:00:00+00:00"
+      ],
+      "strict_total": 6,
+      "strict": {
+        "short": 3,
+        "long": 3
+      },
+      "t1_rr": {
+        "n": 6,
+        "median": 1.5435410709741206,
+        "below_1": 0,
+        "from_1_to_1_8": 4,
+        "from_1_8_to_3": 0,
+        "above_3": 2
+      },
+      "cancel_stats": {
+        "cancelled": 704,
+        "same_bar_resolved": 14,
+        "same_bar_ambiguous": 1,
+        "moved": 495
+      }
+    },
+    "ETH": {
+      "symbol": "ETH",
+      "m15": false,
+      "period": [
+        "2021-01-31T06:00:00+00:00",
+        "2026-07-14T21:00:00+00:00"
+      ],
+      "strict_total": 12,
+      "strict": {
+        "short": 8,
+        "long": 4
+      },
+      "t1_rr": {
+        "n": 12,
+        "median": 1.8832078899558784,
+        "below_1": 0,
+        "from_1_to_1_8": 5,
+        "from_1_8_to_3": 6,
+        "above_3": 1
+      },
+      "cancel_stats": {
+        "cancelled": 604,
+        "same_bar_resolved": 0,
+        "same_bar_ambiguous": 16,
+        "moved": 461
+      }
+    }
+  },
+  "eth_backtests": [
+    {
+      "symbol": "ETH",
+      "split_targets": false,
+      "trades": 12,
+      "reasons": {
+        "stop": 7,
+        "target": 5
+      },
+      "win_rate": 0.4166666666666667,
+      "avg_r": 0.6537291714689889,
+      "total_r": 7.844750057627866
+    },
+    {
+      "symbol": "ETH",
+      "split_targets": true,
+      "trades": 12,
+      "reasons": {
+        "partial_stop": 3,
+        "target": 4,
+        "stop": 5
+      },
+      "win_rate": 0.5,
+      "avg_r": 0.5900033461020369,
+      "total_r": 7.080040153224442
+    }
+  ]
+}

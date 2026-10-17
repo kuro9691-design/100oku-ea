@@ -1,0 +1,232 @@
+[
+  {
+    "date": "2024-06-04",
+    "direction": "買い",
+    "pattern": "4時間足レベルの押し目",
+    "fills": [
+      {
+        "timestamp": "2024-06-03T04:00:00+00:00",
+        "entry": 68460.0,
+        "stop": 67612.48,
+        "strict": false,
+        "failed": [
+          "A",
+          "C",
+          "E",
+          "F",
+          "aligned"
+        ],
+        "E_shape": false,
+        "F": "RR_T1=0.561261091183678, RR_target=1.6844558240513423"
+      },
+      {
+        "timestamp": "2024-06-05T01:00:00+00:00",
+        "entry": 71063.45,
+        "stop": 70092.5,
+        "strict": false,
+        "failed": [
+          "E",
+          "F",
+          "B/B-2"
+        ],
+        "E_shape": false,
+        "F": "RR_T1=0.9429424790154031, RR_target=1.7864359647767787"
+      }
+    ]
+  },
+  {
+    "date": "2024-07-06",
+    "direction": "買い",
+    "pattern": "4時間足レベルの戻り目形成のための上昇（短期）",
+    "fills": []
+  },
+  {
+    "date": "2024-07-24",
+    "direction": "売り",
+    "pattern": "4時間足レベルのトレンド転換後の戻り目",
+    "fills": []
+  },
+  {
+    "date": "2024-07-28",
+    "direction": "買い",
+    "pattern": "4時間足レベルの上昇トレンド転換後の押し目",
+    "fills": [
+      {
+        "timestamp": "2024-07-27T12:00:00+00:00",
+        "entry": 68295.39,
+        "stop": 67630.0,
+        "strict": false,
+        "failed": [
+          "E"
+        ],
+        "E_shape": false,
+        "F": "RR_T1=3.595139692511159, RR_target=1.524699800117232"
+      }
+    ]
+  },
+  {
+    "date": "2024-11-02",
+    "direction": "売り",
+    "pattern": "4時間足レベルの戻り目",
+    "fills": [
+      {
+        "timestamp": "2024-11-03T13:00:00+00:00",
+        "entry": 68200.01,
+        "stop": 68771.58,
+        "strict": false,
+        "failed": [
+          "D",
+          "E",
+          "F"
+        ],
+        "E_shape": false,
+        "F": "RR_T1=0.6368423815105684, RR_target=10.144969370080762"
+      }
+    ]
+  },
+  {
+    "date": "2025-02-23",
+    "direction": "売り",
+    "pattern": "4時間足レベルのトレンド転換後の初戻し",
+    "fills": [
+      {
+        "timestamp": "2025-02-23T10:00:00+00:00",
+        "entry": 96143.99,
+        "stop": 96700.0,
+        "strict": false,
+        "failed": [
+          "A",
+          "E",
+          "aligned"
+        ],
+        "E_shape": false,
+        "F": "RR_T1=1.6665707451305074, RR_target=10.939497619518793"
+      }
+    ]
+  },
+  {
+    "date": "2025-03-09",
+    "direction": "売り",
+    "pattern": "4時間足レベルの戻り売り",
+    "fills": [
+      {
+        "timestamp": "2025-03-08T17:00:00+00:00",
+        "entry": 85762.72,
+        "stop": 86662.0,
+        "strict": false,
+        "failed": [
+          "A",
+          "E",
+          "F",
+          "B/B-2",
+          "aligned"
+        ],
+        "E_shape": false,
+        "F": "RR_T1=0.7918779468018818, RR_target=3.899464015656982"
+      }
+    ]
+  },
+  {
+    "date": "2025-03-28",
+    "direction": "売り",
+    "pattern": "4時間足レベルのトレンド転換後の初戻し",
+    "fills": [
+      {
+        "timestamp": "2025-03-28T06:00:00+00:00",
+        "entry": 85800.0,
+        "stop": 87728.27,
+        "strict": false,
+        "failed": [
+          "C",
+          "E",
+          "F"
+        ],
+        "E_shape": false,
+        "F": "RR_T1=0.25426418499483605, RR_target=1.7341969744900834"
+      },
+      {
+        "timestamp": "2025-03-29T17:00:00+00:00",
+        "entry": 82007.0,
+        "stop": 84624.73,
+        "strict": false,
+        "failed": [
+          "E",
+          "F",
+          "B/B-2"
+        ],
+        "E_shape": false,
+        "F": "RR_T1=0.1936792564550205, RR_target=1.836327657932637"
+      }
+    ]
+  },
+  {
+    "date": "2026-01-13",
+    "direction": "買い",
+    "pattern": "4時間足レベルのトレンド転換後の初押し",
+    "fills": [
+      {
+        "timestamp": "2026-01-13T09:00:00+00:00",
+        "entry": 92332.0,
+        "stop": 91042.66,
+        "strict": false,
+        "failed": [
+          "C"
+        ],
+        "E_shape": true,
+        "F": "RR_T1=1.6383886329439932, RR_target=7.88214379893147"
+      },
+      {
+        "timestamp": "2026-01-13T14:00:00+00:00",
+        "entry": 92672.11,
+        "stop": 91042.66,
+        "strict": true,
+        "failed": [],
+        "E_shape": true,
+        "F": "RR_T1=1.0876860290282027, RR_target=5.945720861114413"
+      }
+    ]
+  },
+  {
+    "date": "2026-01-18",
+    "direction": "売り",
+    "pattern": "4時間足レベルのトレンド転換",
+    "fills": [
+      {
+        "timestamp": "2026-01-18T01:00:00+00:00",
+        "entry": 95021.67,
+        "stop": 95639.45,
+        "strict": false,
+        "failed": [
+          "A",
+          "D",
+          "E",
+          "F",
+          "B/B-2",
+          "aligned"
+        ],
+        "E_shape": false,
+        "F": "RR_T1=0.9343617469001861, RR_target=1.51095859367413"
+      },
+      {
+        "timestamp": "2026-01-18T13:00:00+00:00",
+        "entry": 95021.44,
+        "stop": 95260.0,
+        "strict": false,
+        "failed": [
+          "C",
+          "D",
+          "E",
+          "B/B-2"
+        ],
+        "E_shape": false,
+        "F": "RR_T1=2.418678739101298, RR_target=1.598926894701568"
+      }
+    ]
+  },
+  {
+    "date": "2026-03-04",
+    "direction": "買い",
+    "pattern": "4時間足レベルのトレンド転換後の初押し",
+    "fills": []
+  }
+]

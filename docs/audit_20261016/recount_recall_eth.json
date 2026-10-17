@@ -1,0 +1,234 @@
+{
+  "scans": {
+    "BTC": {
+      "symbol": "BTC",
+      "m15": true,
+      "period": [
+        "2021-01-31T06:00:00+00:00",
+        "2026-09-13T06:00:00+00:00"
+      ],
+      "strict_total": 6,
+      "strict": {
+        "short": 3,
+        "long": 3
+      },
+      "t1_rr": {
+        "n": 6,
+        "median": 1.5435410709741206,
+        "below_1": 0,
+        "from_1_to_1_8": 4,
+        "from_1_8_to_3": 0,
+        "above_3": 2
+      },
+      "candidates": [
+        {
+          "timestamp": "2022-01-17T16:00:00+00:00",
+          "direction": "short",
+          "entry": 42300.0,
+          "stop": 42967.99,
+          "t1_rr": 1.5435410709741206,
+          "targets": 3
+        },
+        {
+          "timestamp": "2022-10-02T07:00:00+00:00",
+          "direction": "short",
+          "entry": 19236.0,
+          "stop": 19400.02,
+          "t1_rr": 1.3656871113278832,
+          "targets": 3
+        },
+        {
+          "timestamp": "2022-12-24T19:00:00+00:00",
+          "direction": "long",
+          "entry": 16859.44,
+          "stop": 16815.09,
+          "t1_rr": 4.320752536640494,
+          "targets": 3
+        },
+        {
+          "timestamp": "2024-06-30T04:00:00+00:00",
+          "direction": "short",
+          "entry": 60839.51,
+          "stop": 61090.0,
+          "t1_rr": 3.0999640704220064,
+          "targets": 3
+        },
+        {
+          "timestamp": "2026-01-13T14:00:00+00:00",
+          "direction": "long",
+          "entry": 92672.11,
+          "stop": 91042.66,
+          "t1_rr": 1.0876860290282027,
+          "targets": 2
+        },
+        {
+          "timestamp": "2026-08-27T15:00:00+00:00",
+          "direction": "long",
+          "entry": 80520.0,
+          "stop": 78600.0,
+          "t1_rr": 1.0204791666666704,
+          "targets": 0
+        }
+      ],
+      "cancel_stats": {
+        "cancelled": 704,
+        "same_bar_resolved": 14,
+        "same_bar_ambiguous": 1,
+        "moved": 495
+      }
+    },
+    "ETH": {
+      "symbol": "ETH",
+      "m15": false,
+      "period": [
+        "2021-01-31T06:00:00+00:00",
+        "2026-07-14T21:00:00+00:00"
+      ],
+      "strict_total": 12,
+      "strict": {
+        "short": 8,
+        "long": 4
+      },
+      "t1_rr": {
+        "n": 12,
+        "median": 1.8832078899558784,
+        "below_1": 0,
+        "from_1_to_1_8": 5,
+        "from_1_8_to_3": 6,
+        "above_3": 1
+      },
+      "candidates": [
+        {
+          "timestamp": "2021-09-28T10:00:00+00:00",
+          "direction": "short",
+          "entry": 2896.21,
+          "stop": 2970.82,
+          "t1_rr": 1.193271679399545,
+          "targets": 3
+        },
+        {
+          "timestamp": "2022-03-24T00:00:00+00:00",
+          "direction": "long",
+          "entry": 3045.2,
+          "stop": 2952.55,
+          "t1_rr": 1.629681597409615,
+          "targets": 0
+        },
+        {
+          "timestamp": "2023-03-08T14:00:00+00:00",
+          "direction": "short",
+          "entry": 1548.0,
+          "stop": 1570.89,
+          "t1_rr": 1.8785495849715952,
+          "targets": 3
+        },
+        {
+          "timestamp": "2023-09-05T02:00:00+00:00",
+          "direction": "short",
+          "entry": 1618.6,
+          "stop": 1635.91,
+          "t1_rr": 2.229924898902341,
+          "targets": 2
+        },
+        {
+          "timestamp": "2024-04-16T16:00:00+00:00",
+          "direction": "short",
+          "entry": 3003.0,
+          "stop": 3128.01,
+          "t1_rr": 2.2852571794256407,
+          "targets": 0
+        },
+        {
+          "timestamp": "2024-05-07T23:00:00+00:00",
+          "direction": "short",
+          "entry": 3027.0,
+          "stop": 3106.0,
+          "t1_rr": 2.048354430379749,
+          "targets": 3
+        },
+        {
+          "timestamp": "2024-07-07T21:00:00+00:00",
+          "direction": "short",
+          "entry": 2955.12,
+          "stop": 3032.18,
+          "t1_rr": 1.8832078899558784,
+          "targets": 1
+        },
+        {
+          "timestamp": "2024-10-20T12:00:00+00:00",
+          "direction": "long",
+          "entry": 2652.03,
+          "stop": 2635.54,
+          "t1_rr": 1.2965433596118465,
+          "targets": 3
+        },
+        {
+          "timestamp": "2025-02-10T01:00:00+00:00",
+          "direction": "short",
+          "entry": 2611.78,
+          "stop": 2666.38,
+          "t1_rr": 8.91520146520148,
+          "targets": 1
+        },
+        {
+          "timestamp": "2025-05-04T06:00:00+00:00",
+          "direction": "long",
+          "entry": 1848.6,
+          "stop": 1828.4,
+          "t1_rr": 1.1089108910891234,
+          "targets": 2
+        },
+        {
+          "timestamp": "2025-11-19T15:00:00+00:00",
+          "direction": "short",
+          "entry": 2992.23,
+          "stop": 3112.55,
+          "t1_rr": 2.964843749999996,
+          "targets": 0
+        },
+        {
+          "timestamp": "2026-01-01T11:00:00+00:00",
+          "direction": "long",
+          "entry": 2988.96,
+          "stop": 2972.99,
+          "t1_rr": 1.304946775203495,
+          "targets": 3
+        }
+      ],
+      "cancel_stats": {
+        "cancelled": 604,
+        "same_bar_resolved": 0,
+        "same_bar_ambiguous": 16,
+        "moved": 461
+      }
+    }
+  },
+  "eth_backtests": [
+    {
+      "symbol": "ETH",
+      "split_targets": false,
+      "trades": 12,
+      "reasons": {
+        "stop": 7,
+        "target": 5
+      },
+      "win_rate": 0.4166666666666667,
+      "avg_r": 0.6537291714689889,
+      "total_r": 7.844750057627866
+    },
+    {
+      "symbol": "ETH",
+      "split_targets": true,
+      "trades": 12,
+      "reasons": {
+        "partial_stop": 3,
+        "target": 4,
+        "stop": 5
+      },
+      "win_rate": 0.5,
+      "avg_r": 0.5900033461020369,
+      "total_r": 7.080040153224442
+    }
+  ],
+  "elapsed_sec": 2041
+}
