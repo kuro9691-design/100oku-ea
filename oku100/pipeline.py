@@ -348,17 +348,18 @@ class DecisionPipeline:
 
         h4_flow_matches = self._higher_timeframe_direction(h4, direction)
         e_pass = h4_flow_matches and h1.trend == direction and self._nested(h4, h1)
-        wave_from_ma = self._wave_starts_at_h4_ma(
-            h1, stop_pivots if stop_pivots is not None else h1.pivots, entry, direction,
-        )
+        wave_pivots_for_e = stop_pivots if stop_pivots is not None else h1.pivots
+        wave_from_ma = self._wave_starts_at_h4_ma(h1, wave_pivots_for_e, entry, direction)
+        wave_from_line = self._wave_starts_at_h4_line(h1, h4, d1, wave_pivots_for_e, entry, direction)
+        wave_from_h4 = wave_from_ma or wave_from_line
         if p.e_wave_from_h4_ma:
-            e_pass = e_pass and wave_from_ma
+            e_pass = e_pass and wave_from_h4
         criteria["E"] = Criterion(
             "E",
             e_pass,
             10 if e_pass else 0,
             f"H4_flow={h4_flow_matches}, H4/H1_dow={h4.trend}/{h1.trend}, nested={self._nested(h4, h1)}, "
-            f"wave_from_H4_MA={wave_from_ma}",
+            f"wave_from_H4_MA={wave_from_ma}, wave_from_H4_line={wave_from_line}",
         )
         target = self._target(d1, h4, entry, direction, b2_pass, stop=stop, min_rr=p.MinRR)
         rr = self._rr(entry, stop, target)
@@ -717,25 +718,52 @@ class DecisionPipeline:
             levels = [min(beyond, key=lambda x: (x - entry) * direction)]
         return levels[0] * (1 - direction * self.params.tp_buffer_pct)
 
-    def _wave_starts_at_h4_ma(
-        self, h1: TimeframeState, pivots: Sequence[Pivot], entry: float, direction: int
-    ) -> bool:
-        """3 shape: the SL pivot (start of the H1 wave) sits at the H4 MA, i.e.
-        within k1 x H1 ATR of the H1 slow SMA at that pivot (execution_spec 7-6)."""
+    @staticmethod
+    def _wave_sl_pivot(pivots: Sequence[Pivot], entry: float, direction: int) -> Pivot | None:
+        """The H1 pivot that starts the current wave, i.e. the SL node (execution_spec 7-6)."""
         kind = "low" if direction > 0 else "high"
-        pivot = next(
+        return next(
             (
                 item for item in reversed(pivots)
                 if item.kind == kind and (item.price - entry) * direction < 0
             ),
             None,
         )
+
+    def _wave_starts_at_h4_ma(
+        self, h1: TimeframeState, pivots: Sequence[Pivot], entry: float, direction: int
+    ) -> bool:
+        """3 shape: the SL pivot (start of the H1 wave) sits at the H4 MA, i.e.
+        within k1 x H1 ATR of the H1 slow SMA at that pivot (execution_spec 7-6)."""
+        pivot = self._wave_sl_pivot(pivots, entry, direction)
         if pivot is None:
             return False
         p = self.params
         ma = sma(h1.bars, pivot.index, p.h1_slow_ma_period)
         band = p.k1 * max(atr(h1.bars, pivot.index, p.atr_period), 1e-12)
         return abs(pivot.price - ma) <= band
+
+    def _wave_starts_at_h4_line(
+        self,
+        h1: TimeframeState,
+        h4: TimeframeState,
+        d1: TimeframeState,
+        pivots: Sequence[Pivot],
+        entry: float,
+        direction: int,
+    ) -> bool:
+        """3 shape (alt support): the SL pivot sits at a 4H line (execution_spec
+        7-6/7-3) instead of the MA. 原典「過去の高値ライン」「レジサポ転換ライン」
+        にしっかりと支えられて。Only lines confirmed by the SL pivot's own
+        confirmation time count (no future lines)."""
+        pivot = self._wave_sl_pivot(pivots, entry, direction)
+        if pivot is None:
+            return False
+        p = self.params
+        band = p.k1 * max(atr(h1.bars, pivot.index, p.atr_period), 1e-12)
+        cutoff = pivot.timestamp + timedelta(hours=p.N_h1)
+        lines = self._h4_lines_as_of(d1, h4, cutoff)
+        return any(abs(pivot.price - price) <= band for price in lines)
 
     @staticmethod
     def _wave_pivots(state: TimeframeState, period: int) -> list[Pivot]:
@@ -758,6 +786,30 @@ class DecisionPipeline:
             if self._pivot_reaction_atr(h4, pivot) >= p.strong_pivot_reaction_atr
         )
         daily = sorted(pivot.price for pivot in self._wave_pivots(d1, p.d1_direction_ma_period))
+
+        def within(prices: list[float], price: float) -> int:
+            return bisect_right(prices, price + tolerance) - bisect_left(prices, price - tolerance)
+
+        return [
+            price for price in strong
+            if within(strong, price) >= p.line_touch_min or within(daily, price) > 0
+        ]
+
+    def _h4_lines_as_of(self, d1: TimeframeState, h4: TimeframeState, cutoff: datetime) -> list[float]:
+        """Same as `_h4_lines` (7-3) but only pivots confirmed strictly before
+        `cutoff` count, so a line cannot be formed by information that did not
+        exist yet (used by the 3-shape line check, execution_spec 7-6)."""
+        p = self.params
+        tolerance = p.k2 * max(h4.atr, 1e-12)
+        strong = sorted(
+            pivot.price for pivot in self._wave_pivots(h4, p.h4_direction_ma_period)
+            if self._pivot_reaction_atr(h4, pivot) >= p.strong_pivot_reaction_atr
+            and pivot.timestamp + timedelta(hours=4 * p.N_h4) <= cutoff
+        )
+        daily = sorted(
+            pivot.price for pivot in self._wave_pivots(d1, p.d1_direction_ma_period)
+            if pivot.timestamp + timedelta(days=p.N_d1) <= cutoff
+        )
 
         def within(prices: list[float], price: float) -> int:
             return bisect_right(prices, price + tolerance) - bisect_left(prices, price - tolerance)
