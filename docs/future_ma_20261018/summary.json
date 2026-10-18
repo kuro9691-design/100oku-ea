@@ -1,0 +1,21 @@
+{
+  "primary": {
+    "positive_below_control_median": 1,
+    "positive_count": 6,
+    "control_median": 0.19149642932500968,
+    "positive_median": 0.6313152125820294,
+    "positive_range": [
+      0.15252611302368954,
+      1.0242314069958094
+    ],
+    "control_range": [
+      0.006413010086421369,
+      1.0747179032177232
+    ],
+    "mann_whitney_u": 71.0,
+    "mann_whitney_p_two_sided_reference": 0.27959226128562514
+  },
+  "seed": 20261018,
+  "horizon": 48,
+  "expansion_is_reference_only": true
+}
