@@ -48,6 +48,20 @@ class WaveFromH4MaTests(unittest.TestCase):
     def test_flag_default_on(self):
         self.assertTrue(Params().e_wave_from_h4_ma)
 
+    def test_horizontal_level_flag_defaults_off(self):
+        self.assertFalse(Params().e_support_includes_level)
+
+    def test_horizontal_level_uses_preregistered_width(self):
+        pivots = [Pivot(150, START, 98.0, "low")]
+        enabled = DecisionPipeline(Params(e_support_includes_level=True))
+        self.assertTrue(enabled._wave_starts_at_h4_level(self.h1, pivots, 103.0, 1, [99.5]))
+        self.assertFalse(enabled._wave_starts_at_h4_level(self.h1, pivots, 103.0, 1, [99.7]))
+
+    def test_horizontal_level_short_mirror(self):
+        pivots = [Pivot(150, START, 102.0, "high")]
+        enabled = DecisionPipeline(Params(e_support_includes_level=True))
+        self.assertTrue(enabled._wave_starts_at_h4_level(self.h1, pivots, 97.0, -1, [100.5]))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -351,14 +351,20 @@ class DecisionPipeline:
         wave_from_ma = self._wave_starts_at_h4_ma(
             h1, stop_pivots if stop_pivots is not None else h1.pivots, entry, direction,
         )
+        wave_from_level = self._wave_starts_at_h4_level(
+            h1, stop_pivots if stop_pivots is not None else h1.pivots, entry, direction,
+            self._h4_lines(d1, h4),
+        )
         if p.e_wave_from_h4_ma:
-            e_pass = e_pass and wave_from_ma
+            support_pass = wave_from_ma or (p.e_support_includes_level and wave_from_level)
+            e_pass = e_pass and support_pass
         criteria["E"] = Criterion(
             "E",
             e_pass,
             10 if e_pass else 0,
             f"H4_flow={h4_flow_matches}, H4/H1_dow={h4.trend}/{h1.trend}, nested={self._nested(h4, h1)}, "
-            f"wave_from_H4_MA={wave_from_ma}",
+            f"wave_from_H4_MA={wave_from_ma}, wave_from_H4_level={wave_from_level}, "
+            f"level_enabled={p.e_support_includes_level}",
         )
         target = self._target(d1, h4, entry, direction, b2_pass, stop=stop, min_rr=p.MinRR)
         rr = self._rr(entry, stop, target)
@@ -736,6 +742,24 @@ class DecisionPipeline:
         ma = sma(h1.bars, pivot.index, p.h1_slow_ma_period)
         band = p.k1 * max(atr(h1.bars, pivot.index, p.atr_period), 1e-12)
         return abs(pivot.price - ma) <= band
+
+    def _wave_starts_at_h4_level(
+        self, h1: TimeframeState, pivots: Sequence[Pivot], entry: float,
+        direction: int, levels: Sequence[float],
+    ) -> bool:
+        """PH-51: SL pivot is within the preregistered H1-ATR width of a 7-3 line."""
+        kind = "low" if direction > 0 else "high"
+        pivot = next(
+            (item for item in reversed(pivots)
+             if item.kind == kind and (item.price - entry) * direction < 0),
+            None,
+        )
+        if pivot is None or not levels:
+            return False
+        width = self.params.e_level_distance_atr * max(
+            atr(h1.bars, pivot.index, self.params.atr_period), 1e-12,
+        )
+        return min(abs(pivot.price - level) for level in levels) <= width
 
     @staticmethod
     def _wave_pivots(state: TimeframeState, period: int) -> list[Pivot]:

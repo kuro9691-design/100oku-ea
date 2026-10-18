@@ -79,6 +79,10 @@ class Params:
     f_min_rr: float = 1.0
     # E requires the H1 wave to start at the H4 MA (execution_spec 7-6).
     e_wave_from_h4_ma: bool = True
+    # PH-51: also accept an existing section 7-3 H4 line near the SL pivot.
+    # Default off preserves the pre-PH-51 definition.
+    e_support_includes_level: bool = False
+    e_level_distance_atr: float = 0.8
     h4_tp_ma_period: int = 80
     tp_zone_pct: float = 0.005
     tp_buffer_pct: float = 0.0
