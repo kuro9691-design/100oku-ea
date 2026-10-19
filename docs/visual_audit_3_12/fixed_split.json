@@ -1,0 +1,181 @@
+{
+  "seed": 20261019,
+  "source_manifest": "docs/visual_audit_20261017/manifest_ground_truth.json",
+  "method": "fixed 14/14 split; each half has 7 positives and 7 controls; exhaustive minimum-imbalance split over symbol, coarse pattern, and their joint counts; seeded tie-break",
+  "training_group": {
+    "source": "docs/audit_20261017/fx_ma_convergence_quotes.json",
+    "count": 30
+  },
+  "development_group": [
+    {
+      "id": "S01",
+      "symbol": "BTC",
+      "kind": "positive",
+      "pattern_stratum": "pullback"
+    },
+    {
+      "id": "S03",
+      "symbol": "BTC",
+      "kind": "positive",
+      "pattern_stratum": "mean_reversion"
+    },
+    {
+      "id": "S05",
+      "symbol": "BTC",
+      "kind": "positive",
+      "pattern_stratum": "all_time_high"
+    },
+    {
+      "id": "S06",
+      "symbol": "ETH",
+      "kind": "positive",
+      "pattern_stratum": "trend_reversal"
+    },
+    {
+      "id": "S08",
+      "symbol": "ETH",
+      "kind": "negative",
+      "pattern_stratum": "control"
+    },
+    {
+      "id": "S09",
+      "symbol": "BTC",
+      "kind": "negative",
+      "pattern_stratum": "control"
+    },
+    {
+      "id": "S13",
+      "symbol": "BTC",
+      "kind": "negative",
+      "pattern_stratum": "control"
+    },
+    {
+      "id": "S14",
+      "symbol": "BTC",
+      "kind": "positive",
+      "pattern_stratum": "pullback"
+    },
+    {
+      "id": "S15",
+      "symbol": "BTC",
+      "kind": "negative",
+      "pattern_stratum": "control"
+    },
+    {
+      "id": "S16",
+      "symbol": "BTC",
+      "kind": "positive",
+      "pattern_stratum": "pullback"
+    },
+    {
+      "id": "S18",
+      "symbol": "BTC",
+      "kind": "negative",
+      "pattern_stratum": "control"
+    },
+    {
+      "id": "S21",
+      "symbol": "BTC",
+      "kind": "positive",
+      "pattern_stratum": "pullback"
+    },
+    {
+      "id": "S25",
+      "symbol": "BTC",
+      "kind": "negative",
+      "pattern_stratum": "control"
+    },
+    {
+      "id": "S26",
+      "symbol": "BTC",
+      "kind": "negative",
+      "pattern_stratum": "control"
+    }
+  ],
+  "final_test_group_sealed": [
+    {
+      "id": "S02",
+      "symbol": "ETH",
+      "kind": "positive",
+      "pattern_stratum": "pullback"
+    },
+    {
+      "id": "S04",
+      "symbol": "BTC",
+      "kind": "negative",
+      "pattern_stratum": "control"
+    },
+    {
+      "id": "S07",
+      "symbol": "BTC",
+      "kind": "positive",
+      "pattern_stratum": "pullback"
+    },
+    {
+      "id": "S10",
+      "symbol": "BTC",
+      "kind": "positive",
+      "pattern_stratum": "pullback"
+    },
+    {
+      "id": "S11",
+      "symbol": "BTC",
+      "kind": "negative",
+      "pattern_stratum": "control"
+    },
+    {
+      "id": "S12",
+      "symbol": "BTC",
+      "kind": "positive",
+      "pattern_stratum": "trend_reversal"
+    },
+    {
+      "id": "S17",
+      "symbol": "BTC",
+      "kind": "positive",
+      "pattern_stratum": "pullback"
+    },
+    {
+      "id": "S19",
+      "symbol": "BTC",
+      "kind": "negative",
+      "pattern_stratum": "control"
+    },
+    {
+      "id": "S20",
+      "symbol": "ETH",
+      "kind": "negative",
+      "pattern_stratum": "control"
+    },
+    {
+      "id": "S22",
+      "symbol": "ETH",
+      "kind": "negative",
+      "pattern_stratum": "control"
+    },
+    {
+      "id": "S23",
+      "symbol": "BTC",
+      "kind": "negative",
+      "pattern_stratum": "control"
+    },
+    {
+      "id": "S24",
+      "symbol": "ETH",
+      "kind": "positive",
+      "pattern_stratum": "trend_reversal"
+    },
+    {
+      "id": "S27",
+      "symbol": "BTC",
+      "kind": "positive",
+      "pattern_stratum": "pullback"
+    },
+    {
+      "id": "S28",
+      "symbol": "BTC",
+      "kind": "negative",
+      "pattern_stratum": "control"
+    }
+  ]
+}
