@@ -10,6 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "run_queue.ps1"
+SELECTOR_PROMPT = ROOT / "scripts" / "queue_select_prompt.md"
 POWERSHELL = shutil.which("pwsh") or shutil.which("powershell")
 
 
@@ -111,6 +112,25 @@ class RunQueueThrottleTests(unittest.TestCase):
         log = self.run_queue([{"status": "error", "error": "test failure"}])
         self.assertIn("selector status/error: error test failure", log)
         self.assertEqual(self.empty_file.read_text(encoding="utf-8").strip(), "")
+
+    def test_low_reasoning_is_added_only_for_selector(self):
+        source = SCRIPT.read_text(encoding="utf-8")
+        setting = 'model_reasoning_effort="low"'
+        self.assertEqual(source.count(setting), 1)
+        self.assertIn(
+            "if ($Kind -eq 'selector') { $arguments += @('-c', "
+            f"'{setting}') }}",
+            source,
+        )
+        self.assertIn("Invoke-Codex $prompt 'worker'", source)
+
+    def test_current_location_is_fetched_only_for_item(self):
+        prompt = SELECTOR_PROMPT.read_text(encoding="utf-8")
+        step6 = next(line for line in prompt.splitlines() if line.startswith("6. "))
+        self.assertIn("status=`item`", step6)
+        self.assertIn("status=`empty`・`error`", step6)
+        self.assertIn("現在地をfetchせず", step6)
+        self.assertIn("current_tail10・decision_logは空文字", step6)
 
 
 if __name__ == "__main__":

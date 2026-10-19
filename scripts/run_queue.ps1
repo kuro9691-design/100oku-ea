@@ -107,6 +107,7 @@ function Invoke-Codex([string]$PromptText, [string]$Kind, [string]$OutputSchema 
     # prompt. Passing a mapped G: drive to Codex's Windows sandbox causes
     # `setup refresh had errors`, so the worker only receives the share folder.
     $arguments = @('exec', '--ephemeral', '--approve-for-me', '-C', $Root, '--add-dir', $Share, '-o', $lastMessage)
+    if ($Kind -eq 'selector') { $arguments += @('-c', 'model_reasoning_effort="low"') }
     if ($OutputSchema) { $arguments += @('--output-schema', $OutputSchema) }
     $arguments += '-'
     Push-Location $Root
