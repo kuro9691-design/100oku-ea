@@ -1,0 +1,335 @@
+{
+  "role": "blind_evaluator",
+  "round": 0,
+  "ai": "Codex",
+  "model": "GPT-5",
+  "checklist_version_note": "five screens W1→D1→H4→H1→M15",
+  "answers": [
+    {
+      "id": "S01",
+      "direction": "買い",
+      "pattern": "4時間足レベルのトレンド転換",
+      "support": [
+        {"kind": "higher_timeframe_ma", "timeframe": "H4", "structure": "上向きに転じたH4 MA80と、その下のH4 MA600"},
+        {"kind": "horizontal", "timeframe": "H4", "structure": "直近の押し安値帯"}
+      ],
+      "resistance": [
+        {"kind": "horizontal", "timeframe": "W1", "structure": "直近週足高値帯"}
+      ],
+      "trigger": {"timeframe": "H1", "structure": "押し後の直近高値更新とH1 MA20上での再加速"},
+      "invalidation": "H4の直近押し安値割れ",
+      "t1": "W1の直近高値帯",
+      "observations": {
+        "W1": "長期上昇後の押しから反発し、価格は上向きMA20付近を回復、MA80は下方で上向き。",
+        "D1": "MA100・MA400が上向く大局上昇の中で、MA20が再び上向きとなり価格はMA100より上。",
+        "H4": "底打ち後に安値切上げと高値更新を重ね、MA80・MA120・MA600を上抜いて上昇構造へ転換。",
+        "H1": "急落後のV字回復からMA20・MA80を上抜き、右端で高値更新を継続。",
+        "M15": "MA20がMA80上で上向き、押しを挟みながら右端まで高値・安値を切り上げ。"
+      },
+      "final_reason": "H4の安値切上げ・高値更新による転換をH1の再上昇が確認し、H4の押し安値と上向きMAが支える。週足高値をT1とし、H4押し安値割れで無効化する買い。"
+    },
+    {
+      "id": "S03",
+      "direction": "売り",
+      "pattern": "4時間足レベルの押し目・戻り目",
+      "support": [
+        {"kind": "higher_timeframe_ma", "timeframe": "H4", "structure": "下向きH4 MA20・MA80・MA120が上値を抑える"}
+      ],
+      "resistance": [
+        {"kind": "horizontal", "timeframe": "H4", "structure": "直近急落後の安値帯"}
+      ],
+      "trigger": {"timeframe": "H1", "structure": "小反発後の保ち合い下限・直近安値割れ"},
+      "invalidation": "H1の直近戻り高値およびH1 MA80の明確な上抜け",
+      "t1": "H4の直近安値帯",
+      "observations": {
+        "W1": "大局は上昇後の高値圏だが右端はMA20へ向かう下落局面で、MA80は下方。",
+        "D1": "高値切下げからMA20・MA100を下回り、右端で下落が加速している。",
+        "H4": "MA20・MA80・MA120が下向きに並び、戻りを挟んで安値更新する下降トレンド。",
+        "H1": "価格は下向きMA80の下で推移し、急落後の小反発もMA20近辺に留まる。",
+        "M15": "MA320・MA80の下で横ばい気味に戻すが、右端は保ち合い下限付近。"
+      },
+      "final_reason": "D1・H4の下降と下向きH4 MA群の抑えが揃い、H1の戻り後安値割れを売りトリガーとする。H1戻り高値超えで無効、先のH4安値をT1とする。"
+    },
+    {
+      "id": "S05",
+      "direction": "見送り",
+      "pattern": "4時間足レベルの押し目・戻り目",
+      "support": [
+        {"kind": "higher_timeframe_ma", "timeframe": "H4", "structure": "上向きH4 MA80・MA120付近"},
+        {"kind": "higher_timeframe_ma", "timeframe": "H1", "structure": "上向きH1 MA480付近"}
+      ],
+      "resistance": [
+        {"kind": "higher_timeframe_ma", "timeframe": "H1", "structure": "下向きH1 MA20・MA80"},
+        {"kind": "horizontal", "timeframe": "H4", "structure": "直近H4高値帯"}
+      ],
+      "trigger": null,
+      "invalidation": "判定不能",
+      "t1": "判定不能",
+      "observations": {
+        "W1": "MA20・MA80上の高値圏で横ばいが続き、右端はレンジ上部から反落。",
+        "D1": "上向きMA100・MA400の上で安値切上げを保つが、右端は直近高値から押している。",
+        "H4": "上昇トレンド内でMA80・MA120付近まで戻しており、押し目候補ではある。",
+        "H1": "MA20・MA80が下向きで安値更新が続き、右端はMA480付近で止まるだけで上昇転換未確定。",
+        "M15": "下向きMA80の下で安値圏の保ち合いとなり、明確な高値更新トリガーはない。"
+      },
+      "final_reason": "上位足は買いの押し目候補だが、H1・M15は下降のままで反転トリガーを確認できない。支え候補と下向きMAの抵抗が競合するため見送る。"
+    },
+    {
+      "id": "S06",
+      "direction": "売り",
+      "pattern": "4時間足レベルの押し目・戻り目",
+      "support": [
+        {"kind": "higher_timeframe_ma", "timeframe": "H4", "structure": "下向きH4 MA20・MA80・MA120が上値を抑える"},
+        {"kind": "horizontal", "timeframe": "H1", "structure": "直近保ち合い上限"}
+      ],
+      "resistance": [
+        {"kind": "higher_timeframe_ma", "timeframe": "H4", "structure": "上向きH4 MA600が下方に控える"},
+        {"kind": "horizontal", "timeframe": "H4", "structure": "直近安値帯"}
+      ],
+      "trigger": {"timeframe": "H1", "structure": "MA20・MA80下の保ち合い下限割れ"},
+      "invalidation": "H1保ち合い上限とH1 MA80の上抜け",
+      "t1": "H4の直近安値帯",
+      "observations": {
+        "W1": "大局は上向きだが右端は高値圏から押しており、MA20からの乖離を縮める局面。",
+        "D1": "長期上昇の中でMA20を下抜く調整となり、MA100はまだ上向き。",
+        "H4": "長い持合いを下放れ、MA20・MA80・MA120が下向きで価格を上から抑える。",
+        "H1": "下降後の戻りがMA80付近で止まり、右端はMA20・MA80の下で横ばいから弱含み。",
+        "M15": "MA320下でMA20・MA80が下向き、右端は安値を切り下げる。"
+      },
+      "final_reason": "H4の下放れ後、H1の戻りが下向きMA群に抑えられており、保ち合い下限割れを売りトリガーとする。下方のH4 MA600と直近安値をT1側の抵抗として扱う。"
+    },
+    {
+      "id": "S08",
+      "direction": "売り",
+      "pattern": "4時間足レベルの押し目・戻り目",
+      "support": [
+        {"kind": "higher_timeframe_ma", "timeframe": "H4", "structure": "下向きH4 MA20・MA80・MA120の戻り売り帯"}
+      ],
+      "resistance": [
+        {"kind": "horizontal", "timeframe": "H4", "structure": "直近H4安値帯"}
+      ],
+      "trigger": {"timeframe": "M15", "structure": "小戻り後の直近安値割れ"},
+      "invalidation": "H1の直近戻り高値とH1 MA80の上抜け",
+      "t1": "H4の直近安値帯更新",
+      "observations": {
+        "W1": "上昇後の高値切下げ局面で、価格はMA20・MA80付近まで下落。",
+        "D1": "MA20・MA100・MA400を下回り、安値・高値とも切り下げる下降構造。",
+        "H4": "急落後もMA20・MA80・MA120下で戻りが止まり、右端で安値を再更新。",
+        "H1": "下向きMA20・MA80の下で戻り高値を切り下げ、右端は安値圏。",
+        "M15": "MA80下の小戻りから右端で再び下向きとなり、直近安値を試す。"
+      },
+      "final_reason": "D1からM15まで下降方向が揃い、H4の下向きMA群が戻りを抑える。M15安値割れを売りトリガー、H1戻り高値超えを無効化、H4安値更新をT1とする。"
+    },
+    {
+      "id": "S09",
+      "direction": "見送り",
+      "pattern": "4時間足レベルのトレンド転換",
+      "support": [
+        {"kind": "higher_timeframe_ma", "timeframe": "H4", "structure": "下向きへ転じたH4 MA20と上値のH4 MA80・MA120"}
+      ],
+      "resistance": [
+        {"kind": "higher_timeframe_ma", "timeframe": "D1", "structure": "上向きD1 MA100が下方に控える"},
+        {"kind": "horizontal", "timeframe": "H1", "structure": "直近急落安値帯"}
+      ],
+      "trigger": null,
+      "invalidation": "判定不能",
+      "t1": "判定不能",
+      "observations": {
+        "W1": "価格は過去表示範囲の最高値圏へ急伸し、MA20・MA80から大きく上方へ乖離。",
+        "D1": "強い上昇トレンド中の急な押しで、価格はなお上向きMA100より上。",
+        "H4": "高値から急落してMA20・MA80・MA120を下回り、短期は下降へ転じた。",
+        "H1": "下向きMA20・MA80の下で持合い後に安値を割る一方、上向きD1の文脈と衝突。",
+        "M15": "MA320・MA80下で下落優勢だが、右端は急落後で戻りもなく伸び切り気味。"
+      },
+      "final_reason": "H4以下は売り転換を示すが、W1・D1の強い上昇とD1 MA100の支えが対立し、急落後で適切な戻りトリガーもないため見送る。"
+    },
+    {
+      "id": "S13",
+      "direction": "買い",
+      "pattern": "4時間足レベルの押し目・戻り目",
+      "support": [
+        {"kind": "higher_timeframe_ma", "timeframe": "H4", "structure": "上向きH4 MA80付近"},
+        {"kind": "horizontal", "timeframe": "H4", "structure": "直近の押し安値帯"}
+      ],
+      "resistance": [
+        {"kind": "horizontal", "timeframe": "H4", "structure": "直近H4高値帯"}
+      ],
+      "trigger": {"timeframe": "H1", "structure": "安値切上げ後のH1 MA80および直近戻り高値上抜け"},
+      "invalidation": "H4の直近押し安値割れ",
+      "t1": "H4の直近高値帯",
+      "observations": {
+        "W1": "MA20・MA80上の強い上昇で、右端は表示範囲高値を更新する局面。",
+        "D1": "MA20・MA100・MA400が上向きに並び、価格は高値圏で上昇構造を維持。",
+        "H4": "強い上昇後にMA80付近まで押し、安値を切り上げながらMA20方向へ反発。",
+        "H1": "底打ち後に安値を切り上げ、MA20が上向いてMA80を上抜ける局面。",
+        "M15": "上昇波の後にMA80・MA320付近まで押し、右端で反発している。"
+      },
+      "final_reason": "W1・D1・H4の上昇に沿うH4 MA80付近の押しで、H1の安値切上げと戻り高値上抜けを確認した買い。H4押し安値割れで無効、直近H4高値をT1とする。"
+    },
+    {
+      "id": "S14",
+      "direction": "売り",
+      "pattern": "4時間足レベルの押し目・戻り目",
+      "support": [
+        {"kind": "higher_timeframe_ma", "timeframe": "H4", "structure": "横ばいから下向きのH4 MA120と上方のMA600"},
+        {"kind": "horizontal", "timeframe": "H1", "structure": "直近持合い下限のレジサポ転換候補"}
+      ],
+      "resistance": [
+        {"kind": "horizontal", "timeframe": "H4", "structure": "直近H4安値帯"}
+      ],
+      "trigger": {"timeframe": "H1", "structure": "持合い下限と直近安値の明確な下抜け"},
+      "invalidation": "H1の直近持合い高値上抜け",
+      "t1": "H4の直近安値帯",
+      "observations": {
+        "W1": "長期上昇後の高値圏からMA20を割って下落し、右端はMA20下。",
+        "D1": "高値切下げ・安値切下げでMA20・MA100下にあり、下方のMA400まで距離がある。",
+        "H4": "大幅下落後の戻りはMA600より下で、右端はMA群近辺の持合い。",
+        "H1": "高値切下げの横ばいから右端で下限を大きく割り、MA20・MA80も下向き。",
+        "M15": "MA20・MA80・MA320の下で急落し、右端まで安値更新が続く。"
+      },
+      "final_reason": "D1の下降に沿い、H4戻り後のH1持合い下抜けが売りトリガーとなる。持合い高値超えで無効、直近H4安値を最初の構造的到達先とする。"
+    },
+    {
+      "id": "S15",
+      "direction": "見送り",
+      "pattern": "判定不能",
+      "support": [
+        {"kind": "higher_timeframe_ma", "timeframe": "H4", "structure": "上向きH4 MA120付近"},
+        {"kind": "higher_timeframe_ma", "timeframe": "H1", "structure": "上向きH1 MA480付近"}
+      ],
+      "resistance": [
+        {"kind": "higher_timeframe_ma", "timeframe": "D1", "structure": "下向きD1 MA400"},
+        {"kind": "higher_timeframe_ma", "timeframe": "H1", "structure": "下向きH1 MA20・MA80"}
+      ],
+      "trigger": null,
+      "invalidation": "判定不能",
+      "t1": "判定不能",
+      "observations": {
+        "W1": "長い下降後の安値圏でMA20が横ばいからわずかに上向くが、価格は下向きMA80より下。",
+        "D1": "底固め後にMA20・MA100を上抜いているが、下向きMA400が大きな上値抵抗。",
+        "H4": "急上昇後の高値圏でMA20・MA80・MA120が収束し、右端はMA120付近を割り込む。",
+        "H1": "直近戻り高値から下落し、MA20・MA80・MA480を試すが方向がまだ揃わない。",
+        "M15": "下向きMA20・MA80の下で急落後に反発するが、高値更新トリガーは未確認。"
+      },
+      "final_reason": "D1の反転上昇とW1・D1 MA400の下降文脈が衝突し、H4も収束、H1・M15は下降中で明確な買い戻しトリガーがないため型を確定せず見送る。"
+    },
+    {
+      "id": "S16",
+      "direction": "買い",
+      "pattern": "4時間足レベルのトレンド転換",
+      "support": [
+        {"kind": "horizontal", "timeframe": "H4", "structure": "長期底値持合い上限の上抜け水準"},
+        {"kind": "higher_timeframe_ma", "timeframe": "H1", "structure": "上向きへ転じたH1 MA20と下方のMA80・MA480"}
+      ],
+      "resistance": [
+        {"kind": "higher_timeframe_ma", "timeframe": "H4", "structure": "下降中のH4 MA600"},
+        {"kind": "horizontal", "timeframe": "D1", "structure": "直近D1戻り高値帯"}
+      ],
+      "trigger": {"timeframe": "H4", "structure": "底値持合い高値とH4 MA20・MA80・MA120の上抜け"},
+      "invalidation": "H4底値持合い上限の再割れ、または直近H4安値割れ",
+      "t1": "下降中のH4 MA600",
+      "observations": {
+        "W1": "高値圏からMA20・MA80を割る大幅下落で、週足大局は下降。",
+        "D1": "MA20・MA100・MA400が下向きに並び、安値圏で小反発している段階。",
+        "H4": "長い下降後の底値持合いから右端でMA20・MA80・MA120を大陽線で上抜く。",
+        "H1": "MA20・MA80・MA480を越えて高値更新する強い上昇第1波。",
+        "M15": "上向きMA20・MA80上で高値・安値を切り上げ、右端まで上昇が継続。"
+      },
+      "final_reason": "D1下降には逆行するが、H4底値持合いとMA群の上抜けで転換第1波が確認できる。持合いへの再侵入で無効、上方のH4 MA600をT1とする買い。"
+    },
+    {
+      "id": "S18",
+      "direction": "見送り",
+      "pattern": "4時間足レベルの押し目・戻り目",
+      "support": [
+        {"kind": "higher_timeframe_ma", "timeframe": "H4", "structure": "上向きH4 MA80と下方のMA120"},
+        {"kind": "higher_timeframe_ma", "timeframe": "H1", "structure": "上向きH1 MA480付近"}
+      ],
+      "resistance": [
+        {"kind": "higher_timeframe_ma", "timeframe": "H1", "structure": "下向きH1 MA20・MA80"},
+        {"kind": "horizontal", "timeframe": "H4", "structure": "直近H4高値帯"}
+      ],
+      "trigger": null,
+      "invalidation": "判定不能",
+      "t1": "判定不能",
+      "observations": {
+        "W1": "MA20・MA80上で表示範囲高値を更新する強い上昇局面。",
+        "D1": "MA20・MA100・MA400が上向きで高値圏を維持し、大局は上昇。",
+        "H4": "上昇後にMA80付近まで押しているが、右端はMA20下で反発確定前。",
+        "H1": "MA20・MA80下で高値を切り下げながら下落し、MA480へ接近。",
+        "M15": "MA20・MA80・MA320の下で安値更新が続き、反転形は未形成。"
+      },
+      "final_reason": "上位足は買いの押し目候補でH4 MA80・H1 MA480が支え候補だが、H1・M15の下降が継続し買いトリガーがないため見送る。"
+    },
+    {
+      "id": "S21",
+      "direction": "買い",
+      "pattern": "4時間足レベルの押し目・戻り目",
+      "support": [
+        {"kind": "higher_timeframe_ma", "timeframe": "H4", "structure": "上向きH4 MA80と下方のMA600"},
+        {"kind": "horizontal", "timeframe": "H1", "structure": "直近反発安値帯"}
+      ],
+      "resistance": [
+        {"kind": "horizontal", "timeframe": "H4", "structure": "直近H4高値帯"}
+      ],
+      "trigger": {"timeframe": "M15", "structure": "底固め後のMA80上抜けと直近戻り高値更新"},
+      "invalidation": "H1の直近反発安値割れ",
+      "t1": "H4の直近高値帯",
+      "observations": {
+        "W1": "大局上昇の高値圏でMA20付近へ押した後に反発し、MA80は下方で上向き。",
+        "D1": "MA100・MA400が上向く中、MA20を回復して高値方向へ戻している。",
+        "H4": "底打ち後に上昇し、MA600上抜け後の押しから再反発する上昇構造。",
+        "H1": "調整下落が一巡して安値を切り上げ、右端でMA20方向へ反発。",
+        "M15": "安値圏の底固め後にMA20が上向き、MA80を越えて高値を切り上げる。"
+      },
+      "final_reason": "D1・H4上昇の押しに対し、M15の底固めと戻り高値更新が買いトリガーとなる。H1反発安値割れで無効、直近H4高値をT1とする。"
+    },
+    {
+      "id": "S25",
+      "direction": "買い",
+      "pattern": "4時間足レベルの押し目・戻り目",
+      "support": [
+        {"kind": "higher_timeframe_ma", "timeframe": "H4", "structure": "上向きH4 MA120付近"},
+        {"kind": "horizontal", "timeframe": "H1", "structure": "急落後の二度の安値帯"}
+      ],
+      "resistance": [
+        {"kind": "higher_timeframe_ma", "timeframe": "H1", "structure": "下向きH1 MA80と上方のMA480"},
+        {"kind": "horizontal", "timeframe": "H4", "structure": "直近H4高値帯"}
+      ],
+      "trigger": {"timeframe": "M15", "structure": "安値切上げ後のMA80と直近戻り高値上抜け"},
+      "invalidation": "H1の急落後安値帯の下抜け",
+      "t1": "H1 MA480とその周辺の直近戻り高値帯",
+      "observations": {
+        "W1": "MA20・MA80上で高値更新する強い上昇局面。",
+        "D1": "MA20・MA100・MA400が上向きに並び、高値圏で上昇構造を保つ。",
+        "H4": "長期上昇の中でMA群付近まで急押しし、右端はMA120近辺から反発。",
+        "H1": "MA480を割る急落後に二番底気味となり、MA20が上向き始めている。",
+        "M15": "急落後の安値圏で安値を切り上げ、MA20がMA80を上抜いて右端で戻り高値を試す。"
+      },
+      "final_reason": "W1・D1上昇に沿うH4 MA120付近の押しで、M15の安値切上げと戻り高値上抜けを買いトリガーとする。H1安値割れで無効、H1 MA480をT1とする。"
+    },
+    {
+      "id": "S26",
+      "direction": "買い",
+      "pattern": "史上最高値",
+      "support": [
+        {"kind": "higher_timeframe_ma", "timeframe": "D1", "structure": "強く上向くD1 MA100"},
+        {"kind": "horizontal", "timeframe": "H1", "structure": "直近押し安値とH1 MA80付近"}
+      ],
+      "resistance": [
+        {"kind": "horizontal", "timeframe": "W1", "structure": "表示範囲の史上最高値帯"}
+      ],
+      "trigger": {"timeframe": "H1", "structure": "安値切上げ後のH1 MA480と直近戻り高値上抜け"},
+      "invalidation": "H1の直近押し安値割れ",
+      "t1": "W1の史上最高値帯",
+      "observations": {
+        "W1": "長期の持合いを上放れて放物線的に上昇し、表示範囲の史上最高値圏。",
+        "D1": "MA20・MA100・MA400が上向きに並ぶ強い上昇で、右端は高値からMA20付近へ押す。",
+        "H4": "上昇トレンド中の深い押しから反発し、MA20を回復してMA80・MA120を試す。",
+        "H1": "底打ち後に安値・高値を切り上げ、右端でMA480を上抜く強い上昇。",
+        "M15": "MA20・MA80・MA320上で上昇し、押し後に再度高値更新している。"
+      },
+      "final_reason": "史上最高値圏の強い上位足上昇に対し、H1の安値切上げとMA480・戻り高値上抜けが買いトリガー。直近H1安値割れで無効、史上最高値帯をT1とする。"
+    }
+  ]
+}
