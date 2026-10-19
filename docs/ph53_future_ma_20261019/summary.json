@@ -1,0 +1,32 @@
+{
+  "primary": {
+    "positive_above_control_median": 1,
+    "positive_count": 6,
+    "control_median": 0.0
+  },
+  "seed": 20261018,
+  "fixed_commits": {
+    "controls": "d1f4cd9",
+    "ph53_preregistration": "2eae77a"
+  },
+  "case_counts": {
+    "positive": 6,
+    "control": 18
+  },
+  "path_status_counts": {
+    "valid": 40,
+    "missing_trigger": 0,
+    "missing_t1": 2,
+    "invalid_order": 0
+  },
+  "measurement_validity": {
+    "max_formula_abs_error": 2.9103830456733704e-11,
+    "q_positive_direction_paths": 3,
+    "q_positive_without_crossing": 3,
+    "q_positive_with_crossing": 0,
+    "distinct_positive_q_rounded_12dp": 3,
+    "valid_paths_with_distinct_event_prices": 40,
+    "valid_paths_with_nonconstant_outgoing_closes": 40
+  },
+  "ph52_reference_only": true
+}
