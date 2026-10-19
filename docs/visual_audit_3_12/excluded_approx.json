@@ -1,0 +1,15 @@
+{
+  "rule": "Exclude only samples whose projected ts_source is approx; do not inspect images or ground-truth fields.",
+  "reason": "判断時点が原典から確定できない",
+  "development_group": [
+    {"id": "S03", "group": "development_group", "reason": "判断時点が原典から確定できない"},
+    {"id": "S06", "group": "development_group", "reason": "判断時点が原典から確定できない"},
+    {"id": "S16", "group": "development_group", "reason": "判断時点が原典から確定できない"},
+    {"id": "S21", "group": "development_group", "reason": "判断時点が原典から確定できない"}
+  ],
+  "final_test_group_sealed": [
+    {"id": "S02", "group": "final_test_group_sealed", "reason": "判断時点が原典から確定できない"},
+    {"id": "S24", "group": "final_test_group_sealed", "reason": "判断時点が原典から確定できない"}
+  ],
+  "counts": {"development_group": 4, "final_test_group_sealed": 2}
+}
