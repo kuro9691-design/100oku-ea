@@ -1,0 +1,17 @@
+{
+  "_sealed_notice": "最終テストの判定と回答のコミットが済むまで誰も開かない",
+  "meta": {
+    "fixed_range": "題名の取引日の前日00:00から翌日24:00まで（JST）。結果を見た範囲拡張なし",
+    "data": "data/ext_20261019/{btcusdt,ethusdt}/{h1,m15}.csv",
+    "rule": "原典で実際の入口を示す足の開始時刻。2候補以上、該当なし、事後画像のみは未特定"
+  },
+  "samples": [
+    {"id": "S02", "source": "ETH 2025.12.9 原典本文・画像", "search_range_jst": "2025-12-08 00:00 ～ 2025-12-11 00:00", "matched_bars": ["ETH H1 2025-12-09 15:00 UTC"], "candidate_count": 1, "judgment_ts": "2025-12-09T15:00:00+00:00", "outside_chart_evidence": "なし"},
+    {"id": "S07", "source": "BTC 2025.3.9 原典本文・画像", "search_range_jst": "2025-03-08 00:00 ～ 2025-03-11 00:00", "matched_bars": [], "candidate_count": 0, "judgment_ts": null, "unidentified_reason": "事後キャプチャのみ", "outside_chart_evidence": "実際の約定足を一意にする時刻情報なし"},
+    {"id": "S10", "source": "reference/entry_buy/BTCUSD_2024-06-04.png と価格データ", "search_range_jst": "2024-06-03 00:00 ～ 2024-06-06 00:00", "matched_bars": ["BTC H1 2024-06-04 13:00 UTC"], "candidate_count": 1, "judgment_ts": "2024-06-04T13:00:00+00:00", "outside_chart_evidence": "本文のローカル保存なし。原典保存画像の矢印と足形を照合"},
+    {"id": "S12", "source": "BTC 2026.1.18 原典本文・画像", "search_range_jst": "2026-01-17 00:00 ～ 2026-01-20 00:00", "matched_bars": ["BTC H1 2026-01-18 01:00 UTC"], "candidate_count": 1, "judgment_ts": "2026-01-18T01:00:00+00:00", "outside_chart_evidence": "なし"},
+    {"id": "S17", "source": "BTC 2026.1.13 原典本文・画像", "search_range_jst": "2026-01-12 00:00 ～ 2026-01-15 00:00", "matched_bars": ["BTC H1 2026-01-13 05:00 UTC"], "candidate_count": 1, "judgment_ts": "2026-01-13T05:00:00+00:00", "outside_chart_evidence": "なし"},
+    {"id": "S24", "source": "ETH 2025.11.9 原典本文・画像", "search_range_jst": "2025-11-08 00:00 ～ 2025-11-11 00:00", "matched_bars": ["ETH H1 2025-11-09 15:00 UTC"], "candidate_count": 1, "judgment_ts": "2025-11-09T15:00:00+00:00", "outside_chart_evidence": "ネックライン通過後に見て成行という原典記述を反映"},
+    {"id": "S27", "source": "BTC 2025.2.23 原典本文・画像", "search_range_jst": "2025-02-22 00:00 ～ 2025-02-25 00:00", "matched_bars": [], "candidate_count": 0, "judgment_ts": null, "unidentified_reason": "事後キャプチャのみ", "outside_chart_evidence": "実際の約定足を一意にする時刻情報なし"}
+  ]
+}

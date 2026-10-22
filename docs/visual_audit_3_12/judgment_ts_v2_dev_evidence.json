@@ -1,0 +1,81 @@
+{
+  "_notice": "監査役の確認用。評価担当・訓練担当は開かない",
+  "meta": {
+    "fixed_range": "題名の取引日の前日00:00から翌日24:00まで（JST）。結果を見た範囲拡張なし",
+    "data": "data/ext_20261019/{btcusdt,ethusdt}/{h1,m15}.csv",
+    "rule": "原典で実際の入口を示す足の開始時刻。2候補以上、該当なし、事後画像のみは未特定"
+  },
+  "samples": [
+    {
+      "id": "S01",
+      "source": "docs/codex_examples/●BTCUSD/btc_20240728.html と同 _files のエントリー図",
+      "source_statement": "1時間足の直近高値超えに買い注文",
+      "search_range_jst": "2024-07-27 00:00 ～ 2024-07-30 00:00",
+      "matched_bars": ["BTC H1 2024-07-29 02:00 UTC"],
+      "candidate_count": 1,
+      "judgment_ts": "2024-07-29T02:00:00+00:00",
+      "outside_chart_evidence": "なし"
+    },
+    {
+      "id": "S03",
+      "source": "docs/codex_examples/●BTCUSD/btc_20240706.html と bandicam-2024-07-15-01-43-22-661.png / 01-45-14-537.png",
+      "source_statement": "1時間足の安値切り上げ内、15分足の戻り高値超えに買い注文",
+      "search_range_jst": "2024-07-05 00:00 ～ 2024-07-08 00:00",
+      "matched_bars": ["BTC M15 2024-07-06 16:15 UTC"],
+      "candidate_count": 1,
+      "judgment_ts": "2024-07-06T16:15:00+00:00",
+      "outside_chart_evidence": "なし"
+    },
+    {
+      "id": "S05",
+      "source": "docs/codex_examples/●BTCUSD/btc_20241102.html と同 _files",
+      "source_statement": "原典掲載図はいずれも実際のエントリー後で、少し遅れて入ったとの記述のみ",
+      "search_range_jst": "2024-11-01 00:00 ～ 2024-11-04 00:00",
+      "matched_bars": [],
+      "candidate_count": 0,
+      "judgment_ts": null,
+      "unidentified_reason": "事後キャプチャのみ",
+      "outside_chart_evidence": "実際の約定足を一意にする時刻情報なし"
+    },
+    {
+      "id": "S06",
+      "source": "docs/codex_examples/ETHUSD/【リアルトレード解説】ETH_USD（2025.9.28）4時間足レベルのトレンド転換を獲りにいったトレード _ 100億円トレーダーになるまで.html と同 _files",
+      "source_statement": "本来待つ形より早い段階で実際に買った位置を原典図が表示",
+      "search_range_jst": "2025-09-27 00:00 ～ 2025-09-30 00:00",
+      "matched_bars": ["ETH H1 2025-09-28 13:00 UTC"],
+      "candidate_count": 1,
+      "judgment_ts": "2025-09-28T13:00:00+00:00",
+      "outside_chart_evidence": "なし"
+    },
+    {
+      "id": "S14",
+      "source": "docs/codex_examples/●BTCUSD/btc_20250328.html と同 _files",
+      "source_statement": "1時間足の直近安値抜けに売り注文",
+      "search_range_jst": "2025-03-27 00:00 ～ 2025-03-30 00:00",
+      "matched_bars": ["BTC H1 2025-03-28 04:00 UTC"],
+      "candidate_count": 1,
+      "judgment_ts": "2025-03-28T04:00:00+00:00",
+      "outside_chart_evidence": "なし"
+    },
+    {
+      "id": "S16",
+      "source": "docs/codex_examples/●BTCUSD/btc_20260304.html と同 _files",
+      "source_statement": "当初注文は取消し、その後4時間足MAの支えを確認して実際に成行買い",
+      "search_range_jst": "2026-03-03 00:00 ～ 2026-03-06 00:00",
+      "matched_bars": ["BTC H1 2026-03-04 05:00 UTC"],
+      "candidate_count": 1,
+      "judgment_ts": "2026-03-04T05:00:00+00:00",
+      "outside_chart_evidence": "取消済みの最初の注文は採用せず"
+    },
+    {
+      "id": "S21",
+      "source": "docs/codex_examples/●BTCUSD/btc_20240724.html と bandicam-2024-08-01-14-09-25-278.png / 14-10-32-659.png / 14-12-16-605.png",
+      "source_statement": "チャートを見られなかったため、安値更新後の一時上昇中に実際は成行売り",
+      "search_range_jst": "2024-07-23 00:00 ～ 2024-07-26 00:00",
+      "matched_bars": ["BTC H1 2024-07-25 06:00 UTC"],
+      "candidate_count": 1,
+      "judgment_ts": "2024-07-25T06:00:00+00:00",
+      "outside_chart_evidence": "なし"
+    }
+  ]
+}

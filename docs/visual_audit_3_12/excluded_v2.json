@@ -1,0 +1,7 @@
+{
+  "samples": [
+    {"id": "S05", "group": "development", "reason": "事後キャプチャのみ"},
+    {"id": "S07", "group": "final_test_sealed", "reason": "事後キャプチャのみ"},
+    {"id": "S27", "group": "final_test_sealed", "reason": "事後キャプチャのみ"}
+  ]
+}
