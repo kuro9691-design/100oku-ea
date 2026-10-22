@@ -1,7 +1,7 @@
 # visual-audit loop 3-12 training evidence v1
 
 - 作成: 2026-10-20
-- 担当AI / モデル: Codex / GPT-5
+- 担当AI / モデル: Codex / gpt-5.6-sol / medium
 - 正本: Drive `監査役_原典台帳/ledger_eurusd_*.json`・`ledger_usdjpy_*.json` のFX30件。`auditor_notes` と欄が食い違う場合は欄を採用した。
 - 対象外: BTC台帳、評価群・最終テスト群、manifest、fixed split、Sxx画像、採点結果。
 - 旧 `training_evidence.md` は残し、本ファイルで置き換える。
