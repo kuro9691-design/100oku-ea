@@ -1,9 +1,7 @@
 {
-  "meta": {
-    "purpose": "development positives corrected to the original entry-decision instant",
-    "method": "fixed title-date range; original article text and images matched to ext_20261019 H1/M15 bars; no range widening",
-    "generated_at": "2026-10-22",
-    "model": "Codex / gpt-5.6-sol",
+  "_meta": {
+    "agent": "Codex",
+    "model": "gpt-5.6-sol",
     "reasoning_effort": "medium"
   },
   "samples": [

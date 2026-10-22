@@ -1,18 +1,17 @@
 {
   "_sealed_notice": "最終テストの画像を描くスクリプトだけが読む。人もAIも中身を表示しない",
-  "meta": {
-    "purpose": "sealed final-test positive judgment times",
-    "generated_at": "2026-10-22",
-    "model": "Codex / gpt-5.6-sol",
+  "_meta": {
+    "agent": "Codex",
+    "model": "gpt-5.6-sol",
     "reasoning_effort": "medium"
   },
   "samples": [
-    {"id": "S02", "judgment_ts": "2025-12-09T15:00:00+00:00", "identified": true, "ts_source": "v2"},
-    {"id": "S07", "judgment_ts": null, "identified": false, "ts_source": "v2"},
-    {"id": "S10", "judgment_ts": "2024-06-04T13:00:00+00:00", "identified": true, "ts_source": "v2"},
-    {"id": "S12", "judgment_ts": "2026-01-18T01:00:00+00:00", "identified": true, "ts_source": "v2"},
-    {"id": "S17", "judgment_ts": "2026-01-13T05:00:00+00:00", "identified": true, "ts_source": "v2"},
-    {"id": "S24", "judgment_ts": "2025-11-09T15:00:00+00:00", "identified": true, "ts_source": "v2"},
-    {"id": "S27", "judgment_ts": null, "identified": false, "ts_source": "v2"}
+    {"id": "S02", "judgment_ts": "2025-12-09T15:00:00+00:00", "identified": true},
+    {"id": "S07", "judgment_ts": null, "identified": false},
+    {"id": "S10", "judgment_ts": "2024-06-04T13:00:00+00:00", "identified": true},
+    {"id": "S12", "judgment_ts": "2026-01-18T01:00:00+00:00", "identified": true},
+    {"id": "S17", "judgment_ts": "2026-01-13T05:00:00+00:00", "identified": true},
+    {"id": "S24", "judgment_ts": "2025-11-09T15:00:00+00:00", "identified": true},
+    {"id": "S27", "judgment_ts": null, "identified": false}
   ]
 }
