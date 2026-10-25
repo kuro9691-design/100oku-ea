@@ -52,6 +52,10 @@ class RunQueueThrottleTests(unittest.TestCase):
             str(self.base),
             "-TestNow",
             self.NOW.isoformat(),
+            "-TestOutputs",
+            "0|QUEUE_ITEM_COMPLETE",
+            "-MaxItems",
+            "1",
         ]
         for selection in encoded:
             command.extend(["-TestSelections", selection])
@@ -118,11 +122,56 @@ class RunQueueThrottleTests(unittest.TestCase):
         setting = 'model_reasoning_effort="low"'
         self.assertEqual(source.count(setting), 1)
         self.assertIn(
-            "if ($Kind -eq 'selector') { $arguments += @('-c', "
-            f"'{setting}') }}",
+            f"if ($Kind -eq 'selector') {{ '-c'; '{setting}' }}",
             source,
         )
         self.assertIn("Invoke-Codex $prompt 'worker'", source)
+
+    def test_locked_cycle_models_in_dry_run(self):
+        cases = [
+            ("3fd72941-354b-813e-a9ee-e2e511e7b1e9", "【3-11の後】Codex目視判断の改善ループ", True),
+            ("3fd72941354b813ea9eee2e511e7b1e9", "renamed", True),
+            ("test-page", "周回3-12 第2周", True),
+            ("test-page", "通常の指示", False),
+        ]
+        for page_id, title, locked in cases:
+            with self.subTest(page_id=page_id, title=title):
+                log = self.run_queue([{
+                    "status": "item", "page_id": page_id,
+                    "page_url": "https://example.invalid/test", "title": title,
+                    "body": "synthetic fixture", "current_tail10": "", "decision_log": "",
+                }])
+                expected = "gpt-5.6-sol" if locked else "gpt-6.1-sol"
+                self.assertIn(f"item model={expected} arguments=--model {expected}", log)
+                if locked:
+                    self.assertIn('model_reasoning_effort="medium"', log)
+                else:
+                    self.assertNotIn('model_reasoning_effort="medium"', log)
+                self.assertIn("requested cap of 1 item(s) reached", log)
+
+    def test_audit_selector_excludes_title_and_main_page(self):
+        prompt = (ROOT / "scripts" / "audit_select_prompt.md").read_text(encoding="utf-8")
+        exclusion = next(line for line in prompt.splitlines() if line.startswith("2. "))
+        self.assertIn("周回3-12", exclusion)
+        self.assertIn("または page ID", exclusion)
+        self.assertIn("3fd72941-354b-813e-a9ee-e2e511e7b1e9", exclusion)
+        self.assertIn("絶対に選ばない", exclusion)
+
+    @unittest.skipUnless(shutil.which("powershell.exe"), "Windows PowerShell is required")
+    def test_scheduled_scripts_parse_in_windows_powershell(self):
+        for name in ("run_queue.ps1", "audit_queue.ps1"):
+            with self.subTest(script=name):
+                path = str(ROOT / "scripts" / name).replace("'", "''")
+                command = (
+                    "$t=$null; $e=$null; "
+                    f"[System.Management.Automation.Language.Parser]::ParseFile('{path}',[ref]$t,[ref]$e) > $null; "
+                    "$e | Out-String | Write-Output; if($e.Count){exit 1}"
+                )
+                result = subprocess.run(
+                    [shutil.which("powershell.exe"), "-NoProfile", "-Command", command],
+                    capture_output=True, text=True, errors="replace",
+                )
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_current_location_is_fetched_only_for_item(self):
         prompt = SELECTOR_PROMPT.read_text(encoding="utf-8")

@@ -1,4 +1,4 @@
-# Codex continuous queue runner. PowerShell obtains one selected Notion item from a
+﻿# Codex continuous queue runner. PowerShell obtains one selected Notion item from a
 # small selector session, then gives only that item to one fresh worker session.
 param(
     [switch]$DryRun,
@@ -22,6 +22,9 @@ $QueueEmptyFile = Join-Path $LogDir 'queue_empty_at.txt'
 $SelectorPromptFile = Join-Path $PSScriptRoot 'queue_select_prompt.md'
 $WorkerPromptFile = Join-Path $PSScriptRoot 'queue_prompt.md'
 $SchemaFile = Join-Path $PSScriptRoot 'queue_selection_schema.json'
+$SelectorModel = 'gpt-6.1-sol'
+$WorkerModel = 'gpt-6.1-sol'
+$LockedCycleModel = 'gpt-5.6-sol'
 if ($DryRun -and $TestHarnessRoot) {
     $Share = Join-Path $TestHarnessRoot 'share'
     $DriveRoot = Join-Path $TestHarnessRoot 'drive'
@@ -99,7 +102,15 @@ function Write-Log([string]$Text) {
     Set-Content -LiteralPath $Heartbeat -Value $line -Encoding UTF8
 }
 
-function Invoke-Codex([string]$PromptText, [string]$Kind, [string]$OutputSchema = '') {
+function Get-ModelArguments([string]$Kind, [string]$Model) {
+    if ($Model) { '--model'; $Model }
+    if ($Kind -eq 'selector') { '-c'; 'model_reasoning_effort="low"' }
+    if ($Kind -eq 'worker' -and $Model -eq $LockedCycleModel) {
+        '-c'; 'model_reasoning_effort="medium"'
+    }
+}
+
+function Invoke-Codex([string]$PromptText, [string]$Kind, [string]$OutputSchema = '', [string]$Model = '') {
     $OutputEncoding = New-Object System.Text.UTF8Encoding($false)
     [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false)
     $lastMessage = Join-Path $LogDir ("queue_{0}_{1}_{2}.txt" -f $Kind, $PID, (Get-Date -Format 'HHmmssfff'))
@@ -107,7 +118,7 @@ function Invoke-Codex([string]$PromptText, [string]$Kind, [string]$OutputSchema 
     # prompt. Passing a mapped G: drive to Codex's Windows sandbox causes
     # `setup refresh had errors`, so the worker only receives the share folder.
     $arguments = @('exec', '--ephemeral', '--approve-for-me', '-C', $Root, '--add-dir', $Share, '-o', $lastMessage)
-    if ($Kind -eq 'selector') { $arguments += @('-c', 'model_reasoning_effort="low"') }
+    $arguments += @(Get-ModelArguments $Kind $Model)
     if ($OutputSchema) { $arguments += @('--output-schema', $OutputSchema) }
     $arguments += '-'
     Push-Location $Root
@@ -123,7 +134,7 @@ function Invoke-Codex([string]$PromptText, [string]$Kind, [string]$OutputSchema 
     $final = if (Test-Path -LiteralPath $lastMessage) {
         Get-Content -Raw -Encoding UTF8 -LiteralPath $lastMessage
     } else { $output -join "`n" }
-    Write-Log "$Kind codex exit code $code"
+    Write-Log "$Kind model=$Model codex exit code $code"
     return @{ Code = $code; Text = $final; Output = ($output -join "`n") }
 }
 
@@ -145,7 +156,7 @@ function Get-QueueSelection([int]$Index) {
     if ($PageId) {
         $selectorPrompt += "`n`nテスト対象の指定: page ID $PageId のみを取得し、他の項目を選ばない。"
     }
-    $result = Invoke-Codex $selectorPrompt 'selector' $SchemaFile
+    $result = Invoke-Codex $selectorPrompt 'selector' $SchemaFile $SelectorModel
     if ($result.Code -ne 0) {
         if (Is-UsageLimit ($result.Text + "`n" + $result.Output)) {
             Write-Log 'selector usage limit: ending this launch'
@@ -206,6 +217,13 @@ $($Selection.decision_log)
 "@
 }
 
+function Get-WorkerModel($Selection) {
+    # Rule 10 preserves the existing 3-12 evaluation-model lock until the cycle ends.
+    if ($Selection.title -match '周回3-12' -or
+        ($Selection.page_id -replace '-', '') -eq '3fd72941354b813ea9eee2e511e7b1e9') { return $LockedCycleModel }
+    return $WorkerModel
+}
+
 try {
     $LockStream = [System.IO.File]::Open($Lock, 'OpenOrCreate', 'ReadWrite', 'None')
 } catch {
@@ -250,13 +268,15 @@ try {
         }
         Write-Log "item run $run page=$($selection.page_id) title=$($selection.title)"
         $prompt = Build-WorkerPrompt $selection $driveContext
+        $model = Get-WorkerModel $selection
+        Write-Log "item model=$model arguments=$(@(Get-ModelArguments 'worker' $model) -join ' ')"
         if ($DryRun) {
             Write-Log "dry run: worker prompt chars=$($prompt.Length)"
             if ($run -gt $TestOutputs.Count) { Write-Log 'dry run: no worker output'; break }
             $parts = $TestOutputs[$run - 1] -split '\|', 2
             $result = @{ Code = [int]$parts[0]; Text = $parts[1]; Output = $parts[1] }
         } else {
-            $result = Invoke-Codex $prompt 'worker'
+            $result = Invoke-Codex $prompt 'worker' '' $model
         }
         if ($result.Code -ne 0) {
             if (Is-UsageLimit ($result.Text + "`n" + $result.Output)) {
