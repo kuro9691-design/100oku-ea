@@ -1,0 +1,18 @@
+{
+  "_sealed_notice": "最終テスト群。A/B機械照合以外では開かない。報告にID別結果を書かない。",
+  "_meta": {
+    "role": "時刻特定役B",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "medium",
+    "timezone": "UTC"
+  },
+  "samples": [
+    {"id": "S02", "identified": true,  "judgment_ts": "2025-12-09T12:00:00Z", "timeframe": "h1", "ts_source": "v3_B"},
+    {"id": "S07", "identified": true,  "judgment_ts": "2025-03-09T08:00:00Z", "timeframe": "h1", "ts_source": "v3_B"},
+    {"id": "S10", "identified": false, "judgment_ts": null,                   "timeframe": "h1", "ts_source": "v3_B"},
+    {"id": "S12", "identified": true,  "judgment_ts": "2026-01-18T14:00:00Z", "timeframe": "h1", "ts_source": "v3_B"},
+    {"id": "S17", "identified": true,  "judgment_ts": "2026-01-13T14:00:00Z", "timeframe": "h1", "ts_source": "v3_B"},
+    {"id": "S24", "identified": true,  "judgment_ts": "2025-11-09T12:00:00Z", "timeframe": "h1", "ts_source": "v3_B"},
+    {"id": "S27", "identified": true,  "judgment_ts": "2025-02-23T12:00:00Z", "timeframe": "h1", "ts_source": "v3_B"}
+  ]
+}

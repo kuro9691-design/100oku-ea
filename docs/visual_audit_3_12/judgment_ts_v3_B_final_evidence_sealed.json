@@ -1,0 +1,18 @@
+{
+  "_sealed_notice": "最終テスト群の証拠。A/B機械照合以外では開かない。画像化しない。報告にID別結果・時刻・形を書かない。",
+  "_meta": {
+    "role": "時刻特定役B",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "medium",
+    "search_window": "記事日付の前日00:00から翌日24:00まで（JST、拡張なし）"
+  },
+  "samples": [
+    {"id":"S02","article_date":"2025-12-09","timeframe":"h1","identified":true,"judgment_ts":"2025-12-09T12:00:00Z","candidate_count":1,"a":"H1トリプルボトムのネックライン上抜け","b":"直前確定足はH1 MA20付近で、原典図の右端の収束位置と整合","c":"矢印足の高値がネックラインを上回る"},
+    {"id":"S07","article_date":"2025-03-09","timeframe":"h1","identified":true,"judgment_ts":"2025-03-09T08:00:00Z","candidate_count":1,"a":"ダブルトップのネックライン割れ前の早入り成行売り","b":"直前確定足は下降するH1 MA20下側で、原典図右端の2回目の戻り後","c":"矢印足はネックライン本割れの1本前に下向きへ動く"},
+    {"id":"S10","article_date":"2024-06-04","timeframe":"h1","identified":false,"judgment_ts":null,"candidate_count":0,"a":"本文ではダブルボトムのネックライン前の早入り","b":"保存済み本文に時刻はなく、対応する原典エントリー図がローカルにない","c":"矢印足を価格データへ一意に対応できない","reason":"原典図欠落のため図との照合不能"},
+    {"id":"S12","article_date":"2026-01-18","timeframe":"h1","identified":true,"judgment_ts":"2026-01-18T14:00:00Z","candidate_count":1,"a":"ダブルトップ右側の小さな高値切り下げ後、直近安値下抜け","b":"直前確定足はH1 MA20下側で、原典図の右端持ち合いと整合","c":"矢印足の安値が緑線で示された直近安値を下回る"},
+    {"id":"S17","article_date":"2026-01-13","timeframe":"h1","identified":true,"judgment_ts":"2026-01-13T14:00:00Z","candidate_count":1,"a":"H1安値切り上げ後の直近高値上抜け","b":"直前確定足はH1 MA20付近で、原典図の右端の押しと整合","c":"矢印足の高値が局所戻り高値を上回る"},
+    {"id":"S24","article_date":"2025-11-09","timeframe":"h1","identified":true,"judgment_ts":"2025-11-09T12:00:00Z","candidate_count":1,"a":"H1ダブルボトムのネックライン上抜け","b":"直前確定足はH1 MA20上側で、原典図の右端持ち合いと整合","c":"矢印足の高値がネックラインを上回る"},
+    {"id":"S27","article_date":"2025-02-23","timeframe":"h1","identified":true,"judgment_ts":"2025-02-23T12:00:00Z","candidate_count":1,"a":"本来の安値更新を見逃した後、遅れて成行売り","b":"直前確定足は下降するH1 MA20下側で、原典図の遅れた矢印直前と整合","c":"矢印足の安値が遅れた時点の直近安値を大きく下回る"}
+  ]
+}

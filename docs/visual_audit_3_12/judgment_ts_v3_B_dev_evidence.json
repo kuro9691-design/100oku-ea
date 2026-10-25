@@ -1,0 +1,67 @@
+{
+  "_meta": {
+    "role": "時刻特定役B",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "medium",
+    "independent_of_A": true,
+    "visual_check": "原典図と、候補時刻で未来足を切ったH1/M15比較図を照合"
+  },
+  "samples": [
+    {
+      "id": "S01", "article_date": "2024-07-28", "timeframe": "h1", "identified": true,
+      "judgment_ts": "2024-07-29T02:00:00Z", "candidate_count": 1,
+      "a": "H1の安値切り上げ後、直近戻り高値を上抜く足",
+      "b": "直前確定足はH1 MA20付近で支えられた位置。図との判別に矛盾なし",
+      "c": "矢印足の高値が直近戻り高値を上回る",
+      "comparison": "H1/M15とも原典図の押しとブレイク直前の並びに一致"
+    },
+    {
+      "id": "S03", "article_date": "2024-07-06", "timeframe": "m15", "identified": true,
+      "judgment_ts": "2024-07-06T16:15:00Z", "candidate_count": 1,
+      "a": "H1安値切り上げの中でM15の戻り高値を上抜く足",
+      "b": "直前確定足はM15 MA20付近から反発する位置で、原典図と整合",
+      "c": "矢印足の高値がM15戻り高値を上回る",
+      "comparison": "原典図の二段の押し、LC、右端の上抜け直前の並びに一致"
+    },
+    {
+      "id": "S05", "article_date": "2024-11-02", "timeframe": "h1", "identified": false,
+      "judgment_ts": null, "candidate_count": 0,
+      "a": "原典の矢印はダブルトップのネックライン抜けを示す",
+      "b": "事後図のみで、実際は矢印より少し遅れて入ったとの本文注記がある",
+      "c": "実約定足を示す別矢印または時刻情報がない",
+      "reason": "事後キャプチャのみで実際の遅れた約定足を一意に特定できない"
+    },
+    {
+      "id": "S06", "article_date": "2025-09-28", "timeframe": "h1", "identified": true,
+      "judgment_ts": "2025-09-28T16:00:00Z", "candidate_count": 1,
+      "a": "H1安値切り上げ後の直近高値上抜け",
+      "b": "直前確定足はH1 MA20上側で、原典図の位置関係と整合",
+      "c": "矢印足の高値が局所高値を上回る",
+      "comparison": "01:00 JST候補は一致し、07:00 JST候補は上昇が進み過ぎて図と不一致"
+    },
+    {
+      "id": "S14", "article_date": "2025-03-28", "timeframe": "h1", "identified": true,
+      "judgment_ts": "2025-03-28T04:00:00Z", "candidate_count": 1,
+      "a": "H1高値切り下げ後、直近安値を下抜く足",
+      "b": "直前確定足は下降するH1 MA20下側で、原典図と整合",
+      "c": "矢印足の安値が直近安値を下回る",
+      "comparison": "H1のダブルトップ右側とM15の下抜け直前の形が一致"
+    },
+    {
+      "id": "S16", "article_date": "2026-03-04", "timeframe": "h1", "identified": true,
+      "judgment_ts": "2026-03-04T07:00:00Z", "candidate_count": 1,
+      "a": "取消後の成行買いのため、注文対象の水平ブレイクはなし（成行）",
+      "b": "直前確定足はH1 MA20近辺まで戻し、原典図の持ち合い終端と整合",
+      "c": "矢印足が持ち合い上端側へ伸びる",
+      "comparison": "H1/M15とも原典図の4H MA反発後の持ち合い終端に一致"
+    },
+    {
+      "id": "S21", "article_date": "2024-07-24", "timeframe": "h1", "identified": true,
+      "judgment_ts": "2024-07-25T14:00:00Z", "candidate_count": 1,
+      "a": "押し安値割れを見逃した後の一時上昇での成行売り（水平ブレイクなし）",
+      "b": "直前確定足は下降するH1 MA20の下側で、本文の『一時的な上昇』直前",
+      "c": "矢印足は一時上昇となる大陽線で、原典の成行売り説明と一致",
+      "comparison": "固定範囲内で本文の深夜・一時上昇・翌朝急落を同時に満たす足は1本"
+    }
+  ]
+}
