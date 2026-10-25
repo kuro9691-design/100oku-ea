@@ -1,0 +1,33 @@
+{
+  "_meta": {
+    "method": "A/Bのidentified・judgment_ts・timeframeを機械的に完全一致照合",
+    "created_at": "2026-10-25"
+  },
+  "development": [
+    {
+      "id": "S01",
+      "reason": "timestamp_or_timeframe_disagreement"
+    },
+    {
+      "id": "S03",
+      "reason": "timestamp_or_timeframe_disagreement"
+    },
+    {
+      "id": "S05",
+      "reason": "both_unidentified"
+    },
+    {
+      "id": "S06",
+      "reason": "timestamp_or_timeframe_disagreement"
+    },
+    {
+      "id": "S21",
+      "reason": "timestamp_or_timeframe_disagreement"
+    }
+  ],
+  "final_test_group": {
+    "label": "最終テスト群",
+    "excluded_count": 4,
+    "details": "judgment_ts_v3_final_ts_sealed.json"
+  }
+}

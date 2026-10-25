@@ -1,0 +1,120 @@
+{
+  "_sealed_notice": "最終テスト群のA/B照合証拠。判定後まで開かない。",
+  "_meta": {
+    "method": "A/Bのidentified・judgment_ts・timeframeを機械的に完全一致照合",
+    "created_at": "2026-10-25"
+  },
+  "samples": [
+    {
+      "id": "S17",
+      "agreement": true,
+      "A": {
+        "id": "S17",
+        "identified": true,
+        "timeframe": "h1",
+        "judgment_ts": "2026-01-13T14:00:00+00:00",
+        "search_range_jst": "2026-01-12T00:00:00+09:00/2026-01-15T00:00:00+09:00",
+        "source_chart": "reference/材料/BTCUSD（2026.1.13）.png",
+        "a": "直前谷91787.61付近、直前山92672.11付近。高値線を上抜く足。",
+        "b": "1本前終値92076.12はH1 MA20=91707.11より上。",
+        "c": "矢印足高値92915.12は直前山92672.11より上。",
+        "candidates_jst": [
+          "2026-01-13T23:00:00+09:00"
+        ],
+        "outside_chart_evidence": null,
+        "verification": "価格データと原典図を数値・文字で照合。比較画像は作成していない。"
+      },
+      "B": {
+        "id": "S17",
+        "article_date": "2026-01-13",
+        "timeframe": "h1",
+        "identified": true,
+        "judgment_ts": "2026-01-13T14:00:00Z",
+        "candidate_count": 1,
+        "a": "H1安値切り上げ後の直近高値上抜け",
+        "b": "直前確定足はH1 MA20付近で、原典図の右端の押しと整合",
+        "c": "矢印足の高値が局所戻り高値を上回る"
+      }
+    },
+    {
+      "id": "S24",
+      "agreement": true,
+      "A": {
+        "id": "S24",
+        "identified": true,
+        "timeframe": "h1",
+        "judgment_ts": "2025-11-09T12:00:00+00:00",
+        "search_range_jst": "2025-11-08T00:00:00+09:00/2025-11-11T00:00:00+09:00",
+        "source_chart": "codex_examples/ETHUSD/2025.11.9_14-1.png",
+        "a": "直前谷3382.35付近、直前山3435.13付近。高値線を上抜く足。",
+        "b": "1本前終値3428.37はH1 MA20=3398.24より上。",
+        "c": "矢印足高値3464.26は直前山3435.13より上。",
+        "candidates_jst": [
+          "2025-11-09T21:00:00+09:00"
+        ],
+        "outside_chart_evidence": null,
+        "verification": "価格データと原典図を数値・文字で照合。比較画像は作成していない。"
+      },
+      "B": {
+        "id": "S24",
+        "article_date": "2025-11-09",
+        "timeframe": "h1",
+        "identified": true,
+        "judgment_ts": "2025-11-09T12:00:00Z",
+        "candidate_count": 1,
+        "a": "H1ダブルボトムのネックライン上抜け",
+        "b": "直前確定足はH1 MA20上側で、原典図の右端持ち合いと整合",
+        "c": "矢印足の高値がネックラインを上回る"
+      }
+    },
+    {
+      "id": "S27",
+      "agreement": true,
+      "A": {
+        "id": "S27",
+        "identified": true,
+        "timeframe": "h1",
+        "judgment_ts": "2025-02-23T12:00:00+00:00",
+        "search_range_jst": "2025-02-22T00:00:00+09:00/2025-02-25T00:00:00+09:00",
+        "source_chart": "reference/材料/2月23売り.png",
+        "a": "なし（成行）。直前山96508.86付近、直前谷96083.33付近の後の足。",
+        "b": "1本前終値96115.99はH1 MA20=96449.60より下。",
+        "c": "矢印足安値95657.05は直前谷96083.33より下。",
+        "candidates_jst": [
+          "2025-02-23T21:00:00+09:00"
+        ],
+        "outside_chart_evidence": "初回の転換を見逃した後の成行。切る時点は実際のS矢印足開始。",
+        "verification": "価格データと原典図を数値・文字で照合。比較画像は作成していない。"
+      },
+      "B": {
+        "id": "S27",
+        "article_date": "2025-02-23",
+        "timeframe": "h1",
+        "identified": true,
+        "judgment_ts": "2025-02-23T12:00:00Z",
+        "candidate_count": 1,
+        "a": "本来の安値更新を見逃した後、遅れて成行売り",
+        "b": "直前確定足は下降するH1 MA20下側で、原典図の遅れた矢印直前と整合",
+        "c": "矢印足の安値が遅れた時点の直近安値を大きく下回る"
+      }
+    }
+  ],
+  "excluded": [
+    {
+      "id": "S02",
+      "reason": "timestamp_or_timeframe_disagreement"
+    },
+    {
+      "id": "S07",
+      "reason": "timestamp_or_timeframe_disagreement"
+    },
+    {
+      "id": "S10",
+      "reason": "identification_disagreement"
+    },
+    {
+      "id": "S12",
+      "reason": "timestamp_or_timeframe_disagreement"
+    }
+  ]
+}
