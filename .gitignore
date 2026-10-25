@@ -7,3 +7,11 @@ __pycache__/
 # プロジェクト外(E:ドライブ)に保管する(2026-07-27、docs/archive_manifest_*.md参照)。
 data/realtrade_cache/
 docs/codex_examples/
+
+# MT4デモ口座からの書き出し生データ・変換済みFXデータ(周回2-2、2026-10-17追加)。
+# 定義変更を伴わないデータなので、変換スクリプトとは別にgit管理下には置かない。
+# 中にはスクリプト動作確認用のスクラッチファイルも含まれる(削除せず残置、MANABU判断待ち)。
+data_local/
+
+# 周回3-12の原典比較画像（原典図を含むためgit管理外）。
+docs/visual_audit_3_12/compare_v3_*/
