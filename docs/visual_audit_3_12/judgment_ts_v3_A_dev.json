@@ -1,0 +1,17 @@
+{
+  "_meta": {
+    "role": "time_identifier_A",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "medium",
+    "created_at": "2026-10-25"
+  },
+  "samples": [
+    {"id": "S01", "judgment_ts": "2024-07-28T18:00:00+00:00", "identified": true, "ts_source": "v3_A", "timeframe": "h1"},
+    {"id": "S03", "judgment_ts": "2024-07-06T13:45:00+00:00", "identified": true, "ts_source": "v3_A", "timeframe": "m15"},
+    {"id": "S05", "judgment_ts": null, "identified": false, "ts_source": "v3_A", "timeframe": "h1"},
+    {"id": "S06", "judgment_ts": "2025-09-28T22:00:00+00:00", "identified": true, "ts_source": "v3_A", "timeframe": "h1"},
+    {"id": "S14", "judgment_ts": "2025-03-28T04:00:00+00:00", "identified": true, "ts_source": "v3_A", "timeframe": "h1"},
+    {"id": "S16", "judgment_ts": "2026-03-04T07:00:00+00:00", "identified": true, "ts_source": "v3_A", "timeframe": "h1"},
+    {"id": "S21", "judgment_ts": "2024-07-24T18:00:00+00:00", "identified": true, "ts_source": "v3_A", "timeframe": "h1"}
+  ]
+}

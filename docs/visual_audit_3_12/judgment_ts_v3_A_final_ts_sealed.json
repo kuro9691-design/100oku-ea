@@ -1,0 +1,18 @@
+{
+  "_sealed_notice": "最終テストの画像を描くスクリプトだけが読む。人もAIも中身を表示しない",
+  "_meta": {
+    "role": "time_identifier_A",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "medium",
+    "created_at": "2026-10-25"
+  },
+  "samples": [
+    {"id": "S02", "judgment_ts": "2025-12-09T15:00:00+00:00", "identified": true, "timeframe": "h1"},
+    {"id": "S07", "judgment_ts": "2025-03-09T09:00:00+00:00", "identified": true, "timeframe": "h1"},
+    {"id": "S10", "judgment_ts": "2024-06-04T13:00:00+00:00", "identified": true, "timeframe": "h1"},
+    {"id": "S12", "judgment_ts": "2026-01-18T13:00:00+00:00", "identified": true, "timeframe": "h1"},
+    {"id": "S17", "judgment_ts": "2026-01-13T14:00:00+00:00", "identified": true, "timeframe": "h1"},
+    {"id": "S24", "judgment_ts": "2025-11-09T12:00:00+00:00", "identified": true, "timeframe": "h1"},
+    {"id": "S27", "judgment_ts": "2025-02-23T12:00:00+00:00", "identified": true, "timeframe": "h1"}
+  ]
+}

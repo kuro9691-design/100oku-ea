@@ -1,0 +1,110 @@
+{
+  "_notice": "監査役の確認用。評価担当・訓練担当は開かない",
+  "_meta": {
+    "role": "time_identifier_A",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "medium",
+    "created_at": "2026-10-25"
+  },
+  "samples": [
+    {
+      "id": "S01",
+      "identified": true,
+      "timeframe": "h1",
+      "judgment_ts": "2024-07-28T18:00:00+00:00",
+      "search_range_jst": "2024-07-27T00:00:00+09:00/2024-07-30T00:00:00+09:00",
+      "source_chart": "reference/材料/7月２８日　買いで入る.png",
+      "a": "直前谷は67624.00付近。直前山68024.99付近の高値線を上抜く足。",
+      "b": "1本前終値67988.47はH1 MA20=67785.95より上。",
+      "c": "矢印足高値68318.43は直前山68024.99より上。",
+      "candidates_jst": ["2024-07-29T03:00:00+09:00"],
+      "outside_chart_evidence": null,
+      "comparison": "compare_v3_A/S01_comparison.jpgで原典とH1・M15を左右比較し、(a)(b)(c)一致。"
+    },
+    {
+      "id": "S03",
+      "identified": true,
+      "timeframe": "m15",
+      "judgment_ts": "2024-07-06T13:45:00+00:00",
+      "search_range_jst": "2024-07-05T00:00:00+09:00/2024-07-08T00:00:00+09:00",
+      "source_chart": "reference/材料/7月6日　買いで入る.png",
+      "a": "直前谷56500.00付近。直前山56850.01付近の高値線を上抜く足。",
+      "b": "1本前終値56812.01はM15 MA20=56681.82より上。",
+      "c": "矢印足高値57299.00は直前山56850.01より上。",
+      "candidates_jst": ["2024-07-06T22:45:00+09:00"],
+      "outside_chart_evidence": null,
+      "comparison": "compare_v3_A/S03_comparison.jpgで原典とH1・M15を左右比較し、(a)(b)(c)一致。"
+    },
+    {
+      "id": "S05",
+      "identified": false,
+      "timeframe": "h1",
+      "judgment_ts": null,
+      "search_range_jst": "2024-11-01T00:00:00+09:00/2024-11-04T00:00:00+09:00",
+      "source_chart": "reference/材料/11月2売り.png",
+      "a": null,
+      "b": null,
+      "c": null,
+      "candidates_jst": [],
+      "outside_chart_evidence": null,
+      "reason_type": "事後キャプチャのみ",
+      "comparison": "候補を作らないため比較画像なし。"
+    },
+    {
+      "id": "S06",
+      "identified": true,
+      "timeframe": "h1",
+      "judgment_ts": "2025-09-28T22:00:00+00:00",
+      "search_range_jst": "2025-09-27T00:00:00+09:00/2025-09-30T00:00:00+09:00",
+      "source_chart": "codex_examples/ETHUSD/2025.9.28_19-min.jpg",
+      "a": "直前谷4035.58付近。直前山4066.00付近の高値線を上抜く足。",
+      "b": "1本前終値4049.95はH1 MA20=4016.07より上。",
+      "c": "矢印足高値4141.09は直前山4066.00より上。",
+      "candidates_jst": ["2025-09-29T07:00:00+09:00"],
+      "outside_chart_evidence": "本文に就寝前に早めに入った旨があるが、切る時点は実際のL矢印足開始。",
+      "comparison": "compare_v3_A/S06_comparison.jpgで原典とH1・M15を左右比較し、(a)(b)(c)一致。"
+    },
+    {
+      "id": "S14",
+      "identified": true,
+      "timeframe": "h1",
+      "judgment_ts": "2025-03-28T04:00:00+00:00",
+      "search_range_jst": "2025-03-27T00:00:00+09:00/2025-03-30T00:00:00+09:00",
+      "source_chart": "reference/材料/3月28売り.png",
+      "a": "直前山87515.67付近。直前安値86750.00付近の低値線を下抜く足。",
+      "b": "1本前終値86787.16はH1 MA20=87111.96より下。",
+      "c": "矢印足安値85952.54は直前安値86750.00より下。",
+      "candidates_jst": ["2025-03-28T13:00:00+09:00"],
+      "outside_chart_evidence": null,
+      "comparison": "compare_v3_A/S14_comparison.jpgで原典とH1・M15を左右比較し、(a)(b)(c)一致。"
+    },
+    {
+      "id": "S16",
+      "identified": true,
+      "timeframe": "h1",
+      "judgment_ts": "2026-03-04T07:00:00+00:00",
+      "search_range_jst": "2026-03-03T00:00:00+09:00/2026-03-06T00:00:00+09:00",
+      "source_chart": "reference/extracted/2026-03-04_long_08.png",
+      "a": "直前谷67400.00付近。直前山68909.34付近の高値線とH1 MAを上抜く足。",
+      "b": "1本前終値68508.02はH1 MA20=67961.04より上。",
+      "c": "矢印足高値69668.00は直前山68909.34より上。",
+      "candidates_jst": ["2026-03-04T16:00:00+09:00"],
+      "outside_chart_evidence": "当初の逆指値注文を取り消し、その後H4 MA反発を見てH1 MA越えで成行。切る時点は実際のL矢印足開始。",
+      "comparison": "compare_v3_A/S16_comparison.jpgで原典とH1・M15を左右比較し、(a)(b)(c)一致。"
+    },
+    {
+      "id": "S21",
+      "identified": true,
+      "timeframe": "h1",
+      "judgment_ts": "2024-07-24T18:00:00+00:00",
+      "search_range_jst": "2024-07-23T00:00:00+09:00/2024-07-26T00:00:00+09:00",
+      "source_chart": "reference/材料/7月24売り.png",
+      "a": "なし（成行）。直前谷66093.99付近、戻り山66709.55付近の後の足。",
+      "b": "1本前終値66586.01はH1 MA20=66152.77より上。",
+      "c": "矢印足安値65715.17は直前谷66093.99より下。",
+      "candidates_jst": ["2024-07-25T03:00:00+09:00"],
+      "outside_chart_evidence": "理想の安値抜けを見逃し、一時的な戻り局面から成行で入った。切る時点は実際のS矢印足開始。",
+      "comparison": "compare_v3_A/S21_comparison.jpgで原典とH1・M15を左右比較し、(a)(b)(c)一致。"
+    }
+  ]
+}
