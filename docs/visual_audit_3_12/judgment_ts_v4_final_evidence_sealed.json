@@ -1,0 +1,25 @@
+{
+  "_sealed_notice": "最終テスト群のA/B照合証拠。判定後まで開かない。",
+  "_meta": {
+    "method": "A/Bのidentified・judgment_ts・timeframeを機械的に完全一致照合",
+    "created_at": "2026-10-27",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "medium"
+  },
+  "samples": [
+    {
+      "id":"S02",
+      "agreement":true,
+      "A":{"identified":true,"judgment_ts":"2025-12-09T15:00:00Z","timeframe":"H1","source_six":{"directions":["up","up","up","down","up","up"],"body_ranks":[5,4,3,2,6,1],"prominent_wicks":["both","none","none","none","both","none"]},"match_count":1,"line_contact":{"ts":"2025-12-09T12:00:00Z","value":3141.46}},
+      "B":{"identified":true,"judgment_ts":"2025-12-09T15:00:00+00:00","timeframe":"H1","source_six":["陽・5・上下","陽・4・なし","陽・3・なし","陰・2・なし","十字・最短・上下","陽・1・なし"],"match_count":1,"line_contact":{"ts":"2025-12-09T12:00:00+00:00","value":3141.46}}
+    }
+  ],
+  "excluded": [
+    {"id":"S07","reason":"timestamp_disagreement"},
+    {"id":"S10","reason":"both_unidentified"},
+    {"id":"S12","reason":"timestamp_disagreement"},
+    {"id":"S17","reason":"timestamp_disagreement"},
+    {"id":"S24","reason":"timestamp_disagreement"},
+    {"id":"S27","reason":"timestamp_disagreement"}
+  ]
+}
