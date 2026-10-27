@@ -1,0 +1,19 @@
+{
+  "_meta": {
+    "method_version": "v4",
+    "role": "時刻特定役A",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "medium",
+    "created_date_jst": "2026-10-27",
+    "rule": "原典図の矢印の足と前5本を、方向・実体順位・目立つヒゲでデータの足に1本ずつ対応させる"
+  },
+  "items": [
+    {"id": "S01", "judgment_ts": "2024-07-28T11:00:00Z", "timeframe": "H1", "identified": true, "ts_source": "v4_A"},
+    {"id": "S03", "judgment_ts": "2024-07-06T13:45:00Z", "timeframe": "M15", "identified": true, "ts_source": "v4_A"},
+    {"id": "S05", "judgment_ts": null, "timeframe": "H1", "identified": false, "ts_source": "v4_A", "reason": "事後キャプチャのみ"},
+    {"id": "S06", "judgment_ts": "2025-09-28T13:00:00Z", "timeframe": "H1", "identified": true, "ts_source": "v4_A"},
+    {"id": "S14", "judgment_ts": "2025-03-28T03:00:00Z", "timeframe": "H1", "identified": true, "ts_source": "v4_A"},
+    {"id": "S16", "judgment_ts": "2026-03-04T05:00:00Z", "timeframe": "H1", "identified": true, "ts_source": "v4_A"},
+    {"id": "S21", "judgment_ts": "2024-07-24T15:00:00Z", "timeframe": "H1", "identified": true, "ts_source": "v4_A"}
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "_meta": {
+    "method_version": "v4",
+    "role": "時刻特定役A",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "medium",
+    "created_date_jst": "2026-10-27",
+    "match_window": "記事日の前日00:00 JSTから翌日24:00 JSTまで（指示で固定）",
+    "signature": "矢印足と前5本の方向、6本内の実体順位、ヒゲ長>実体の目立つヒゲ位置"
+  },
+  "items": [
+    {
+      "id": "S01", "identified": true, "judgment_ts": "2024-07-28T11:00:00Z", "timeframe": "H1",
+      "source_figure": "docs/codex_examples/●BTCUSD/btc_20240728_files/bandicam-2024-08-02-18-48-57-691.png",
+      "arrow_from_right": 1, "right_edge_partial_appearance": "途中足には見えない",
+      "six_bar_correspondence": [
+        {"ts":"2024-07-28T06:00:00Z","direction":"up","body_rank":5,"prominent_wick":"upper"},
+        {"ts":"2024-07-28T07:00:00Z","direction":"up","body_rank":4,"prominent_wick":"lower"},
+        {"ts":"2024-07-28T08:00:00Z","direction":"down","body_rank":2,"prominent_wick":"none"},
+        {"ts":"2024-07-28T09:00:00Z","direction":"up","body_rank":6,"prominent_wick":"upper"},
+        {"ts":"2024-07-28T10:00:00Z","direction":"up","body_rank":3,"prominent_wick":"upper"},
+        {"ts":"2024-07-28T11:00:00Z","direction":"up","body_rank":1,"prominent_wick":"none"}
+      ],
+      "exact_signature_match_count": 1,
+      "previous_bar_ma20": {"ts":"2024-07-28T10:00:00Z","close":67560.01,"ma20":68017.1705,"relation":"below"},
+      "trigger_line": {"kind":"直前の高値","bar_ts":"2024-07-28T08:00:00Z","price":67564.48,"relation":"矢印足が上抜け"},
+      "visual_check": "原典の矢印足直前の小陽線と上ヒゲ、前5本の陰陽・実体順位・目立つヒゲを順番どおり確認"
+    },
+    {
+      "id": "S03", "identified": true, "judgment_ts": "2024-07-06T13:45:00Z", "timeframe": "M15",
+      "source_figure": "docs/codex_examples/●BTCUSD/btc_20240706_files/bandicam-2024-07-15-01-43-22-661.png",
+      "arrow_from_right": 1, "right_edge_partial_appearance": "途中足には見えない",
+      "six_bar_correspondence": [
+        {"ts":"2024-07-06T12:30:00Z","direction":"down","body_rank":3,"prominent_wick":"none"},
+        {"ts":"2024-07-06T12:45:00Z","direction":"up","body_rank":2,"prominent_wick":"none"},
+        {"ts":"2024-07-06T13:00:00Z","direction":"down","body_rank":6,"prominent_wick":"both"},
+        {"ts":"2024-07-06T13:15:00Z","direction":"up","body_rank":5,"prominent_wick":"upper"},
+        {"ts":"2024-07-06T13:30:00Z","direction":"up","body_rank":4,"prominent_wick":"none"},
+        {"ts":"2024-07-06T13:45:00Z","direction":"up","body_rank":1,"prominent_wick":"upper"}
+      ],
+      "exact_signature_match_count": 1,
+      "previous_bar_ma20": {"ts":"2024-07-06T13:30:00Z","close":56812.01,"ma20":56681.8185,"relation":"above"},
+      "trigger_line": {"kind":"戻り高値","bar_ts":"2024-07-06T13:30:00Z","price":56850.01,"relation":"矢印足が上抜け"},
+      "visual_check": "M15原典図を拡大し、矢印足と前5本の並びをデータの6本に逐次対応"
+    },
+    {
+      "id": "S05", "identified": false, "judgment_ts": null, "timeframe": "H1",
+      "source_figure": null, "arrow_from_right": null, "right_edge_partial_appearance": "判定不能",
+      "six_bar_correspondence": [], "exact_signature_match_count": 0,
+      "previous_bar_ma20": null, "trigger_line": null,
+      "reason": "事後キャプチャのみ。矢印足と前5本を確定できるエントリー時点の原典図がない"
+    },
+    {
+      "id": "S06", "identified": true, "judgment_ts": "2025-09-28T13:00:00Z", "timeframe": "H1",
+      "source_figure": "docs/codex_examples/●ETHUSD/eth_20250928_files/21.jpg",
+      "arrow_from_right": 1, "right_edge_partial_appearance": "途中足には見えない",
+      "six_bar_correspondence": [
+        {"ts":"2025-09-28T08:00:00Z","direction":"down","body_rank":3,"prominent_wick":"none"},
+        {"ts":"2025-09-28T09:00:00Z","direction":"down","body_rank":4,"prominent_wick":"lower"},
+        {"ts":"2025-09-28T10:00:00Z","direction":"up","body_rank":6,"prominent_wick":"both"},
+        {"ts":"2025-09-28T11:00:00Z","direction":"down","body_rank":5,"prominent_wick":"lower"},
+        {"ts":"2025-09-28T12:00:00Z","direction":"down","body_rank":2,"prominent_wick":"none"},
+        {"ts":"2025-09-28T13:00:00Z","direction":"up","body_rank":1,"prominent_wick":"none"}
+      ],
+      "exact_signature_match_count": 1,
+      "previous_bar_ma20": {"ts":"2025-09-28T12:00:00Z","close":3978.11,"ma20":4004.047,"relation":"below"},
+      "trigger_line": {"kind":"成行の先回り","bar_ts":null,"price":null,"relation":"記事本文どおり理想の収束前に成行で入っており、抜け線は使わない"},
+      "visual_check": "原典矢印足の大陽線と直前の陰線列、下ヒゲ位置を順番どおり確認"
+    },
+    {
+      "id": "S14", "identified": true, "judgment_ts": "2025-03-28T03:00:00Z", "timeframe": "H1",
+      "source_figure": "docs/codex_examples/●BTCUSD/btc_20250328_files/bandicam-2025-04-03-00-36-04-501.png",
+      "arrow_from_right": 1, "right_edge_partial_appearance": "途中足には見えない",
+      "six_bar_correspondence": [
+        {"ts":"2025-03-27T22:00:00Z","direction":"down","body_rank":2,"prominent_wick":"none"},
+        {"ts":"2025-03-27T23:00:00Z","direction":"down","body_rank":6,"prominent_wick":"none"},
+        {"ts":"2025-03-28T00:00:00Z","direction":"up","body_rank":5,"prominent_wick":"lower"},
+        {"ts":"2025-03-28T01:00:00Z","direction":"down","body_rank":4,"prominent_wick":"upper"},
+        {"ts":"2025-03-28T02:00:00Z","direction":"down","body_rank":1,"prominent_wick":"none"},
+        {"ts":"2025-03-28T03:00:00Z","direction":"down","body_rank":3,"prominent_wick":"none"}
+      ],
+      "exact_signature_match_count": 1,
+      "previous_bar_ma20": {"ts":"2025-03-28T02:00:00Z","close":86987.77,"ma20":87142.601,"relation":"below"},
+      "trigger_line": {"kind":"直前安値","bar_ts":"2025-03-28T02:00:00Z","price":86950.75,"relation":"矢印足が下抜け"},
+      "visual_check": "原典矢印足までの陰線主体の6本と中央の下ヒゲ陽線を逐次確認"
+    },
+    {
+      "id": "S16", "identified": true, "judgment_ts": "2026-03-04T05:00:00Z", "timeframe": "H1",
+      "source_figure": "docs/codex_examples/●BTCUSD/btc_20260304_files/29.png",
+      "arrow_from_right": 1, "right_edge_partial_appearance": "途中足には見えない",
+      "six_bar_correspondence": [
+        {"ts":"2026-03-04T00:00:00Z","direction":"down","body_rank":4,"prominent_wick":"none"},
+        {"ts":"2026-03-04T01:00:00Z","direction":"up","body_rank":3,"prominent_wick":"upper"},
+        {"ts":"2026-03-04T02:00:00Z","direction":"down","body_rank":5,"prominent_wick":"lower"},
+        {"ts":"2026-03-04T03:00:00Z","direction":"down","body_rank":1,"prominent_wick":"none"},
+        {"ts":"2026-03-04T04:00:00Z","direction":"up","body_rank":6,"prominent_wick":"both"},
+        {"ts":"2026-03-04T05:00:00Z","direction":"up","body_rank":2,"prominent_wick":"none"}
+      ],
+      "exact_signature_match_count": 1,
+      "previous_bar_ma20": {"ts":"2026-03-04T04:00:00Z","close":67786.0,"ma20":67800.72,"relation":"below"},
+      "trigger_line": {"kind":"成行判断","bar_ts":null,"price":null,"relation":"注文取消し後、4時間足MAの支えとH1 MA越えを根拠に成行"},
+      "visual_check": "大陰線、短い両ヒゲ陽線、矢印足の陽線という末尾3本を含め6本を逐次確認"
+    },
+    {
+      "id": "S21", "identified": true, "judgment_ts": "2024-07-24T15:00:00Z", "timeframe": "H1",
+      "source_figure": "docs/codex_examples/●BTCUSD/btc_20240724_files/bandicam-2024-07-26-14-10-32-659.png",
+      "arrow_from_right": 1, "right_edge_partial_appearance": "途中足には見えない",
+      "six_bar_correspondence": [
+        {"ts":"2024-07-24T10:00:00Z","direction":"up","body_rank":6,"prominent_wick":"upper"},
+        {"ts":"2024-07-24T11:00:00Z","direction":"down","body_rank":5,"prominent_wick":"none"},
+        {"ts":"2024-07-24T12:00:00Z","direction":"down","body_rank":3,"prominent_wick":"upper"},
+        {"ts":"2024-07-24T13:00:00Z","direction":"up","body_rank":4,"prominent_wick":"upper"},
+        {"ts":"2024-07-24T14:00:00Z","direction":"up","body_rank":2,"prominent_wick":"none"},
+        {"ts":"2024-07-24T15:00:00Z","direction":"down","body_rank":1,"prominent_wick":"none"}
+      ],
+      "exact_signature_match_count": 1,
+      "previous_bar_ma20": {"ts":"2024-07-24T14:00:00Z","close":66760.01,"ma20":66057.1675,"relation":"above"},
+      "trigger_line": {"kind":"見逃し後の成行","bar_ts":null,"price":null,"relation":"記事本文どおり最初の抜けを見逃し、一時上昇で成行売り"},
+      "visual_check": "末尾の大陰線と、その前の大陽線・上ヒゲ陽線を含む6本の順序を確認"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "_sealed_notice": "最終テストの画像を描くスクリプトだけが読む。人もAIも中身を表示しない",
+  "_meta": {"method_version":"v4","role":"時刻特定役A","model":"gpt-5.6-sol","reasoning_effort":"medium","created_date_jst":"2026-10-27"},
+  "items": [
+    {"id":"S02","judgment_ts":"2025-12-09T15:00:00Z","timeframe":"H1","identified":true,"ts_source":"v4_A"},
+    {"id":"S07","judgment_ts":"2025-03-08T16:00:00Z","timeframe":"H1","identified":true,"ts_source":"v4_A"},
+    {"id":"S10","judgment_ts":null,"timeframe":"H1","identified":false,"ts_source":"v4_A","reason":"図と合わない（矢印なし）"},
+    {"id":"S12","judgment_ts":"2026-01-18T01:00:00Z","timeframe":"H1","identified":true,"ts_source":"v4_A"},
+    {"id":"S17","judgment_ts":"2026-01-13T09:00:00Z","timeframe":"H1","identified":true,"ts_source":"v4_A"},
+    {"id":"S24","judgment_ts":"2025-11-09T12:00:00Z","timeframe":"H1","identified":true,"ts_source":"v4_A"},
+    {"id":"S27","judgment_ts":"2025-02-23T10:00:00Z","timeframe":"H1","identified":true,"ts_source":"v4_A"}
+  ]
+}
