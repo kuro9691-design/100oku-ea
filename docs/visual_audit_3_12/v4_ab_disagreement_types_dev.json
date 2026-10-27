@@ -1,0 +1,134 @@
+{
+  "_meta": {
+    "scope": "development_only",
+    "created_date_jst": "2026-10-27",
+    "rules_source": "C:/Users/user/Documents/100億j_share/指示_20261028_3-12判断時点の決まりの見直し.md",
+    "inputs": {
+      "A_commit": "9eb9c674c8662c817d1ef185c042557ca8208722",
+      "B_commit": "ed1018c96f6f9696c0ad1228b413679305fe7991",
+      "reconciliation_commit": "697023c098b78ebe0609550f3db6b336472c0028"
+    },
+    "sealed_final_files_opened": false,
+    "performance_results_read": false
+  },
+  "counting_rule": "各項目は、開発群7件のうちA/B間で1足以上の差がある件を1件として数える。図から決められない足は、食い違った相対6足のうち、画像上で実体順位を区別できない足を足単位で数える。",
+  "summary": {
+    "development_cases": 7,
+    "both_identified_cases": 6,
+    "same_timestamp_and_timeframe_cases": 1,
+    "both_unidentified_cases": 1,
+    "disagreement_case_counts": {
+      "a_candle_direction": 5,
+      "b_body_length_rank": 5,
+      "c_upper_wick_longer_than_body": 5,
+      "d_lower_wick_longer_than_body": 4,
+      "e_arrow_bar_counting": 6,
+      "f_timeframe_or_search_period": 0,
+      "g_other": 2
+    },
+    "undecidable_bar_count": 7,
+    "undecidable_bar_breakdown": {
+      "body_rank_only": 7,
+      "direction": 0,
+      "upper_wick": 0,
+      "lower_wick": 0
+    }
+  },
+  "items": [
+    {
+      "id": "S01",
+      "different_categories": ["a", "b", "c", "d", "e"],
+      "A_arrow_from_right": 1,
+      "B_arrow_from_right": 3,
+      "visual_adjudication": "Bの矢印足と6本窓が原典図に合う。Aは図の矢印より後ろの窓を書き写している。",
+      "undecidable_relative_bars": [1, 2],
+      "undecidable_reason": "2本の小実体は画像上で長さの差を区別できず、相互の順位は決められない。",
+      "evidence": [
+        "docs/visual_audit_3_12/judgment_ts_v4_A_dev_evidence.json",
+        "docs/visual_audit_3_12/judgment_ts_v4_B_dev_evidence.json",
+        "docs/codex_examples/●BTCUSD/btc_20240728_files/bandicam-2024-08-02-18-48-57-691.png"
+      ]
+    },
+    {
+      "id": "S03",
+      "different_categories": ["a", "b", "c", "d", "e"],
+      "A_arrow_from_right": 1,
+      "B_arrow_from_right": 5,
+      "visual_adjudication": "Bの矢印足と6本窓が原典図に合う。Aは図の矢印より後ろの窓を書き写している。",
+      "undecidable_relative_bars": [1, 3],
+      "undecidable_reason": "2本の小実体は画像上で長さの差を区別できず、相互の順位は決められない。",
+      "evidence": [
+        "docs/visual_audit_3_12/judgment_ts_v4_A_dev_evidence.json",
+        "docs/visual_audit_3_12/judgment_ts_v4_B_dev_evidence.json",
+        "docs/codex_examples/●BTCUSD/btc_20240706_files/bandicam-2024-07-15-01-43-22-661.png"
+      ]
+    },
+    {
+      "id": "S05",
+      "different_categories": [],
+      "visual_adjudication": "A/Bとも事後キャプチャのみとして未特定。比較できる6本窓はない。",
+      "undecidable_relative_bars": [],
+      "evidence": [
+        "docs/visual_audit_3_12/judgment_ts_v4_A_dev_evidence.json",
+        "docs/visual_audit_3_12/judgment_ts_v4_B_dev_evidence.json"
+      ]
+    },
+    {
+      "id": "S06",
+      "different_categories": ["e", "g"],
+      "A_arrow_from_right": 1,
+      "B_arrow_from_right": 4,
+      "visual_adjudication": "6本署名と特定時刻は一致する。矢印の右からの本数差は、Aが21.jpg、Bが19-min.jpgと21.jpgを参照したことによる。成行か高値抜けかの記載は画像だけでは決められない。",
+      "undecidable_relative_bars": [],
+      "other_difference": "参照図の組合せと引き金の記載（Aは成行、Bは直近高値抜け）が異なる。",
+      "evidence": [
+        "docs/visual_audit_3_12/judgment_ts_v4_A_dev_evidence.json",
+        "docs/visual_audit_3_12/judgment_ts_v4_B_dev_evidence.json",
+        "docs/codex_examples/ETHUSD/【リアルトレード解説】ETH_USD（2025.9.28）4時間足レベルのトレンド転換を獲りにいったトレード _ 100億円トレーダーになるまで_files/19-min.jpg",
+        "docs/codex_examples/ETHUSD/【リアルトレード解説】ETH_USD（2025.9.28）4時間足レベルのトレンド転換を獲りにいったトレード _ 100億円トレーダーになるまで_files/21.jpg"
+      ]
+    },
+    {
+      "id": "S14",
+      "different_categories": ["a", "b", "c", "d", "e"],
+      "A_arrow_from_right": 1,
+      "B_arrow_from_right": 3,
+      "visual_adjudication": "Bの矢印足と6本窓が原典図に合う。Aは図の矢印より後ろの窓を書き写している。",
+      "undecidable_relative_bars": [1, 2, 3],
+      "undecidable_reason": "3本の小実体は画像上で長さの差を区別できず、相互の順位は決められない。",
+      "evidence": [
+        "docs/visual_audit_3_12/judgment_ts_v4_A_dev_evidence.json",
+        "docs/visual_audit_3_12/judgment_ts_v4_B_dev_evidence.json",
+        "docs/codex_examples/●BTCUSD/btc_20250328_files/bandicam-2025-04-03-00-36-04-501.png"
+      ]
+    },
+    {
+      "id": "S16",
+      "different_categories": ["a", "b", "c", "d", "e"],
+      "A_arrow_from_right": 1,
+      "B_arrow_from_right": 2,
+      "visual_adjudication": "Bの矢印足と6本窓が原典図に合い、右端は確定前の足に見える。Aは右端の確定前の足を矢印足として扱っている。",
+      "undecidable_relative_bars": [],
+      "evidence": [
+        "docs/visual_audit_3_12/judgment_ts_v4_A_dev_evidence.json",
+        "docs/visual_audit_3_12/judgment_ts_v4_B_dev_evidence.json",
+        "docs/codex_examples/●BTCUSD/btc_20260304_files/29.png"
+      ]
+    },
+    {
+      "id": "S21",
+      "different_categories": ["a", "b", "c", "e", "g"],
+      "A_arrow_from_right": 1,
+      "B_arrow_from_right": 4,
+      "visual_adjudication": "Bが使ったエントリー図では、Bの矢印足と6本窓が図に合う。Aは別の保存図の右端を矢印足として扱っている。",
+      "undecidable_relative_bars": [],
+      "other_difference": "AとBが異なる保存図を使っている。",
+      "evidence": [
+        "docs/visual_audit_3_12/judgment_ts_v4_A_dev_evidence.json",
+        "docs/visual_audit_3_12/judgment_ts_v4_B_dev_evidence.json",
+        "docs/codex_examples/●BTCUSD/btc_20240724_files/bandicam-2024-07-26-14-10-32-659.png",
+        "docs/codex_examples/●BTCUSD/btc_20240724_files/bandicam-2024-07-26-14-09-25-278.png"
+      ]
+    }
+  ]
+}
