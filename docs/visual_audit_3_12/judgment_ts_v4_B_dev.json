@@ -1,0 +1,17 @@
+{
+  "_meta": {
+    "role": "時刻特定役B",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "medium",
+    "method": "v4: 原典図の矢印足と前5本を、固定記事日範囲内の価格データへ陽陰・実体順位・目立つひげで一意照合"
+  },
+  "samples": [
+    {"id":"S01","identified":true,"judgment_ts":"2024-07-29T02:00:00+00:00","trigger_timeframe":"H1"},
+    {"id":"S03","identified":true,"judgment_ts":"2024-07-06T16:15:00+00:00","trigger_timeframe":"M15"},
+    {"id":"S05","identified":false,"judgment_ts":null,"trigger_timeframe":"H1","reason":"図と合わない（事後キャプチャのみ）"},
+    {"id":"S06","identified":true,"judgment_ts":"2025-09-28T13:00:00+00:00","trigger_timeframe":"H1"},
+    {"id":"S14","identified":true,"judgment_ts":"2025-03-28T04:00:00+00:00","trigger_timeframe":"H1"},
+    {"id":"S16","identified":true,"judgment_ts":"2026-03-04T07:00:00+00:00","trigger_timeframe":"H1"},
+    {"id":"S21","identified":true,"judgment_ts":"2024-07-24T17:00:00+00:00","trigger_timeframe":"H1"}
+  ]
+}

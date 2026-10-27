@@ -1,0 +1,12 @@
+{
+  "_meta": {"role":"時刻特定役B","model":"gpt-5.6-sol","reasoning_effort":"medium","sealed":true,"images_generated":false},
+  "samples": [
+    {"id":"S02","identified":true,"judgment_ts":"2025-12-09T15:00:00+00:00","trigger_timeframe":"H1"},
+    {"id":"S07","identified":true,"judgment_ts":"2025-03-09T08:00:00+00:00","trigger_timeframe":"H1"},
+    {"id":"S10","identified":false,"judgment_ts":null,"trigger_timeframe":"H1","reason":"図と合わない（ローカル保存にエントリー図本体がない）"},
+    {"id":"S12","identified":true,"judgment_ts":"2026-01-18T23:00:00+00:00","trigger_timeframe":"H1"},
+    {"id":"S17","identified":true,"judgment_ts":"2026-01-13T15:00:00+00:00","trigger_timeframe":"H1"},
+    {"id":"S24","identified":true,"judgment_ts":"2025-11-09T14:00:00+00:00","trigger_timeframe":"H1"},
+    {"id":"S27","identified":true,"judgment_ts":"2025-02-23T12:00:00+00:00","trigger_timeframe":"H1"}
+  ]
+}
