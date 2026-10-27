@@ -1,0 +1,17 @@
+{
+  "_meta": {
+    "method": "B/Cのidentified・judgment_ts・timeframeを機械的に完全一致照合",
+    "created_at": "2026-10-28",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "medium"
+  },
+  "samples": [
+    {
+      "id": "S14",
+      "identified": true,
+      "judgment_ts": "2025-03-28T04:00:00Z",
+      "timeframe": "h1",
+      "ts_source": "v4_BC"
+    }
+  ]
+}

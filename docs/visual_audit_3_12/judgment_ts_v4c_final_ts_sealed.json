@@ -1,0 +1,19 @@
+{
+  "_sealed_notice": "最終テスト群。判定後まで開かない・画像化しない。",
+  "_meta": {
+    "method": "B/Cのidentified・judgment_ts・timeframeを機械的に完全一致照合",
+    "created_at": "2026-10-28",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "medium"
+  },
+  "samples": [],
+  "excluded": [
+    {"id":"S02","reason":"C_unidentified_arrow_bar_not_identifiable"},
+    {"id":"S07","reason":"C_unidentified_arrow_bar_not_identifiable"},
+    {"id":"S10","reason":"both_unidentified_source_chart_unavailable"},
+    {"id":"S12","reason":"C_unidentified_six_bar_match_zero"},
+    {"id":"S17","reason":"C_unidentified_arrow_bar_not_identifiable"},
+    {"id":"S24","reason":"C_unidentified_arrow_bar_not_identifiable"},
+    {"id":"S27","reason":"C_unidentified_post_capture_only"}
+  ]
+}
