@@ -15,3 +15,4 @@ data_local/
 
 # 周回3-12の原典比較画像（原典図を含むためgit管理外）。
 docs/visual_audit_3_12/compare_v3_*/
+docs/visual_audit_3_12/compare_v4_*/
