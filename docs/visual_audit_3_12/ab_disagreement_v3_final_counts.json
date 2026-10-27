@@ -1,0 +1,34 @@
+{
+  "summary": {
+    "group": "final",
+    "identification_and_time": {
+      "both_identified": 6,
+      "only_A_identified": 1,
+      "same_timeframe_time_different": 3,
+      "target": 7,
+      "time_and_timeframe_same": 3
+    },
+    "timeframe_pairs": {},
+    "same_timeframe_time_difference": {
+      "B_relative_to_A": {
+        "B_after_A": 1,
+        "B_before_A": 2
+      },
+      "signed_bar_offsets_B_minus_A": {
+        "h1:+1": 1,
+        "h1:-1": 1,
+        "h1:-3": 1
+      }
+    },
+    "unavailable_reason_types": {
+      "B:候補なし": 1
+    },
+    "abc_semantic_difference_counts": {
+      "a": 4,
+      "b": 3,
+      "c": 2
+    },
+    "abc_missing_on_one_side_counts": {},
+    "chart_indeterminate_counts": {}
+  }
+}
