@@ -1,0 +1,105 @@
+{
+  "_sealed_notice": "最終テストの判定と回答のコミットが済むまで誰も開かない。",
+  "_meta": {
+    "role": "時刻特定役C",
+    "ai": "Codex",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "medium",
+    "procedure": "最終テスト群の比較画像は生成せず、原典図で矢印の足を先に決められた件だけ価格データを文字と数値で照合した。"
+  },
+  "samples": [
+    {
+      "id": "S02",
+      "source_images": ["17.png", "18.png"],
+      "arrow_bar_from_right": null,
+      "arrow_bar_observation_before_price_data": "L矢印がローソク群の右側にあり、特定の足へ重なる・指すことを確かめられない。",
+      "rightmost_bar_looks_incomplete": "判別不能",
+      "visual_six_bars": null,
+      "matched_data_bar_times": [],
+      "match_count": null,
+      "identified": false,
+      "reason": "矢印の足を図だけで特定できない"
+    },
+    {
+      "id": "S07",
+      "source_images": ["bandicam-2025-03-12-16-29-14-799-min.png", "bandicam-2025-03-12-16-31-13-977.png"],
+      "arrow_bar_from_right": null,
+      "arrow_bar_observation_before_price_data": "早い成行売りのS矢印がローソク群の右側に置かれ、特定の足への重なりを確かめられない。",
+      "rightmost_bar_looks_incomplete": "判別不能",
+      "visual_six_bars": null,
+      "matched_data_bar_times": [],
+      "match_count": null,
+      "identified": false,
+      "reason": "矢印の足を図だけで特定できない",
+      "outside_chart_evidence": "この後チャートを見られないため、本来のネックライン割れより前に成行売り。"
+    },
+    {
+      "id": "S10",
+      "source_images": [],
+      "arrow_bar_from_right": null,
+      "arrow_bar_observation_before_price_data": "保存HTMLはあるが、記事の原典図ファイルがローカル正本・Drive写しで見つからず、新1の図の書き出しを実行できない。外部アクセスは禁止のため取得していない。",
+      "rightmost_bar_looks_incomplete": "対象外",
+      "visual_six_bars": null,
+      "matched_data_bar_times": [],
+      "match_count": null,
+      "identified": false,
+      "reason": "原典図のローカル画像が見つからない"
+    },
+    {
+      "id": "S12",
+      "source_images": ["16-2.png", "17-1.png"],
+      "arrow_bar_from_right": 1,
+      "rightmost_confirmation": "S矢印の軸が右端の陰線に重なっている。",
+      "rightmost_bar_looks_incomplete": false,
+      "visual_six_bars": [
+        {"order": 1, "candle": "陽線", "body_rank": 3, "prominent_wick": "なし"},
+        {"order": 2, "candle": "陰線", "body_rank": 4, "prominent_wick": "なし"},
+        {"order": 3, "candle": "陰線", "body_rank": 2, "prominent_wick": "なし"},
+        {"order": 4, "candle": "陰線", "body_rank": 6, "prominent_wick": "上"},
+        {"order": 5, "candle": "陰線", "body_rank": 5, "prominent_wick": "両方"},
+        {"order": 6, "candle": "陰線", "body_rank": 1, "prominent_wick": "なし"}
+      ],
+      "matched_data_bar_times": [],
+      "match_count": 0,
+      "identified": false,
+      "reason": "6本の対応が0か所"
+    },
+    {
+      "id": "S17",
+      "source_images": ["21.png", "22.png"],
+      "arrow_bar_from_right": null,
+      "arrow_bar_observation_before_price_data": "L矢印がローソク群の右側にあり、特定の足へ重なる・指すことを確かめられない。",
+      "rightmost_bar_looks_incomplete": "判別不能",
+      "visual_six_bars": null,
+      "matched_data_bar_times": [],
+      "match_count": null,
+      "identified": false,
+      "reason": "矢印の足を図だけで特定できない"
+    },
+    {
+      "id": "S24",
+      "source_images": ["14-1.png", "15.png"],
+      "arrow_bar_from_right": null,
+      "arrow_bar_observation_before_price_data": "L矢印がローソク群の右側にあり、特定の足へ重なる・指すことを確かめられない。",
+      "rightmost_bar_looks_incomplete": "判別不能",
+      "visual_six_bars": null,
+      "matched_data_bar_times": [],
+      "match_count": null,
+      "identified": false,
+      "reason": "矢印の足を図だけで特定できない"
+    },
+    {
+      "id": "S27",
+      "source_images": [],
+      "arrow_bar_from_right": null,
+      "arrow_bar_observation_before_price_data": "記事自身がエントリー時点のキャプチャを撮り忘れ、全て事後キャプチャと明記しているため新1の対象にできない。",
+      "rightmost_bar_looks_incomplete": "対象外",
+      "visual_six_bars": null,
+      "matched_data_bar_times": [],
+      "match_count": null,
+      "identified": false,
+      "reason": "事後キャプチャのみ",
+      "outside_chart_evidence": "本来の地点を見逃し、かなり遅れて成行売り。"
+    }
+  ]
+}

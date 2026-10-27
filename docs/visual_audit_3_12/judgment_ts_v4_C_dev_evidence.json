@@ -1,0 +1,183 @@
+{
+  "_notice": "監査役の確認用。評価担当・訓練担当は開かない。",
+  "_meta": {
+    "role": "時刻特定役C",
+    "ai": "Codex",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "medium",
+    "procedure": "各原典図で価格データを見る前に矢印の足を決め、右端からの本数を記録した。その後、矢印の足と前5本を書き出し、新2〜新6で照合した。候補の差し替え、期間拡大、同点規則の追加はしていない。"
+  },
+  "samples": [
+    {
+      "id": "S01",
+      "source_images": [
+        "bandicam-2024-08-02-18-48-57-691.png",
+        "bandicam-2024-08-02-18-51-00-732.png"
+      ],
+      "arrow_bar_from_right": null,
+      "arrow_bar_observation_before_price_data": "L矢印はローソク群の右側の空白にあり、特定の足へ重なる・指すことを図だけでは確かめられない。右端の足とは決めなかった。",
+      "rightmost_bar_looks_incomplete": "判別不能",
+      "visual_six_bars": null,
+      "matched_data_bar_times": [],
+      "match_count": null,
+      "identified": false,
+      "reason": "矢印の足を図だけで特定できない"
+    },
+    {
+      "id": "S03",
+      "source_images": [
+        "bandicam-2024-07-15-01-43-22-661.png",
+        "bandicam-2024-07-15-01-45-14-537.png"
+      ],
+      "arrow_bar_from_right": null,
+      "arrow_bar_observation_before_price_data": "L矢印は15分足のローソク群の右側に置かれ、特定の足へ重なる・指すことを図だけでは確かめられない。右端の足とは決めなかった。",
+      "rightmost_bar_looks_incomplete": "判別不能",
+      "visual_six_bars": null,
+      "matched_data_bar_times": [],
+      "match_count": null,
+      "identified": false,
+      "reason": "矢印の足を図だけで特定できない"
+    },
+    {
+      "id": "S05",
+      "source_images": [],
+      "arrow_bar_from_right": null,
+      "arrow_bar_observation_before_price_data": "原典にエントリー時点の図がなく、事後キャプチャだけなので新1を実行できない。",
+      "rightmost_bar_looks_incomplete": "対象外",
+      "visual_six_bars": null,
+      "matched_data_bar_times": [],
+      "match_count": null,
+      "identified": false,
+      "reason": "事後キャプチャのみ"
+    },
+    {
+      "id": "S06",
+      "source_images": [
+        "19-min.jpg"
+      ],
+      "arrow_bar_from_right": null,
+      "arrow_bar_observation_before_price_data": "L矢印はローソク群の右側にあり、矢印の軸がどの足にも重ならない。右端の足を矢印の足とする根拠がない。",
+      "rightmost_bar_looks_incomplete": "判別不能",
+      "visual_six_bars": null,
+      "matched_data_bar_times": [],
+      "match_count": null,
+      "identified": false,
+      "reason": "矢印の足を図だけで特定できない"
+    },
+    {
+      "id": "S14",
+      "source_images": [
+        "bandicam-2025-04-03-00-36-04-501.png",
+        "bandicam-2025-04-03-00-37-36-247.png"
+      ],
+      "arrow_bar_from_right": 1,
+      "rightmost_confirmation": "両図でS矢印の軸が右端の長い陰線に重なっている。矢印の先端ではなく軸と足の重なりで確認した。",
+      "rightmost_bar_looks_incomplete": false,
+      "visual_six_bars": [
+        {"order": 1, "candle": "陰線", "body_rank": 6, "prominent_wick": "なし"},
+        {"order": 2, "candle": "陽線", "body_rank": 5, "prominent_wick": "下"},
+        {"order": 3, "candle": "陰線", "body_rank": 4, "prominent_wick": "上"},
+        {"order": 4, "candle": "陰線", "body_rank": 2, "prominent_wick": "なし"},
+        {"order": 5, "candle": "陰線", "body_rank": 3, "prominent_wick": "なし"},
+        {"order": 6, "candle": "陰線", "body_rank": 1, "prominent_wick": "なし"}
+      ],
+      "matched_data_bar_times": [
+        "2025-03-27T23:00:00Z",
+        "2025-03-28T00:00:00Z",
+        "2025-03-28T01:00:00Z",
+        "2025-03-28T02:00:00Z",
+        "2025-03-28T03:00:00Z",
+        "2025-03-28T04:00:00Z"
+      ],
+      "match_count": 1,
+      "trigger": {
+        "a": "直近安値の下抜け",
+        "line_touch_bar_time": "2025-03-28T00:00:00Z",
+        "line_value": 86929.58,
+        "b": "矢印の1本前の終値86787.16はH1 MA20=87111.9595より下",
+        "c": "矢印の足は直近安値線より下"
+      },
+      "comparison_image": "docs/visual_audit_3_12/compare_v4_C/S14_compare.png",
+      "new6_check": "比較画像で、データ画像の最後の足（2025-03-28T03:00:00Z）が原典の矢印の1本前の陰線と、陽陰・実体の相対長・目立つひげの有無で一致した。",
+      "outside_chart_evidence": null,
+      "identified": true
+    },
+    {
+      "id": "S16",
+      "source_images": [
+        "29.png",
+        "30.png"
+      ],
+      "arrow_bar_from_right": 1,
+      "rightmost_confirmation": "両図でL矢印の軸が右端の陽線に重なっている。",
+      "rightmost_bar_looks_incomplete": false,
+      "visual_six_bars": [
+        {"order": 1, "candle": "陰線", "body_rank": 5, "prominent_wick": "下"},
+        {"order": 2, "candle": "陰線", "body_rank": 2, "prominent_wick": "なし"},
+        {"order": 3, "candle": "陽線", "body_rank": 6, "prominent_wick": "両方"},
+        {"order": 4, "candle": "陽線", "body_rank": 3, "prominent_wick": "なし"},
+        {"order": 5, "candle": "陽線", "body_rank": 4, "prominent_wick": "なし"},
+        {"order": 6, "candle": "陽線", "body_rank": 1, "prominent_wick": "なし"}
+      ],
+      "matched_data_bar_times": [
+        "2026-03-04T02:00:00Z",
+        "2026-03-04T03:00:00Z",
+        "2026-03-04T04:00:00Z",
+        "2026-03-04T05:00:00Z",
+        "2026-03-04T06:00:00Z",
+        "2026-03-04T07:00:00Z"
+      ],
+      "match_count": 1,
+      "trigger": {
+        "a": "なし（成行）。本文条件は4時間足MAに支えられた下ひげ反発後、1時間足MAを超えたあたり",
+        "line_touch_bar_time": null,
+        "line_value": null,
+        "b": "矢印の1本前の終値68508.02はH1 MA20=67961.0365より上",
+        "c": "矢印候補より前にすでに1時間足MAの上へ出ており、本文の成行条件の位置と合わない"
+      },
+      "comparison_image": "docs/visual_audit_3_12/compare_v4_C/S16_compare.png",
+      "new6_check": "候補の探し直しはせず、新5に従って図と本文条件の不一致で特定できないとした。",
+      "outside_chart_evidence": null,
+      "identified": false,
+      "reason": "図と合わない"
+    },
+    {
+      "id": "S21",
+      "source_images": [
+        "bandicam-2024-07-26-14-09-25-278.png",
+        "bandicam-2024-07-26-14-10-32-659.png"
+      ],
+      "arrow_bar_from_right": 1,
+      "rightmost_confirmation": "両図でS矢印の軸が右端の陰線に重なっている。",
+      "rightmost_bar_looks_incomplete": false,
+      "visual_six_bars": [
+        {"order": 1, "candle": "陰線", "body_rank": 1, "prominent_wick": "なし"},
+        {"order": 2, "candle": "陽線", "body_rank": 2, "prominent_wick": "なし"},
+        {"order": 3, "candle": "陽線", "body_rank": 5, "prominent_wick": "両方"},
+        {"order": 4, "candle": "陽線", "body_rank": 4, "prominent_wick": "両方"},
+        {"order": 5, "candle": "陽線", "body_rank": 6, "prominent_wick": "両方"},
+        {"order": 6, "candle": "陰線", "body_rank": 3, "prominent_wick": "上"}
+      ],
+      "matched_data_bar_times": [
+        "2024-07-23T19:00:00Z",
+        "2024-07-23T20:00:00Z",
+        "2024-07-23T21:00:00Z",
+        "2024-07-23T22:00:00Z",
+        "2024-07-23T23:00:00Z",
+        "2024-07-24T00:00:00Z"
+      ],
+      "match_count": 1,
+      "trigger": {
+        "a": "なし（成行）。本文条件は押し安値割れ後の一時的な上昇で成行売り",
+        "line_touch_bar_time": null,
+        "line_value": null,
+        "b": "矢印の1本前の終値65936.01はH1 MA20=66349.8180より下",
+        "c": "矢印の足は先に割った押し安値より下の戻り局面"
+      },
+      "comparison_image": "docs/visual_audit_3_12/compare_v4_C/S21_compare.png",
+      "new6_check": "比較画像で、データ画像の最後の足（2024-07-23T23:00:00Z）が原典の矢印の1本前の小さい陽線と、陽陰・実体の相対長・上下の目立つひげで一致した。",
+      "outside_chart_evidence": "押し安値割れ時はチャートを見ておらず、割れ後の一時的な上昇で成行売り。実際のエントリー足を動かしていない。",
+      "identified": true
+    }
+  ]
+}

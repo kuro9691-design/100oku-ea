@@ -1,0 +1,20 @@
+{
+  "_sealed_notice": "最終テストの画像を描くスクリプトだけが読む。人もAIも中身を表示しない。",
+  "_meta": {
+    "role": "時刻特定役C",
+    "ai": "Codex",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "medium",
+    "model_source": "run_queue起動モデル欄",
+    "rules_version": "v4（決まり新1〜新6を変更せず使用）"
+  },
+  "samples": [
+    {"id": "S02", "judgment_ts": null, "identified": false, "ts_source": "v4_C", "timeframe": "h1", "reason": "矢印の足を図だけで特定できない"},
+    {"id": "S07", "judgment_ts": null, "identified": false, "ts_source": "v4_C", "timeframe": "h1", "reason": "矢印の足を図だけで特定できない"},
+    {"id": "S10", "judgment_ts": null, "identified": false, "ts_source": "v4_C", "timeframe": "h1", "reason": "原典図のローカル画像が見つからない"},
+    {"id": "S12", "judgment_ts": null, "identified": false, "ts_source": "v4_C", "timeframe": "h1", "reason": "6本の対応が0か所"},
+    {"id": "S17", "judgment_ts": null, "identified": false, "ts_source": "v4_C", "timeframe": "h1", "reason": "矢印の足を図だけで特定できない"},
+    {"id": "S24", "judgment_ts": null, "identified": false, "ts_source": "v4_C", "timeframe": "h1", "reason": "矢印の足を図だけで特定できない"},
+    {"id": "S27", "judgment_ts": null, "identified": false, "ts_source": "v4_C", "timeframe": "h1", "reason": "事後キャプチャのみ"}
+  ]
+}
